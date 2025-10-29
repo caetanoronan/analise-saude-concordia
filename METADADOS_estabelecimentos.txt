@@ -1,0 +1,14 @@
+METADADOS - ESTABELECIMENTOS DE SAÚDE CONCÓRDIA/SC
+==================================================
+Total de estabelecimentos: 32
+ESF: 16
+PS: 15
+Outros: 1
+
+SISTEMA DE COORDENADAS: WGS84 (EPSG:4326)
+LATITUDE: Field39
+LONGITUDE: Field40
+
+ARQUIVOS GERADOS:
+- estabelecimentos_concordia_qgis.csv (para carregamento simples)
+- estabelecimentos_concordia_wkt.csv (com geometria WKT)

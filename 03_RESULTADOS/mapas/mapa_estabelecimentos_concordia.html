@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_67be3269728238692f7b447ff4cc1880 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_67be3269728238692f7b447ff4cc1880" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_67be3269728238692f7b447ff4cc1880 = L.map(
+                "map_67be3269728238692f7b447ff4cc1880",
+                {
+                    center: [-27.2393960840625, -52.04943930875],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 12,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_146ee756796c6fa5255027e574004815 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_146ee756796c6fa5255027e574004815.addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var marker_97961134cd5042be9f1ef5bd8a24c575 = L.marker(
+                [-27.2333315, -52.0484409],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_0b37ccfc22b0b1ed8ca07030317dd6ae = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_99d71a2173fd3b494672c246a695a640 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_aec54e75a44925c603ce9f00bad6b750 = $(`<div id="html_aec54e75a44925c603ce9f00bad6b750" style="width: 100.0%; height: 100.0%;">     <b>ESF NOVO HORIZONTE</b><br>     <b>Endereço:</b> RUA GUILHERME MUNARETTO, 37<br>     <b>Bairro:</b> LOTEAMENTO NOVO HORI<br>     <b>CEP:</b> 89705218<br>     <b>Tipo:</b> ESF     </div>`)[0];
+                popup_99d71a2173fd3b494672c246a695a640.setContent(html_aec54e75a44925c603ce9f00bad6b750);
+            
+        
+
+        marker_97961134cd5042be9f1ef5bd8a24c575.bindPopup(popup_99d71a2173fd3b494672c246a695a640)
+        ;
+
+        
+    
+    
+            marker_97961134cd5042be9f1ef5bd8a24c575.bindTooltip(
+                `<div>
+                     ESF NOVO HORIZONTE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_97961134cd5042be9f1ef5bd8a24c575.setIcon(icon_0b37ccfc22b0b1ed8ca07030317dd6ae);
+            
+    
+            var marker_ce610f0aa8b29defe59be66ed96fe2a3 = L.marker(
+                [-27.2461031, -52.0202689],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_0974dd1f493594bc1cff79639991cd1a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_34254e85eb374c7c34a20695674bda8a = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_a64e4c8e86bbd57c1843c9acbaebc92f = $(`<div id="html_a64e4c8e86bbd57c1843c9acbaebc92f" style="width: 100.0%; height: 100.0%;">     <b>ESF GUILHERME REICH II</b><br>     <b>Endereço:</b> RUA VITORIA, 91<br>     <b>Bairro:</b> GUILHERME REICH<br>     <b>CEP:</b> 89709172<br>     <b>Tipo:</b> ESF     </div>`)[0];
+                popup_34254e85eb374c7c34a20695674bda8a.setContent(html_a64e4c8e86bbd57c1843c9acbaebc92f);
+            
+        
+
+        marker_ce610f0aa8b29defe59be66ed96fe2a3.bindPopup(popup_34254e85eb374c7c34a20695674bda8a)
+        ;
+
+        
+    
+    
+            marker_ce610f0aa8b29defe59be66ed96fe2a3.bindTooltip(
+                `<div>
+                     ESF GUILHERME REICH II
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ce610f0aa8b29defe59be66ed96fe2a3.setIcon(icon_0974dd1f493594bc1cff79639991cd1a);
+            
+    
+            var marker_9e18ba8af7f86f2423ebcd0bed927887 = L.marker(
+                [-27.2167556, -52.015262],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_9acdae3235c3d71e80aceec6392601b4 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_628e3c625dabd2df38013a2e719b29a3 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_264e6f64149331139728321ae5c7f557 = $(`<div id="html_264e6f64149331139728321ae5c7f557" style="width: 100.0%; height: 100.0%;">     <b>ESF SALETE</b><br>     <b>Endereço:</b> RUA JOAO ZANARDI, S/N<br>     <b>Bairro:</b> NOSSA SENHORA DA SAL<br>     <b>CEP:</b> 89700396<br>     <b>Tipo:</b> ESF     </div>`)[0];
+                popup_628e3c625dabd2df38013a2e719b29a3.setContent(html_264e6f64149331139728321ae5c7f557);
+            
+        
+
+        marker_9e18ba8af7f86f2423ebcd0bed927887.bindPopup(popup_628e3c625dabd2df38013a2e719b29a3)
+        ;
+
+        
+    
+    
+            marker_9e18ba8af7f86f2423ebcd0bed927887.bindTooltip(
+                `<div>
+                     ESF SALETE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_9e18ba8af7f86f2423ebcd0bed927887.setIcon(icon_9acdae3235c3d71e80aceec6392601b4);
+            
+    
+            var marker_0fcb7f62715f8f106e9b08010ba74cde = L.marker(
+                [-27.2483118, -52.1186013],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_97c045c3e4fffce8db1f92200e9d885e = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3a99af05e72ab4f01b5357a9eff5b77c = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_eedc3cf05cfaa8fafd9b256537840050 = $(`<div id="html_eedc3cf05cfaa8fafd9b256537840050" style="width: 100.0%; height: 100.0%;">     <b>PS PRESIDENTE KENNEDY</b><br>     <b>Endereço:</b> PRESIDENTE KENNEDY, 1<br>     <b>Bairro:</b> CENTRO<br>     <b>CEP:</b> 89725000<br>     <b>Tipo:</b> PS     </div>`)[0];
+                popup_3a99af05e72ab4f01b5357a9eff5b77c.setContent(html_eedc3cf05cfaa8fafd9b256537840050);
+            
+        
+
+        marker_0fcb7f62715f8f106e9b08010ba74cde.bindPopup(popup_3a99af05e72ab4f01b5357a9eff5b77c)
+        ;
+
+        
+    
+    
+            marker_0fcb7f62715f8f106e9b08010ba74cde.bindTooltip(
+                `<div>
+                     PS PRESIDENTE KENNEDY
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_0fcb7f62715f8f106e9b08010ba74cde.setIcon(icon_97c045c3e4fffce8db1f92200e9d885e);
+            
+    
+            var marker_cf27597dba5dde03a93400e3145791f1 = L.marker(
+                [-27.2249988, -52.0350825],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_a0a80640417e14a070b0ab9efe2adf70 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_8b7f123b1175003150e9ceaa91c62fbb = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_b1b69689ad7bb34f8e91388f70a8b731 = $(`<div id="html_b1b69689ad7bb34f8e91388f70a8b731" style="width: 100.0%; height: 100.0%;">     <b>PS SANTA CRUZ</b><br>     <b>Endereço:</b> RUA CLOVIS CESAR DE OLIVEIRA, S/N<br>     <b>Bairro:</b> SANTA CRUZ<br>     <b>CEP:</b> 89703142<br>     <b>Tipo:</b> PS     </div>`)[0];
+                popup_8b7f123b1175003150e9ceaa91c62fbb.setContent(html_b1b69689ad7bb34f8e91388f70a8b731);
+            
+        
+
+        marker_cf27597dba5dde03a93400e3145791f1.bindPopup(popup_8b7f123b1175003150e9ceaa91c62fbb)
+        ;
+
+        
+    
+    
+            marker_cf27597dba5dde03a93400e3145791f1.bindTooltip(
+                `<div>
+                     PS SANTA CRUZ
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_cf27597dba5dde03a93400e3145791f1.setIcon(icon_a0a80640417e14a070b0ab9efe2adf70);
+            
+    
+            var marker_c6fea5d25b858c892f217bac25c6b47d = L.marker(
+                [-27.234114, -52.201091],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_4285386e91f2c7557a474d949a602347 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_301b6921e6c55f074a7543b3914d66ff = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_91edce258cf9b8c7d5677572933c7ede = $(`<div id="html_91edce258cf9b8c7d5677572933c7ede" style="width: 100.0%; height: 100.0%;">     <b>PS ENGENHO VELHO</b><br>     <b>Endereço:</b> ENGENHO VELHO, S/N<br>     <b>Bairro:</b> CENTRO<br>     <b>CEP:</b> 89720000<br>     <b>Tipo:</b> PS     </div>`)[0];
+                popup_301b6921e6c55f074a7543b3914d66ff.setContent(html_91edce258cf9b8c7d5677572933c7ede);
+            
+        
+
+        marker_c6fea5d25b858c892f217bac25c6b47d.bindPopup(popup_301b6921e6c55f074a7543b3914d66ff)
+        ;
+
+        
+    
+    
+            marker_c6fea5d25b858c892f217bac25c6b47d.bindTooltip(
+                `<div>
+                     PS ENGENHO VELHO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_c6fea5d25b858c892f217bac25c6b47d.setIcon(icon_4285386e91f2c7557a474d949a602347);
+            
+    
+            var marker_c4cd4e8deecae96939bafc9f7c8ef785 = L.marker(
+                [-27.3380429, -51.967781],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_0f23259bf7888f3126b8acfb60e8b98c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_8c10df3d75a30b9e56e9f70d38e8b0ae = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_f978fb2b24a8196e4126a298f3069580 = $(`<div id="html_f978fb2b24a8196e4126a298f3069580" style="width: 100.0%; height: 100.0%;">     <b>PS RANCHO GRANDE</b><br>     <b>Endereço:</b> RANCHO GRANDE, S/N<br>     <b>Bairro:</b> RANCHO GRANDE<br>     <b>CEP:</b> 89715899<br>     <b>Tipo:</b> PS     </div>`)[0];
+                popup_8c10df3d75a30b9e56e9f70d38e8b0ae.setContent(html_f978fb2b24a8196e4126a298f3069580);
+            
+        
+
+        marker_c4cd4e8deecae96939bafc9f7c8ef785.bindPopup(popup_8c10df3d75a30b9e56e9f70d38e8b0ae)
+        ;
+
+        
+    
+    
+            marker_c4cd4e8deecae96939bafc9f7c8ef785.bindTooltip(
+                `<div>
+                     PS RANCHO GRANDE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_c4cd4e8deecae96939bafc9f7c8ef785.setIcon(icon_0f23259bf7888f3126b8acfb60e8b98c);
+            
+    
+            var marker_48ba43ac5fc23f3f38f0bda77a081939 = L.marker(
+                [-27.1243386, -51.9846434],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_1339e31d62b033034f4d948de97456ba = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5a3c6217b183792d8df7cc33b3205106 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_4a836aec3ccce469d02b807d1eb3f062 = $(`<div id="html_4a836aec3ccce469d02b807d1eb3f062" style="width: 100.0%; height: 100.0%;">     <b>PS TRES DE OUTUBRO</b><br>     <b>Endereço:</b> TRES DE OUTUBRO, S/N<br>     <b>Bairro:</b> INTERIOR<br>     <b>CEP:</b> 89715899<br>     <b>Tipo:</b> PS     </div>`)[0];
+                popup_5a3c6217b183792d8df7cc33b3205106.setContent(html_4a836aec3ccce469d02b807d1eb3f062);
+            
+        
+
+        marker_48ba43ac5fc23f3f38f0bda77a081939.bindPopup(popup_5a3c6217b183792d8df7cc33b3205106)
+        ;
+
+        
+    
+    
+            marker_48ba43ac5fc23f3f38f0bda77a081939.bindTooltip(
+                `<div>
+                     PS TRES DE OUTUBRO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_48ba43ac5fc23f3f38f0bda77a081939.setIcon(icon_1339e31d62b033034f4d948de97456ba);
+            
+    
+            var marker_bf3db80b93015fa30485beaeac9525bd = L.marker(
+                [-27.2441391, -51.9539252],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_918f00841799f318e34f9ebb2f07c1b9 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_fd5f263d085c4531938a41b192e77f52 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_0b3f61e8fd937cd0d6ac9ce7f73eed07 = $(`<div id="html_0b3f61e8fd937cd0d6ac9ce7f73eed07" style="width: 100.0%; height: 100.0%;">     <b>ESF VILA JACOB BIEZUS</b><br>     <b>Endereço:</b> RUA ANDORINHAS, S/N<br>     <b>Bairro:</b> JACOB BIEZUS<br>     <b>CEP:</b> 89712232<br>     <b>Tipo:</b> ESF     </div>`)[0];
+                popup_fd5f263d085c4531938a41b192e77f52.setContent(html_0b3f61e8fd937cd0d6ac9ce7f73eed07);
+            
+        
+
+        marker_bf3db80b93015fa30485beaeac9525bd.bindPopup(popup_fd5f263d085c4531938a41b192e77f52)
+        ;
+
+        
+    
+    
+            marker_bf3db80b93015fa30485beaeac9525bd.bindTooltip(
+                `<div>
+                     ESF VILA JACOB BIEZUS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_bf3db80b93015fa30485beaeac9525bd.setIcon(icon_918f00841799f318e34f9ebb2f07c1b9);
+            
+    
+            var marker_911d8912a11f2d97599174ac1ef79c32 = L.marker(
+                [-27.2466631, -52.0200085],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_8720c0d0ef1941389bd53cb789c4c4a6 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_66ee745a93796517ba715fffc4442841 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_31aee9afe84674a6a0eb6387f3ad9662 = $(`<div id="html_31aee9afe84674a6a0eb6387f3ad9662" style="width: 100.0%; height: 100.0%;">     <b>ESF GUILHERME REICH</b><br>     <b>Endereço:</b> RUA VITORIA, 91<br>     <b>Bairro:</b> GUILHERME REICH<br>     <b>CEP:</b> 89709172<br>     <b>Tipo:</b> ESF     </div>`)[0];
+                popup_66ee745a93796517ba715fffc4442841.setContent(html_31aee9afe84674a6a0eb6387f3ad9662);
+            
+        
+
+        marker_911d8912a11f2d97599174ac1ef79c32.bindPopup(popup_66ee745a93796517ba715fffc4442841)
+        ;
+
+        
+    
+    
+            marker_911d8912a11f2d97599174ac1ef79c32.bindTooltip(
+                `<div>
+                     ESF GUILHERME REICH
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_911d8912a11f2d97599174ac1ef79c32.setIcon(icon_8720c0d0ef1941389bd53cb789c4c4a6);
+            
+    
+            var marker_b9a6cbf4615b99a489943389490fde55 = L.marker(
+                [-27.22889383, -52.00150967],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_63fde4b82a3415e499def1645161f311 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_607d7803033d9abe9386f381eb92137c = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_c0f13e2648d1a5c9fa9852beaf1d6fde = $(`<div id="html_c0f13e2648d1a5c9fa9852beaf1d6fde" style="width: 100.0%; height: 100.0%;">     <b>ESF JARDIM EUROPA</b><br>     <b>Endereço:</b> RUA ALEXANDRE LORENZET, 319<br>     <b>Bairro:</b> PARQUE DE EXPOSICOES<br>     <b>CEP:</b> 89711226<br>     <b>Tipo:</b> ESF     </div>`)[0];
+                popup_607d7803033d9abe9386f381eb92137c.setContent(html_c0f13e2648d1a5c9fa9852beaf1d6fde);
+            
+        
+
+        marker_b9a6cbf4615b99a489943389490fde55.bindPopup(popup_607d7803033d9abe9386f381eb92137c)
+        ;
+
+        
+    
+    
+            marker_b9a6cbf4615b99a489943389490fde55.bindTooltip(
+                `<div>
+                     ESF JARDIM EUROPA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b9a6cbf4615b99a489943389490fde55.setIcon(icon_63fde4b82a3415e499def1645161f311);
+            
+    
+            var marker_a93179673325ac0113ca7fd99b8c6ecc = L.marker(
+                [-27.2304667, -51.9864312],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_79c9a642e97a0f6da0ebf547e389976a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ba232a8f3df586cb03aeaa6313504a2e = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_715fe315475eb60849c7d6f9458888d5 = $(`<div id="html_715fe315475eb60849c7d6f9458888d5" style="width: 100.0%; height: 100.0%;">     <b>ESF SAO CRISTOVAO</b><br>     <b>Endereço:</b> RUA MAURO MATIOLLO, 255<br>     <b>Bairro:</b> SAO CRISTOVAO<br>     <b>CEP:</b> 89711508<br>     <b>Tipo:</b> ESF     </div>`)[0];
+                popup_ba232a8f3df586cb03aeaa6313504a2e.setContent(html_715fe315475eb60849c7d6f9458888d5);
+            
+        
+
+        marker_a93179673325ac0113ca7fd99b8c6ecc.bindPopup(popup_ba232a8f3df586cb03aeaa6313504a2e)
+        ;
+
+        
+    
+    
+            marker_a93179673325ac0113ca7fd99b8c6ecc.bindTooltip(
+                `<div>
+                     ESF SAO CRISTOVAO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_a93179673325ac0113ca7fd99b8c6ecc.setIcon(icon_79c9a642e97a0f6da0ebf547e389976a);
+            
+    
+            var marker_46021d191f2121fd9cb9f6c94e80e28b = L.marker(
+                [-27.2349951, -52.0405281],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_dc512494c64a57a33d99951127111542 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b281ac01707ebee86d4480e49268c8f7 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_adf616a262193e1917b9240020364228 = $(`<div id="html_adf616a262193e1917b9240020364228" style="width: 100.0%; height: 100.0%;">     <b>ESF INDUSTRIARIOS</b><br>     <b>Endereço:</b> OTTO TRAMONTINI, S/N<br>     <b>Bairro:</b> INDUSTRIARIOS<br>     <b>CEP:</b> 89705070<br>     <b>Tipo:</b> ESF     </div>`)[0];
+                popup_b281ac01707ebee86d4480e49268c8f7.setContent(html_adf616a262193e1917b9240020364228);
+            
+        
+
+        marker_46021d191f2121fd9cb9f6c94e80e28b.bindPopup(popup_b281ac01707ebee86d4480e49268c8f7)
+        ;
+
+        
+    
+    
+            marker_46021d191f2121fd9cb9f6c94e80e28b.bindTooltip(
+                `<div>
+                     ESF INDUSTRIARIOS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_46021d191f2121fd9cb9f6c94e80e28b.setIcon(icon_dc512494c64a57a33d99951127111542);
+            
+    
+            var marker_7e7c5855e16dfa38772a84fd5ba5699c = L.marker(
+                [-27.21589969, -52.02835321],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_fb11f571225e00c3720e8ac5398061c9 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c2b9a236e7628621fcab7a32044d9c76 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_b4f7245deb368f35c2baa2634452a621 = $(`<div id="html_b4f7245deb368f35c2baa2634452a621" style="width: 100.0%; height: 100.0%;">     <b>PS JARDIM</b><br>     <b>Endereço:</b> RUA LEONIDAS FAVERO, S/N<br>     <b>Bairro:</b> JARDIM<br>     <b>CEP:</b> 89703024<br>     <b>Tipo:</b> PS     </div>`)[0];
+                popup_c2b9a236e7628621fcab7a32044d9c76.setContent(html_b4f7245deb368f35c2baa2634452a621);
+            
+        
+
+        marker_7e7c5855e16dfa38772a84fd5ba5699c.bindPopup(popup_c2b9a236e7628621fcab7a32044d9c76)
+        ;
+
+        
+    
+    
+            marker_7e7c5855e16dfa38772a84fd5ba5699c.bindTooltip(
+                `<div>
+                     PS JARDIM
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7e7c5855e16dfa38772a84fd5ba5699c.setIcon(icon_fb11f571225e00c3720e8ac5398061c9);
+            
+    
+            var marker_92da67cafc41751812e2ce10d886498c = L.marker(
+                [-27.2441305, -52.032473],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_6f8c56a986516db15fb021d24db39eb7 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f21ea2731477ae5ab137fb1737521227 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_d69ad34e46b26abbb84d3817432af3b4 = $(`<div id="html_d69ad34e46b26abbb84d3817432af3b4" style="width: 100.0%; height: 100.0%;">     <b>ESF NACOES</b><br>     <b>Endereço:</b> RUA BOLIVIA, S/N<br>     <b>Bairro:</b> NACOES<br>     <b>CEP:</b> 89708184<br>     <b>Tipo:</b> ESF     </div>`)[0];
+                popup_f21ea2731477ae5ab137fb1737521227.setContent(html_d69ad34e46b26abbb84d3817432af3b4);
+            
+        
+
+        marker_92da67cafc41751812e2ce10d886498c.bindPopup(popup_f21ea2731477ae5ab137fb1737521227)
+        ;
+
+        
+    
+    
+            marker_92da67cafc41751812e2ce10d886498c.bindTooltip(
+                `<div>
+                     ESF NACOES
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_92da67cafc41751812e2ce10d886498c.setIcon(icon_6f8c56a986516db15fb021d24db39eb7);
+            
+    
+            var marker_308f42b2224a4288fe5361d66a529456 = L.marker(
+                [-27.2657536, -51.9119779],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_1b7c71bd46139e6f66f2c658032a9d7c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_856981a26eb0d6e46faa755d7a4c9ccd = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_566e45fc1dca879b703380d3e6bacfa0 = $(`<div id="html_566e45fc1dca879b703380d3e6bacfa0" style="width: 100.0%; height: 100.0%;">     <b>PS BARRA BONITA</b><br>     <b>Endereço:</b> BARRA BONITA, S/N<br>     <b>Bairro:</b> INTERIOR<br>     <b>CEP:</b> 89715899<br>     <b>Tipo:</b> PS     </div>`)[0];
+                popup_856981a26eb0d6e46faa755d7a4c9ccd.setContent(html_566e45fc1dca879b703380d3e6bacfa0);
+            
+        
+
+        marker_308f42b2224a4288fe5361d66a529456.bindPopup(popup_856981a26eb0d6e46faa755d7a4c9ccd)
+        ;
+
+        
+    
+    
+            marker_308f42b2224a4288fe5361d66a529456.bindTooltip(
+                `<div>
+                     PS BARRA BONITA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_308f42b2224a4288fe5361d66a529456.setIcon(icon_1b7c71bd46139e6f66f2c658032a9d7c);
+            
+    
+            var marker_4d0558495b80c238738472dd3d34f9f0 = L.marker(
+                [-27.2425278, -52.0509926],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_c16866991a090174e260a12971a8b99d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d1a4a2c1ebd6b02246658795c45af5b1 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_e29f4187b623d0188972b9e23193cfa2 = $(`<div id="html_e29f4187b623d0188972b9e23193cfa2" style="width: 100.0%; height: 100.0%;">     <b>ESF CRISTAL</b><br>     <b>Endereço:</b> RUA PEDRO RUBINI, 30<br>     <b>Bairro:</b> CRISTAL<br>     <b>CEP:</b> 89707148<br>     <b>Tipo:</b> ESF     </div>`)[0];
+                popup_d1a4a2c1ebd6b02246658795c45af5b1.setContent(html_e29f4187b623d0188972b9e23193cfa2);
+            
+        
+
+        marker_4d0558495b80c238738472dd3d34f9f0.bindPopup(popup_d1a4a2c1ebd6b02246658795c45af5b1)
+        ;
+
+        
+    
+    
+            marker_4d0558495b80c238738472dd3d34f9f0.bindTooltip(
+                `<div>
+                     ESF CRISTAL
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_4d0558495b80c238738472dd3d34f9f0.setIcon(icon_c16866991a090174e260a12971a8b99d);
+            
+    
+            var marker_7868cbc91a32d9b7a9b8188628308e1f = L.marker(
+                [-27.2247233, -52.0253905],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_6eb0703bceee6233af0d8df326c42347 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_4d7f26612d704b2cb2551903cd94a56c = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_18f7196a0140705b073658ea894daced = $(`<div id="html_18f7196a0140705b073658ea894daced" style="width: 100.0%; height: 100.0%;">     <b>ESF VISTA ALEGRE</b><br>     <b>Endereço:</b> MARIO DALFOVO, 186<br>     <b>Bairro:</b> VISTA ALEGRE<br>     <b>CEP:</b> 89701044<br>     <b>Tipo:</b> ESF     </div>`)[0];
+                popup_4d7f26612d704b2cb2551903cd94a56c.setContent(html_18f7196a0140705b073658ea894daced);
+            
+        
+
+        marker_7868cbc91a32d9b7a9b8188628308e1f.bindPopup(popup_4d7f26612d704b2cb2551903cd94a56c)
+        ;
+
+        
+    
+    
+            marker_7868cbc91a32d9b7a9b8188628308e1f.bindTooltip(
+                `<div>
+                     ESF VISTA ALEGRE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7868cbc91a32d9b7a9b8188628308e1f.setIcon(icon_6eb0703bceee6233af0d8df326c42347);
+            
+    
+            var marker_e615c697758c82c6354a1695ad7084e2 = L.marker(
+                [-27.2874049, -51.8702276],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_2f0376fd145b5dfa55232e2ddebaba6e = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d2f5bfc32e4e51d48b932e0a979487c9 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_efb2f28523b5e2bcff194b328955487f = $(`<div id="html_efb2f28523b5e2bcff194b328955487f" style="width: 100.0%; height: 100.0%;">     <b>PS BARRA DO TIGRE</b><br>     <b>Endereço:</b> BARRA DO TIGRE, S/N<br>     <b>Bairro:</b> INTERIOR<br>     <b>CEP:</b> 89700995<br>     <b>Tipo:</b> PS     </div>`)[0];
+                popup_d2f5bfc32e4e51d48b932e0a979487c9.setContent(html_efb2f28523b5e2bcff194b328955487f);
+            
+        
+
+        marker_e615c697758c82c6354a1695ad7084e2.bindPopup(popup_d2f5bfc32e4e51d48b932e0a979487c9)
+        ;
+
+        
+    
+    
+            marker_e615c697758c82c6354a1695ad7084e2.bindTooltip(
+                `<div>
+                     PS BARRA DO TIGRE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_e615c697758c82c6354a1695ad7084e2.setIcon(icon_2f0376fd145b5dfa55232e2ddebaba6e);
+            
+    
+            var marker_5459ef10b3cd1f0f017993d1ff24ccde = L.marker(
+                [-27.3267388, -52.0593599],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_ef8dc54883c37b4fc660857e7f3e731c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3e96a9100c3bb468a0213b375f6f38fc = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_253d92727427899d610a7bd869f093e6 = $(`<div id="html_253d92727427899d610a7bd869f093e6" style="width: 100.0%; height: 100.0%;">     <b>PS SAO LUIS</b><br>     <b>Endereço:</b> SAO LUIZ, S/N<br>     <b>Bairro:</b> CENTRO<br>     <b>CEP:</b> 89715899<br>     <b>Tipo:</b> PS     </div>`)[0];
+                popup_3e96a9100c3bb468a0213b375f6f38fc.setContent(html_253d92727427899d610a7bd869f093e6);
+            
+        
+
+        marker_5459ef10b3cd1f0f017993d1ff24ccde.bindPopup(popup_3e96a9100c3bb468a0213b375f6f38fc)
+        ;
+
+        
+    
+    
+            marker_5459ef10b3cd1f0f017993d1ff24ccde.bindTooltip(
+                `<div>
+                     PS SAO LUIS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_5459ef10b3cd1f0f017993d1ff24ccde.setIcon(icon_ef8dc54883c37b4fc660857e7f3e731c);
+            
+    
+            var marker_875683c60c42d8076be62fc3cc709f34 = L.marker(
+                [-27.2867648, -52.0869413],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_d513d1e047b85a4221dcddc0eb60ce02 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e8bc99194a798b7dd46ab5a980328183 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_afdd1a94785527610ab24369cc5b08f5 = $(`<div id="html_afdd1a94785527610ab24369cc5b08f5" style="width: 100.0%; height: 100.0%;">     <b>PS SEDE BRUM</b><br>     <b>Endereço:</b> SEDE BRUM, S/N<br>     <b>Bairro:</b> CENTRO<br>     <b>CEP:</b> 89715899<br>     <b>Tipo:</b> PS     </div>`)[0];
+                popup_e8bc99194a798b7dd46ab5a980328183.setContent(html_afdd1a94785527610ab24369cc5b08f5);
+            
+        
+
+        marker_875683c60c42d8076be62fc3cc709f34.bindPopup(popup_e8bc99194a798b7dd46ab5a980328183)
+        ;
+
+        
+    
+    
+            marker_875683c60c42d8076be62fc3cc709f34.bindTooltip(
+                `<div>
+                     PS SEDE BRUM
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_875683c60c42d8076be62fc3cc709f34.setIcon(icon_d513d1e047b85a4221dcddc0eb60ce02);
+            
+    
+            var marker_0e8abdd03854a0bfc430e9ed26440a27 = L.marker(
+                [-27.3025472, -51.9976974],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_06bc725e9857d60c87dee2dffb0705e7 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_45344459b24893c9e2843129a33e9c58 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_73a43e590d8a190e7579234b4dea1d51 = $(`<div id="html_73a43e590d8a190e7579234b4dea1d51" style="width: 100.0%; height: 100.0%;">     <b>PS TAMANDUA</b><br>     <b>Endereço:</b> TAMANDUA, S/N<br>     <b>Bairro:</b> INTERIOR<br>     <b>CEP:</b> 89700991<br>     <b>Tipo:</b> PS     </div>`)[0];
+                popup_45344459b24893c9e2843129a33e9c58.setContent(html_73a43e590d8a190e7579234b4dea1d51);
+            
+        
+
+        marker_0e8abdd03854a0bfc430e9ed26440a27.bindPopup(popup_45344459b24893c9e2843129a33e9c58)
+        ;
+
+        
+    
+    
+            marker_0e8abdd03854a0bfc430e9ed26440a27.bindTooltip(
+                `<div>
+                     PS TAMANDUA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_0e8abdd03854a0bfc430e9ed26440a27.setIcon(icon_06bc725e9857d60c87dee2dffb0705e7);
+            
+    
+            var marker_3aef5881b414f2e9dce584aca4e65823 = L.marker(
+                [-27.1803634, -51.9189932],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_97f31902aff457e15b862f2a70fd8de6 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_4704138aa743124118ab49e92b4bada3 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_eb53ab761a365f057d7ae7157fbefdc5 = $(`<div id="html_eb53ab761a365f057d7ae7157fbefdc5" style="width: 100.0%; height: 100.0%;">     <b>PS CACHIMBO</b><br>     <b>Endereço:</b> CACHIMBO, 3<br>     <b>Bairro:</b> INTERIOR<br>     <b>CEP:</b> 89715899<br>     <b>Tipo:</b> PS     </div>`)[0];
+                popup_4704138aa743124118ab49e92b4bada3.setContent(html_eb53ab761a365f057d7ae7157fbefdc5);
+            
+        
+
+        marker_3aef5881b414f2e9dce584aca4e65823.bindPopup(popup_4704138aa743124118ab49e92b4bada3)
+        ;
+
+        
+    
+    
+            marker_3aef5881b414f2e9dce584aca4e65823.bindTooltip(
+                `<div>
+                     PS CACHIMBO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_3aef5881b414f2e9dce584aca4e65823.setIcon(icon_97f31902aff457e15b862f2a70fd8de6);
+            
+    
+            var marker_1382b75c8280ec8da68cf62198a5d793 = L.marker(
+                [-27.2392716, -51.8853275],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_acb2354b3dfceebe418897c57d26d2e1 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_fdedd70603b98032aa4f2765ce0ce30c = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_c719e5db04be2ff5efc4d366cfb8a671 = $(`<div id="html_c719e5db04be2ff5efc4d366cfb8a671" style="width: 100.0%; height: 100.0%;">     <b>PS TIRADENTES</b><br>     <b>Endereço:</b> TIRADENTES, S/N<br>     <b>Bairro:</b> CENTRO<br>     <b>CEP:</b> 89715899<br>     <b>Tipo:</b> PS     </div>`)[0];
+                popup_fdedd70603b98032aa4f2765ce0ce30c.setContent(html_c719e5db04be2ff5efc4d366cfb8a671);
+            
+        
+
+        marker_1382b75c8280ec8da68cf62198a5d793.bindPopup(popup_fdedd70603b98032aa4f2765ce0ce30c)
+        ;
+
+        
+    
+    
+            marker_1382b75c8280ec8da68cf62198a5d793.bindTooltip(
+                `<div>
+                     PS TIRADENTES
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_1382b75c8280ec8da68cf62198a5d793.setIcon(icon_acb2354b3dfceebe418897c57d26d2e1);
+            
+    
+            var marker_1d0ff4e22d1d528b64629941f458efd6 = L.marker(
+                [-27.2946786, -52.2271415],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_d30347500297983bae21cd6b05fcf071 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_17eeb5fc1c301252f10f4a6d5630f16f = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_c1231421426d975ecbe2bb524d834edd = $(`<div id="html_c1231421426d975ecbe2bb524d834edd" style="width: 100.0%; height: 100.0%;">     <b>PS TERRA VERMELHA</b><br>     <b>Endereço:</b> TERRA VERMELHA, S/N<br>     <b>Bairro:</b> CENTRO<br>     <b>CEP:</b> 89715899<br>     <b>Tipo:</b> PS     </div>`)[0];
+                popup_17eeb5fc1c301252f10f4a6d5630f16f.setContent(html_c1231421426d975ecbe2bb524d834edd);
+            
+        
+
+        marker_1d0ff4e22d1d528b64629941f458efd6.bindPopup(popup_17eeb5fc1c301252f10f4a6d5630f16f)
+        ;
+
+        
+    
+    
+            marker_1d0ff4e22d1d528b64629941f458efd6.bindTooltip(
+                `<div>
+                     PS TERRA VERMELHA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_1d0ff4e22d1d528b64629941f458efd6.setIcon(icon_d30347500297983bae21cd6b05fcf071);
+            
+    
+            var marker_0a5a2bbaaabc0fdcd77c942976178481 = L.marker(
+                [-27.23406435, -52.0283103],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_b58997a5a260282b3e9b338884e0f0cf = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_0f19175842b3f2115874fb96e3ff95c7 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_84c920b6aadf7ecf20e4d90ad541dd92 = $(`<div id="html_84c920b6aadf7ecf20e4d90ad541dd92" style="width: 100.0%; height: 100.0%;">     <b>ESF PLANALTO</b><br>     <b>Endereço:</b> CORONEL PASSOS MAIA, 504<br>     <b>Bairro:</b> PLANALTO<br>     <b>CEP:</b> 89715899<br>     <b>Tipo:</b> ESF     </div>`)[0];
+                popup_0f19175842b3f2115874fb96e3ff95c7.setContent(html_84c920b6aadf7ecf20e4d90ad541dd92);
+            
+        
+
+        marker_0a5a2bbaaabc0fdcd77c942976178481.bindPopup(popup_0f19175842b3f2115874fb96e3ff95c7)
+        ;
+
+        
+    
+    
+            marker_0a5a2bbaaabc0fdcd77c942976178481.bindTooltip(
+                `<div>
+                     ESF PLANALTO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_0a5a2bbaaabc0fdcd77c942976178481.setIcon(icon_b58997a5a260282b3e9b338884e0f0cf);
+            
+    
+            var marker_23cfe23c9410f139d4bf4ff1a9043c98 = L.marker(
+                [-27.1250133, -52.3727026],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_a055d50e7f3e52a43c31301adf77bccd = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_cd1f45ad0891c2c669cc612f9955d291 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_4a247b0501446cd1b50d96552b0292cf = $(`<div id="html_4a247b0501446cd1b50d96552b0292cf" style="width: 100.0%; height: 100.0%;">     <b>PS SAO PAULO</b><br>     <b>Endereço:</b> SAO PAULO, 11<br>     <b>Bairro:</b> CENTRO<br>     <b>CEP:</b> 89715899<br>     <b>Tipo:</b> PS     </div>`)[0];
+                popup_cd1f45ad0891c2c669cc612f9955d291.setContent(html_4a247b0501446cd1b50d96552b0292cf);
+            
+        
+
+        marker_23cfe23c9410f139d4bf4ff1a9043c98.bindPopup(popup_cd1f45ad0891c2c669cc612f9955d291)
+        ;
+
+        
+    
+    
+            marker_23cfe23c9410f139d4bf4ff1a9043c98.bindTooltip(
+                `<div>
+                     PS SAO PAULO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_23cfe23c9410f139d4bf4ff1a9043c98.setIcon(icon_a055d50e7f3e52a43c31301adf77bccd);
+            
+    
+            var marker_7177a56b5c23bb32798857a63478739e = L.marker(
+                [-27.19669192, -52.10673809],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_173bb4f5ec8106a2b532a8fa76ab2d5e = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c15eb5b831b72f0dcf4038dfa846b2dc = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_a0d22592ddd1f4749d742b0c6ad8935b = $(`<div id="html_a0d22592ddd1f4749d742b0c6ad8935b" style="width: 100.0%; height: 100.0%;">     <b>ESF SANTO ANTONIO</b><br>     <b>Endereço:</b> DISTRITO SANTO ANTONIO, S/N<br>     <b>Bairro:</b> CENTRO<br>     <b>CEP:</b> 89700990<br>     <b>Tipo:</b> ESF     </div>`)[0];
+                popup_c15eb5b831b72f0dcf4038dfa846b2dc.setContent(html_a0d22592ddd1f4749d742b0c6ad8935b);
+            
+        
+
+        marker_7177a56b5c23bb32798857a63478739e.bindPopup(popup_c15eb5b831b72f0dcf4038dfa846b2dc)
+        ;
+
+        
+    
+    
+            marker_7177a56b5c23bb32798857a63478739e.bindTooltip(
+                `<div>
+                     ESF SANTO ANTONIO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7177a56b5c23bb32798857a63478739e.setIcon(icon_173bb4f5ec8106a2b532a8fa76ab2d5e);
+            
+    
+            var marker_e609b32942b864606420b8479f629650 = L.marker(
+                [-27.2352949, -52.0353003],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_73b3dda21d71a46e236f5d603273f0c3 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b2be16096063272a51c1cd0948745610 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_ce40696d8b4bcb314e11c64a7e07b555 = $(`<div id="html_ce40696d8b4bcb314e11c64a7e07b555" style="width: 100.0%; height: 100.0%;">     <b>ESF NAZARE</b><br>     <b>Endereço:</b> RUA VEREADOR JACOB SELBACH, 776<br>     <b>Bairro:</b> NAZARE<br>     <b>CEP:</b> 89707006<br>     <b>Tipo:</b> ESF     </div>`)[0];
+                popup_b2be16096063272a51c1cd0948745610.setContent(html_ce40696d8b4bcb314e11c64a7e07b555);
+            
+        
+
+        marker_e609b32942b864606420b8479f629650.bindPopup(popup_b2be16096063272a51c1cd0948745610)
+        ;
+
+        
+    
+    
+            marker_e609b32942b864606420b8479f629650.bindTooltip(
+                `<div>
+                     ESF NAZARE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_e609b32942b864606420b8479f629650.setIcon(icon_73b3dda21d71a46e236f5d603273f0c3);
+            
+    
+            var marker_e5148603c6fa146ec29a2ea9c1ced78a = L.marker(
+                [-27.2552449, -52.502155],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_54d4c7726c885c186a69393c0cd298d5 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_359db76cb9e356974e8094e209ff7a66 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_bc16b7e494ddbed93bbd6a658fc3d1a4 = $(`<div id="html_bc16b7e494ddbed93bbd6a658fc3d1a4" style="width: 100.0%; height: 100.0%;">     <b>ESF ESTADOS</b><br>     <b>Endereço:</b> RUA RIO GRANDE DO SUL, 111<br>     <b>Bairro:</b> ESTADOS<br>     <b>CEP:</b> 89703488<br>     <b>Tipo:</b> ESF     </div>`)[0];
+                popup_359db76cb9e356974e8094e209ff7a66.setContent(html_bc16b7e494ddbed93bbd6a658fc3d1a4);
+            
+        
+
+        marker_e5148603c6fa146ec29a2ea9c1ced78a.bindPopup(popup_359db76cb9e356974e8094e209ff7a66)
+        ;
+
+        
+    
+    
+            marker_e5148603c6fa146ec29a2ea9c1ced78a.bindTooltip(
+                `<div>
+                     ESF ESTADOS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_e5148603c6fa146ec29a2ea9c1ced78a.setIcon(icon_54d4c7726c885c186a69393c0cd298d5);
+            
+    
+            var marker_7cdb4dca5ba7af21c41f73d982558c09 = L.marker(
+                [-27.22332237, -52.04730034],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_772d882d003fcbdfb3e223d906a43d0c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1e1f680a01539de74311a9420f5e14bd = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_d4c0e7a509ebb989ca2964164d5b8e51 = $(`<div id="html_d4c0e7a509ebb989ca2964164d5b8e51" style="width: 100.0%; height: 100.0%;">     <b>ESF PETROPOLIS</b><br>     <b>Endereço:</b> RUA DAS ERVEIRAS, 140<br>     <b>Bairro:</b> PETROPOLIS<br>     <b>CEP:</b> 89703288<br>     <b>Tipo:</b> ESF     </div>`)[0];
+                popup_1e1f680a01539de74311a9420f5e14bd.setContent(html_d4c0e7a509ebb989ca2964164d5b8e51);
+            
+        
+
+        marker_7cdb4dca5ba7af21c41f73d982558c09.bindPopup(popup_1e1f680a01539de74311a9420f5e14bd)
+        ;
+
+        
+    
+    
+            marker_7cdb4dca5ba7af21c41f73d982558c09.bindTooltip(
+                `<div>
+                     ESF PETROPOLIS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7cdb4dca5ba7af21c41f73d982558c09.setIcon(icon_772d882d003fcbdfb3e223d906a43d0c);
+            
+    
+            var marker_10338cc9099b441e99ae6adcffeea84e = L.marker(
+                [-27.22908463, -52.00110197],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_a1bff8c218138dfa0cba968eebededcc = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "star",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f6c3c9b2fa63ff5f4f7ed58f7c10047b = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_dd01c85e1a91983f880a083a7ae9f00f = $(`<div id="html_dd01c85e1a91983f880a083a7ae9f00f" style="width: 100.0%; height: 100.0%;">     <b>CENTRO DE SAUDE BASICA CONCORDIA</b><br>     <b>Endereço:</b> RUA ALEXANDRE LORENZET, 319<br>     <b>Bairro:</b> PARQUE DE EXPOSICAO<br>     <b>CEP:</b> 89711226<br>     <b>Tipo:</b> CENTRO     </div>`)[0];
+                popup_f6c3c9b2fa63ff5f4f7ed58f7c10047b.setContent(html_dd01c85e1a91983f880a083a7ae9f00f);
+            
+        
+
+        marker_10338cc9099b441e99ae6adcffeea84e.bindPopup(popup_f6c3c9b2fa63ff5f4f7ed58f7c10047b)
+        ;
+
+        
+    
+    
+            marker_10338cc9099b441e99ae6adcffeea84e.bindTooltip(
+                `<div>
+                     CENTRO DE SAUDE BASICA CONCORDIA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_10338cc9099b441e99ae6adcffeea84e.setIcon(icon_a1bff8c218138dfa0cba968eebededcc);
+            
+    
+            var marker_74a7a1c91ecb45fabe31a1f97dfda2fd = L.marker(
+                [-27.2393960840625, -52.04943930875],
+                {
+}
+            ).addTo(map_67be3269728238692f7b447ff4cc1880);
+        
+    
+            var icon_348edd8890e4e6d1931d94d2f76d0e14 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "flag",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_fcf47dd18b9eb502d3a61c90f969fe9c = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_385c4cabb95756046697aeda5438a0d3 = $(`<div id="html_385c4cabb95756046697aeda5438a0d3" style="width: 100.0%; height: 100.0%;"><b>Centro Geográfico</b><br>Média das coordenadas</div>`)[0];
+                popup_fcf47dd18b9eb502d3a61c90f969fe9c.setContent(html_385c4cabb95756046697aeda5438a0d3);
+            
+        
+
+        marker_74a7a1c91ecb45fabe31a1f97dfda2fd.bindPopup(popup_fcf47dd18b9eb502d3a61c90f969fe9c)
+        ;
+
+        
+    
+    
+            marker_74a7a1c91ecb45fabe31a1f97dfda2fd.bindTooltip(
+                `<div>
+                     Centro Geográfico
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_74a7a1c91ecb45fabe31a1f97dfda2fd.setIcon(icon_348edd8890e4e6d1931d94d2f76d0e14);
+            
+</script>
+</html>

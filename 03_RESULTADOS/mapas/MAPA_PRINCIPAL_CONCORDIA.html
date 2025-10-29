@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🏥 Mapa dos Estabelecimentos de Saúde - Concórdia/SC</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        body { margin: 0; padding: 20px; font-family: Arial, sans-serif; }
+        #map { height: 600px; width: 100%; border: 2px solid #333; }
+        .info-panel { 
+            background: white; 
+            padding: 15px; 
+            margin-bottom: 20px; 
+            border-radius: 5px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .title { 
+            font-size: 24px; 
+            font-weight: bold; 
+            color: #2c3e50; 
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle { 
+            font-size: 16px; 
+            color: #7f8c8d; 
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .stat-box {
+            text-align: center;
+            padding: 10px;
+            background: #ecf0f1;
+            border-radius: 5px;
+            margin: 0 5px;
+        }
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="info-panel">
+        <div class="title">🏥 ESTABELECIMENTOS DE SAÚDE - CONCÓRDIA/SC</div>
+        <div class="subtitle">Análise Espacial e Distribuição Territorial</div>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number">418</div>
+                <div class="stat-label">Total Identificados</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">401</div>
+                <div class="stat-label">Com Coordenadas</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">98</div>
+                <div class="stat-label">Públicos</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">79.6%</div>
+                <div class="stat-label">≤ 5km Centro</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">3.97km</div>
+                <div class="stat-label">Distância Média</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Criar mapa centrado em Concórdia
+        var map = L.map('map').setView([-27.2335, -52.0238], 12);
+
+        // Adicionar camada de tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Centro de Concórdia
+        var centro = L.marker([-27.2335, -52.0238], {
+            icon: L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            })
+        }).addTo(map);
+        centro.bindPopup("<b>🏛️ Centro de Concórdia</b><br>Ponto de referência para análises");
+
+        // Círculo de 5km
+        var circle = L.circle([-27.2335, -52.0238], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.1,
+            radius: 5000
+        }).addTo(map);
+        circle.bindPopup("Raio de 5km do centro");
+
+        // Exemplos de estabelecimentos (baseados nos dados reais)
+        var estabelecimentos = [
+            {nome: "Hospital São Francisco", lat: -27.2336, lon: -52.0257, tipo: "Hospital", setor: "Público"},
+            {nome: "ESF Novo Horizonte", lat: -27.2333, lon: -52.0484, tipo: "ESF", setor: "Público"},
+            {nome: "PS Santa Cruz", lat: -27.2250, lon: -52.0351, tipo: "PS", setor: "Público"},
+            {nome: "ESF Guilherme Reich", lat: -27.2467, lon: -52.0200, tipo: "ESF", setor: "Público"},
+            {nome: "Policlínica Central", lat: -27.2290, lon: -52.0179, tipo: "Policlínica", setor: "Público"},
+            {nome: "ESF São Cristóvão", lat: -27.2305, lon: -51.9864, tipo: "ESF", setor: "Público"},
+            {nome: "CAPS II", lat: -27.2321, lon: -52.0234, tipo: "CAPS", setor: "Público"},
+            {nome: "Consultório Centro", lat: -27.2325, lon: -52.0245, tipo: "Consultório", setor: "Privado"},
+            {nome: "Laboratório Concordia", lat: -27.2337, lon: -52.0262, tipo: "Laboratório", setor: "Privado"},
+            {nome: "ESF Vista Alegre", lat: -27.2247, lon: -52.0254, tipo: "ESF", setor: "Público"}
+        ];
+
+        // Adicionar marcadores dos estabelecimentos
+        estabelecimentos.forEach(function(est) {
+            var cor = est.setor === 'Público' ? 'red' : 'blue';
+            var iconeUrl = est.setor === 'Público' ? 
+                'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png' :
+                'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png';
+
+            var marker = L.marker([est.lat, est.lon], {
+                icon: L.icon({
+                    iconUrl: iconeUrl,
+                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                })
+            }).addTo(map);
+
+            marker.bindPopup(`
+                <div style="width: 200px;">
+                    <h4><b>${est.nome}</b></h4>
+                    <hr>
+                    <b>🏥 Tipo:</b> ${est.tipo}<br>
+                    <b>🏛️ Setor:</b> ${est.setor}<br>
+                    <b>📍 Coordenadas:</b> ${est.lat.toFixed(4)}, ${est.lon.toFixed(4)}
+                </div>
+            `);
+        });
+
+        // Legenda
+        var legend = L.control({position: 'bottomright'});
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'info legend');
+            div.innerHTML = `
+                <div style="background: white; padding: 10px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                    <h4>📊 Legenda</h4>
+                    <i style="color: red;">●</i> Estabelecimentos Públicos<br>
+                    <i style="color: blue;">●</i> Estabelecimentos Privados<br>
+                    <i style="color: black;">●</i> Centro de Concórdia<br>
+                    <div style="margin-top: 10px; font-size: 12px; color: #666;">
+                        <b>Projeto:</b> Análise Espacial Concórdia/SC<br>
+                        <b>Autor:</b> Caetano Ronan - UFSC<br>
+                        <b>Data:</b> Outubro 2025
+                    </div>
+                </div>
+            `;
+            return div;
+        };
+        legend.addTo(map);
+    </script>
+</body>
+</html>
