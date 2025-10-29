@@ -33,44 +33,135 @@
       margin: 0 0 0.5rem 0;
       font-size: 2.2rem;
     }
-    .toggle-btn {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 20px;
-      padding: 0.5rem 1.2rem;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-bottom: 1rem;
-      transition: background 0.2s;
-    }
-    .toggle-btn:hover {
-      background: #1565c0;
-    }
-    .container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-      padding: 1rem;
-    }
-    .card {
-      background: var(--card-light);
-      color: var(--text-light);
-      border-radius: 16px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      padding: 1.5rem 1.2rem;
-      min-width: 260px;
-      max-width: 320px;
-      text-align: center;
-      transition: background 0.3s, color 0.3s;
-    }
-    .dark-mode .card {
-      background: var(--card-dark);
-      color: var(--text-dark);
-    }
-    .card h2 {
-      font-size: 1.2rem;
+
+    <header>
+      <h1>Análise Espacial dos Estabelecimentos de Saúde - Concórdia/SC</h1>
+      <button class="toggle-btn" onclick="toggleDarkMode()">Alternar modo escuro</button>
+      <p><strong>Autor:</strong> Ronan Armando Caetano<br>
+      <strong>Instituição:</strong> IFSC - Técnico em Geoprocessamento</p>
+      <div style="max-width:900px;margin:2rem auto 0 auto;text-align:left;background:rgba(255,255,255,0.7);border-radius:12px;padding:1.2rem;box-shadow:0 1px 8px rgba(0,0,0,0.05);">
+        <h2>Referências de Software Utilizado</h2>
+        <ul>
+          <li>Python (Análise e automação): pandas, numpy, folium, matplotlib, seaborn, geopandas, shapely</li>
+          <li>QGIS (Geoprocessamento avançado, Voronoi, shapefiles)</li>
+          <li>Jupyter Notebook (Documentação interativa)</li>
+          <li>GitHub Pages (Publicação web)</li>
+          <li>VS Code (Ambiente de desenvolvimento)</li>
+          <li>Git (Controle de versão)</li>
+          <li>Copilot (Assistente de programação AI)</li>
+        </ul>
+        <h2>O que subir para o repositório</h2>
+        <ul>
+          <li><strong>docs/</strong> com mapas HTML e dashboards PNG</li>
+          <li><strong>02_SCRIPTS/</strong> com scripts Python principais</li>
+          <li><strong>01_DADOS/processados/</strong> com dados limpos</li>
+          <li><strong>03_RESULTADOS/shapefiles/</strong> com shapefiles gerados</li>
+          <li><strong>04_DOCUMENTACAO/</strong> com relatórios e notebooks</li>
+          <li>Arquivos de metadados e README</li>
+        </ul>
+        <h2>Exemplo de Estrutura Final</h2>
+        <pre style="background:#f5f7fa;padding:1rem;border-radius:8px;overflow-x:auto;font-size:0.95em;">
+  docs/
+     mapa_avancado_colorbrewer.html
+     mapa_estabelecimentos_concordia.html
+     mapa_unidades_saude_concordia.html
+     DASHBOARD_ANALISE_ESPACIAL_CONCORDIA.png
+  01_DADOS/processados/
+     concordia_saude_simples.csv
+     estabelecimentos_concordia_qgis.csv
+     estabelecimentos_concordia_wkt.csv
+  02_SCRIPTS/
+     dashboard_simples.py
+     ANALISE_ESPACIAL_corrigido.py
+     Análise_da_distribuicao_PS_publico.py
+     mapa_concordia.py
+     preparacao_qgis.py
+  03_RESULTADOS/shapefiles/
+     areas_influencia_voronoi.*
+     voronoi_recortado.*
+     Centroide_concordia.*
+     Concordia_sencitario.*
+  04_DOCUMENTACAO/
+     RELATORIO_TECNICO_ANALISE_ESPACIAL_CONCORDIA.md
+     Analise_Espacial_Concordia_Demonstrativo.ipynb
+     APRESENTACAO_EXECUTIVA.md
+  METADADOS_estabelecimentos.txt
+  README.md
+  README_ORGANIZACIONAL.md
+  INDICE_GERAL_PROJETO.md
+        </pre>
+        <h2>Créditos</h2>
+        <ul>
+          <li>Projeto realizado por Ronan Armando Caetano</li>
+          <li>Instituição: IFSC - Técnico em Geoprocessamento</li>
+          <li>Assistência AI: GitHub Copilot</li>
+          <li>Outubro 2025</li>
+        </ul>
+      </div>
+    </header>
+
+    <section>
+      <h2 style="text-align:center;margin-top:2rem;">Mapas Interativos</h2>
+      <div class="container">
+        <div class="card">
+          <h3>Mapa Avançado ColorBrewer</h3>
+          <p>Visualização avançada da distribuição dos estabelecimentos de saúde com paleta ColorBrewer para melhor contraste e acessibilidade.</p>
+          <a href="mapa_avancado_colorbrewer.html" target="_blank">Abrir Mapa</a>
+        </div>
+        <div class="card">
+          <h3>Mapa Estabelecimentos Concórdia</h3>
+          <p>Mapa interativo mostrando todos os estabelecimentos de saúde do município, com filtros por tipo e setor.</p>
+          <a href="mapa_estabelecimentos_concordia.html" target="_blank">Abrir Mapa</a>
+        </div>
+        <div class="card">
+          <h3>Mapa Unidades Saúde Concórdia</h3>
+          <p>Visão geral das unidades de saúde, incluindo ESF, PS, consultórios e laboratórios.</p>
+          <a href="mapa_unidades_saude_concordia.html" target="_blank">Abrir Mapa</a>
+        </div>
+        <div class="card">
+          <h3>Mapa Postos Públicos Concórdia</h3>
+          <p>Foco nos postos públicos, destacando cobertura e acessibilidade territorial.</p>
+          <a href="mapa_postos_publicos_concordia.html" target="_blank">Abrir Mapa</a>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 style="text-align:center;margin-top:2rem;">Dashboards Analíticos</h2>
+      <div class="container">
+        <div class="card">
+          <h3>Dashboard Completo ColorBrewer</h3>
+          <p>Dashboard interativo com gráficos, estatísticas e visualizações espaciais para análise detalhada dos dados de saúde.</p>
+          <a href="dashboard_completo_colorbrewer.html" target="_blank">Abrir Dashboard</a>
+        </div>
+        <div class="card">
+          <h3>Dashboard PNG Consolidado</h3>
+          <p>Resumo visual dos principais indicadores e mapas em formato PNG para fácil apresentação.</p>
+          <a href="DASHBOARD_ANALISE_ESPACIAL_CONCORDIA.png" target="_blank">Abrir Dashboard PNG</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div style="max-width:900px;margin:0 auto 1rem auto;text-align:left;background:rgba(255,255,255,0.7);border-radius:12px;padding:1.2rem;box-shadow:0 1px 8px rgba(0,0,0,0.05);">
+        <h3>Produtos do Projeto</h3>
+        <ul>
+          <li><strong>Relatório Técnico:</strong> <a href="../04_DOCUMENTACAO/RELATORIO_TECNICO_ANALISE_ESPACIAL_CONCORDIA.md" target="_blank">RELATORIO_TECNICO_ANALISE_ESPACIAL_CONCORDIA.md</a></li>
+          <li><strong>Notebook Interativo:</strong> <a href="../04_DOCUMENTACAO/Analise_Espacial_Concordia_Demonstrativo.ipynb" target="_blank">Analise_Espacial_Concordia_Demonstrativo.ipynb</a></li>
+          <li><strong>Apresentação Executiva:</strong> <a href="../04_DOCUMENTACAO/APRESENTACAO_EXECUTIVA.md" target="_blank">APRESENTACAO_EXECUTIVA.md</a></li>
+          <li><strong>Metadados:</strong> <a href="../METADADOS_estabelecimentos.txt" target="_blank">METADADOS_estabelecimentos.txt</a></li>
+          <li><strong>Organização:</strong> <a href="../README_ORGANIZACIONAL.md" target="_blank">README_ORGANIZACIONAL.md</a></li>
+          <li><strong>Índice Geral:</strong> <a href="../INDICE_GERAL_PROJETO.md" target="_blank">INDICE_GERAL_PROJETO.md</a></li>
+        </ul>
+      </div>
+      &copy; 2025 Ronan Armando Caetano | IFSC Geoprocessamento<br>
+      Powered by GitHub Pages & Copilot
+    </footer>
+    <script>
+      function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+      }
+    </script>
       margin-bottom: 0.7rem;
     }
     .card a {
