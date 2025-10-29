@@ -1,63 +1,111 @@
-<!DOCTYPE html>
+Te<!DOCTYPE html>
 <html lang="pt-br">
 
-  <header>
-    <h1>Análise Espacial dos Estabelecimentos de Saúde - Concórdia/SC</h1>
-    <button class="toggle-btn" onclick="toggleDarkMode()">Alternar modo escuro</button>
-    <div style="max-width:900px;margin:2rem auto 0 auto;text-align:left;background:rgba(255,255,255,0.7);border-radius:12px;padding:1.2rem;box-shadow:0 1px 8px rgba(0,0,0,0.05);">
-      <h2>README do Projeto</h2>
-      <p><strong>Autor:</strong> Ronan Armando Caetano<br>
-      <strong>Instituição:</strong> IFSC - Técnico em Geoprocessamento</p>
-      <h3>Referências de Software Utilizado</h3>
+  <head>
+    <meta charset="UTF-8">
+    <title>Mapas e Dashboards - Saúde Concórdia/SC</title>
+    <style>
+  body { font-family: Arial, sans-serif; margin: 2em; background: #f9f9f9; color: #222; }
+  h1, h2, h3 { color: #2a5d84; }
+  .container { max-width: 900px; margin: 2rem auto; }
+      .card {
+        background: linear-gradient(135deg, #E5F5F9 0%, #99D8C9 70%, #2CA25F 100%);
+        border-radius: 10px;
+        box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+        padding: 1.2rem;
+        margin-bottom: 1.5rem;
+        color: #184d3a;
+      }
+      .card h2 {
+        margin-top: 0;
+        color: #2CA25F;
+        text-shadow: 0 1px 0 #E5F5F9;
+      }
+      .card a {
+        background: #2CA25F;
+        color: #fff !important;
+        padding: 0.5em 1.2em;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        box-shadow: 0 1px 4px rgba(44,162,95,0.12);
+        transition: background 0.2s;
+        display: inline-block;
+        margin-top: 0.7em;
+      }
+      .card a:hover {
+        background: #184d3a;
+      }
+  .card p { color: #444; margin-bottom: 0.7em; }
+  .toggle-btn { float: right; margin-top: 0.5em; }
+  footer { font-size: 0.95rem; color: #888; text-align: center; margin-top: 2em; }
+  .dark-mode { background: #23272e !important; color: #fff !important; }
+  .dark-mode .card { background: #2a2f2e !important; color: #fff !important; }
+  .dark-mode h1, .dark-mode h2, .dark-mode h3 { color: #99D8C9 !important; }
+  .dark-mode a { color: #2CA25F !important; }
+  .dark-mode .card p, .dark-mode .card small { color: #e0e0e0 !important; }
+  .dark-mode footer { color: #bbb !important; }
+    </style>
+  </head>
+  <body>
+    <header style="max-width:900px;margin:2rem auto 0 auto;text-align:left;background:rgba(255,255,255,0.85);border-radius:12px;padding:1.2rem;box-shadow:0 1px 8px rgba(0,0,0,0.05);">
+      <h1>Análise Espacial dos Estabelecimentos de Saúde - Concórdia/SC</h1>
+      <button class="toggle-btn" onclick="toggleDarkMode()">Alternar modo escuro</button>
+      <p><strong>Produto:</strong> Mapas interativos, dashboards e relatório técnico<br>
+      <strong>Município:</strong> Concórdia/SC<br>
+      <strong>Autor:</strong> Ronan Armando Caetano<br>
+      <strong>Instituição:</strong> IFSC - Técnico em Geoprocessamento<br>
+      <strong>Data:</strong> Outubro de 2025</p>
+      <p style="font-size:0.98em;color:#555;margin-top:0.7em;">Este projeto segue padrões cartográficos, acessibilidade e documentação em português brasileiro conforme diretrizes UFSC.</p>
+    </header>
+
+    <section style="max-width:900px;margin:2rem auto 0 auto;background:rgba(229,245,249,0.7);border-radius:10px;padding:1.2rem;box-shadow:0 1px 6px rgba(44,162,95,0.07);">
+      <h2 style="color:#2CA25F;">Introdução e Orientações</h2>
+      <p>
+        Este painel apresenta os principais resultados da análise espacial dos estabelecimentos de saúde de Concórdia/SC. Foram processados dados do CNES, classificados os tipos de unidades e gerados mapas interativos para facilitar a compreensão da cobertura e distribuição dos serviços de saúde no município.
+      </p>
+      <h3>Como utilizar os mapas:</h3>
       <ul>
-        <li>Python (Análise e automação)
-          <ul>
-            <li>pandas</li>
-            <li>numpy</li>
-            <li>folium</li>
-            <li>matplotlib</li>
-            <li>seaborn</li>
-            <li>geopandas</li>
-            <li>shapely</li>
-          </ul>
-        </li>
-        <li>QGIS (Geoprocessamento avançado, Voronoi, shapefiles)</li>
-        <li>Jupyter Notebook (Documentação interativa)</li>
-        <li>GitHub Pages (Publicação web)</li>
-        <header>
-          <h1>Análise Espacial dos Estabelecimentos de Saúde - Concórdia/SC</h1>
-          <button class="toggle-btn" onclick="toggleDarkMode()">Alternar modo escuro</button>
-        </header>
-      font-size: 0.95rem;
-      color: #888;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>Mapas e Dashboards - Saúde Concórdia/SC</h1>
-    <button class="toggle-btn" onclick="toggleDarkMode()">Alternar modo escuro</button>
-    <p>Projeto IFSC Geoprocessamento | Autor: Ronan Armando Caetano</p>
-  </header>
+        <li><strong>Navegue</strong> pelos mapas clicando nos botões "Abrir Mapa" de cada card.</li>
+        <li><strong>Explore</strong> os marcadores para visualizar informações detalhadas de cada unidade.</li>
+        <li><strong>Utilize</strong> os controles de camadas para alternar entre diferentes tipos de estabelecimentos e áreas de influência.</li>
+        <li><strong>Consulte</strong> o dashboard para visualizar gráficos, estatísticas e síntese dos resultados.</li>
+        <li>Todos os mapas são responsivos e podem ser acessados em dispositivos móveis.</li>
+      </ul>
+      <p>
+        Os mapas e dashboards foram desenvolvidos seguindo padrões de qualidade geoespacial, garantindo precisão, acessibilidade e clareza visual para apoio ao planejamento territorial e à gestão pública.
+      </p>
+    </section>
   <div class="container">
+    <!-- Mapa Geral será movido para depois do Estabelecimentos -->
     <div class="card">
-      <h2>Mapa Avançado ColorBrewer</h2>
+      <h2>Mapa Avançado</h2>
+      <p>Visualização customizada com paleta ColorBrewer para análise espacial detalhada.</p>
+      <small><em>Foco: Padrões espaciais, clusters, áreas de influência e Voronoi.</em></small>
       <a href="mapa_avancado_colorbrewer.html" target="_blank">Abrir Mapa</a>
     </div>
     <div class="card">
-      <h2>Mapa Estabelecimentos Concórdia</h2>
+      <h2>Mapa Avançado Treelayer</h2>
+      <p>Visualização interativa com múltiplas camadas, utilizando paleta ColorBrewer para destacar padrões espaciais e áreas de influência dos estabelecimentos de saúde.</p>
+      <small><em>Foco: Análise detalhada de clusters, sobreposição de camadas e navegação avançada para apoio ao planejamento territorial.</em></small>
+      <a href="mapa_avancado_treelayer_colorbrewer.html" target="_blank">Abrir Mapa</a>
+    </div>
+    <div class="card">
+      <h2>Estabelecimentos</h2>
+      <p>Compara tipos de unidades (privado/público), perfil de atendimento e serviços ofertados.</p>
+      <small><em>Foco: Classificação CNES, distribuição por tipo, análise estatística dos serviços.</em></small>
       <a href="mapa_estabelecimentos_concordia.html" target="_blank">Abrir Mapa</a>
     </div>
     <div class="card">
-      <h2>Mapa Unidades Saúde Concórdia</h2>
+      <h2>Mapa Geral</h2>
+      <p>Visualiza a distribuição espacial dos 418 estabelecimentos de saúde em Concórdia.</p>
+      <small><em>Foco: Cobertura georreferenciada, densidade e proximidade dos serviços ao centro urbano.</em></small>
       <a href="mapa_unidades_saude_concordia.html" target="_blank">Abrir Mapa</a>
     </div>
     <div class="card">
-      <h2>Mapa Postos Públicos Concórdia</h2>
-      <a href="mapa_postos_publicos_concordia.html" target="_blank">Abrir Mapa</a>
-    </div>
-    <div class="card">
-      <h2>Dashboard Completo ColorBrewer</h2>
+      <h2>Dashboard Interativo</h2>
+      <p>Painel com gráficos, estatísticas e mapas consolidados para análise completa do projeto.</p>
+      <small><em>Foco: Integração dos resultados, síntese visual dos indicadores, mapas e estatísticas.</em></small>
       <a href="dashboard_completo_colorbrewer.html" target="_blank">Abrir Dashboard</a>
     </div>
   </div>
