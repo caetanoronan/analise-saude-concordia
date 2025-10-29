@@ -1,0 +1,3999 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_91e0adb09aa0cc2a32998b2f71ab3909 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/gh/python-visualization/folium@main/folium/templates/leaflet_heat.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.css"/>
+</head>
+<body>
+    
+    
+    <div id="legendas-container" style="position: fixed; top: 10px; right: 10px; z-index: 10000;
+         display: flex; flex-direction: column; gap: 10px; align-items: flex-end;">
+    
+    <div id="legenda-setor" style="width: 200px; height: auto; 
+                background-color: white; border:2px solid grey; 
+                font-size:12px; padding: 15px; border-radius: 10px; box-shadow: 3px 3px 10px rgba(0,0,0,0.3); display: none;">
+    <h4 style="margin-top: 0; color: #333; border-bottom: 1px solid #ccc; padding-bottom: 8px;">🏛️ Setor dos Estabelecimentos</h4>
+    <div style="display: flex; align-items: center; margin: 10px 0;">
+        <div style="width: 18px; height: 18px; background-color: #e41a1c; margin-right: 10px; border-radius: 3px;"></div>
+        <span style="font-weight: bold;">Público (30)</span>
+    </div>
+    <div style="display: flex; align-items: center; margin: 10px 0;">
+        <div style="width: 18px; height: 18px; background-color: #377eb8; margin-right: 10px; border-radius: 3px;"></div>
+        <span style="font-weight: bold;">Privado (0)</span>
+    </div>
+    <hr style="margin: 12px 0;">
+    <div style="text-align: center; font-size: 11px; color: #666;">
+        <b>Total:</b> 30 estabelecimentos<br>
+        <b>Dist. Média:</b> 6.7km<br>
+        <small style="color: #999;">ColorBrewer 2.0 | UFSC 2025</small>
+    </div>
+    </div>
+    
+    <div id="legenda-tipo" style="width: 260px; height: auto; max-height: 85vh; overflow-y: auto;
+                background-color: white; border:2px solid #7570b3; 
+                font-size:12px; padding: 15px; border-radius: 10px; box-shadow: 3px 3px 10px rgba(0,0,0,0.3);
+                display: none;">
+    <h4 style="margin-top: 0; color: #7570b3; border-bottom: 2px solid #7570b3; padding-bottom: 8px;">🏥 Tipos de Estabelecimentos</h4>
+    
+    <div style="background-color: #f0f0f0; padding: 8px; border-radius: 5px; margin-bottom: 10px; font-size: 10px;">
+        <div style="margin-bottom: 4px;"><b>📖 Glossário:</b></div>
+        <div style="margin-left: 5px; line-height: 1.4;">
+            <b>ESF</b> = Estratégia de Saúde da Família<br>
+            <small style="color: #555;">Equipes que atuam em áreas específicas</small>
+        </div>
+        <div style="margin-left: 5px; line-height: 1.4; margin-top: 3px;">
+            <b>PS</b> = Posto de Saúde<br>
+            <small style="color: #555;">Unidades básicas de atendimento</small>
+        </div>
+    </div>
+    
+    
+        <div style="display: flex; align-items: center; margin: 6px 0;">
+            <div style="width: 16px; height: 16px; background-color: #1b9e77; margin-right: 8px; border-radius: 50%; border: 2px solid black;"></div>
+            <span style="font-size: 11px;"><b>ESF</b> (15)</span>
+        </div>
+        
+        <div style="display: flex; align-items: center; margin: 6px 0;">
+            <div style="width: 16px; height: 16px; background-color: #d95f02; margin-right: 8px; border-radius: 50%; border: 2px solid black;"></div>
+            <span style="font-size: 11px;"><b>PS</b> (15)</span>
+        </div>
+        
+    <hr style="margin: 12px 0;">
+    <div style="text-align: center; font-size: 11px; color: #666;">
+        <small style="color: #999;">Clique nos marcadores para mais detalhes</small>
+    </div>
+    </div>
+    
+    <div id="legenda-distancia" style="width: 220px; height: auto; 
+                background-color: white; border:2px solid #238b45; 
+                font-size:12px; padding: 15px; border-radius: 10px; box-shadow: 3px 3px 10px rgba(0,0,0,0.3);
+                display: none;">
+    <h4 style="margin-top: 0; color: #238b45; border-bottom: 2px solid #238b45; padding-bottom: 8px;">📏 Distância do Centro</h4>
+    
+        <div style="display: flex; align-items: center; margin: 6px 0;">
+            <div style="width: 16px; height: 16px; background-color: #66c2a4; margin-right: 8px; border-radius: 50%; border: 2px solid darkblue;"></div>
+            <span style="font-size: 11px;"><b>Distante (10-20km)</b> (8)</span>
+        </div>
+        
+        <div style="display: flex; align-items: center; margin: 6px 0;">
+            <div style="width: 16px; height: 16px; background-color: #99d8c9; margin-right: 8px; border-radius: 50%; border: 2px solid darkblue;"></div>
+            <span style="font-size: 11px;"><b>Moderado (5-10km)</b> (5)</span>
+        </div>
+        
+        <div style="display: flex; align-items: center; margin: 6px 0;">
+            <div style="width: 16px; height: 16px; background-color: #238b45; margin-right: 8px; border-radius: 50%; border: 2px solid darkblue;"></div>
+            <span style="font-size: 11px;"><b>Muito Distante (>20km)</b> (1)</span>
+        </div>
+        
+        <div style="display: flex; align-items: center; margin: 6px 0;">
+            <div style="width: 16px; height: 16px; background-color: #ccece6; margin-right: 8px; border-radius: 50%; border: 2px solid darkblue;"></div>
+            <span style="font-size: 11px;"><b>Muito Próximo (≤2km)</b> (8)</span>
+        </div>
+        
+        <div style="display: flex; align-items: center; margin: 6px 0;">
+            <div style="width: 16px; height: 16px; background-color: #edf8fb; margin-right: 8px; border-radius: 50%; border: 2px solid darkblue;"></div>
+            <span style="font-size: 11px;"><b>Próximo (2-5km)</b> (8)</span>
+        </div>
+        
+    <hr style="margin: 12px 0;">
+    <div style="text-align: center; font-size: 11px; color: #666;">
+        <small style="color: #999;">Círculos de referência no mapa</small>
+    </div>
+    </div>
+    </div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function atualizarLegendas() {
+            var container = document.querySelector('.leaflet-control-layers-overlays');
+            var checkboxes = container ? container.querySelectorAll('input.leaflet-control-layers-selector') : [];
+            var labels = container ? container.querySelectorAll('label span') : [];
+
+            var ativos = { setor: false, tipo: false, distancia: false };
+
+            checkboxes.forEach(function(cb, i){
+                if (!labels[i]) return;
+                var texto = labels[i].textContent.trim();
+                if (cb.checked) {
+                    if (texto.includes('Tipo')) { ativos.tipo = true; }
+                    if (texto.includes('Distância') || texto.includes('Distancia')) { ativos.distancia = true; }
+                    if (texto.includes('Setor')) { ativos.setor = true; }
+                }
+            });
+
+            var elSetor = document.getElementById('legenda-setor');
+            var elTipo = document.getElementById('legenda-tipo');
+            var elDist = document.getElementById('legenda-distancia');
+
+            // Se nenhuma camada estiver ativa, mostrar Setor como padrão
+            var nenhumAtivo = !ativos.setor && !ativos.tipo && !ativos.distancia;
+            if (elSetor) elSetor.style.display = (ativos.setor || nenhumAtivo) ? 'block' : 'none';
+            if (elTipo) elTipo.style.display = ativos.tipo ? 'block' : 'none';
+            if (elDist) elDist.style.display = ativos.distancia ? 'block' : 'none';
+        }
+
+        // Rodar após montagem inicial
+        setTimeout(atualizarLegendas, 500);
+
+        // Listeners para mudanças
+        var container = document.querySelector('.leaflet-control-layers-overlays');
+        if (container) {
+            container.addEventListener('change', function(){ setTimeout(atualizarLegendas, 50); });
+            container.addEventListener('click', function(){ setTimeout(atualizarLegendas, 50); });
+        }
+
+        if (window.MutationObserver) {
+            var ctrl = document.querySelector('.leaflet-control-layers');
+            if (ctrl) {
+                var obs = new MutationObserver(function(){ setTimeout(atualizarLegendas, 50); });
+                obs.observe(ctrl, { childList: true, subtree: true, attributes: true });
+            }
+        }
+    });
+    </script>
+    
+    
+            <div class="folium-map" id="map_91e0adb09aa0cc2a32998b2f71ab3909" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_91e0adb09aa0cc2a32998b2f71ab3909 = L.map(
+                "map_91e0adb09aa0cc2a32998b2f71ab3909",
+                {
+                    center: [-27.2335, -52.0238],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "maxBounds": [
+[
+-90,
+-180,
+],
+[
+90,
+180,
+],
+],
+  "zoom": 12,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_034f0fb7a628a3aff8d879bd9b40fa33 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 10,
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_034f0fb7a628a3aff8d879bd9b40fa33.addTo(map_91e0adb09aa0cc2a32998b2f71ab3909);
+        
+    
+            var feature_group_e22e9e0b6e6c94a67880c92094162305 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_98c19e9f0d17788d145a5ca53321fdf7 = L.marker(
+                [-27.2333315, -52.0484409],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_dcd67ffc97f4537df07a9d6fa1070243 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_532cddb91beef6bb98af85b29944b7a8 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_982b685752f1eca9efc5d4c6970b0a93 = $(`<div id="html_982b685752f1eca9efc5d4c6970b0a93" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>ESF NOVO HORIZONTE</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">ESF</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">RUA GUILHERME MUNARETTO</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">LOTEAMENTO NOVO HORI</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">2.4 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">NW</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_532cddb91beef6bb98af85b29944b7a8.setContent(html_982b685752f1eca9efc5d4c6970b0a93);
+            
+        
+
+        marker_98c19e9f0d17788d145a5ca53321fdf7.bindPopup(popup_532cddb91beef6bb98af85b29944b7a8)
+        ;
+
+        
+    
+    
+            marker_98c19e9f0d17788d145a5ca53321fdf7.bindTooltip(
+                `<div>
+                     ESF NOVO HORIZONTE - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_98c19e9f0d17788d145a5ca53321fdf7.setIcon(icon_dcd67ffc97f4537df07a9d6fa1070243);
+            
+    
+            var marker_af9fdca6501494b6d221e07cb9092bac = L.marker(
+                [-27.2461031, -52.0202689],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_1bf00fb014036bd386433cdb72b25dd0 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_8aee7fc9c425871fba74acd25868142e = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_8eb18d30522331f00fbb1f1a47627040 = $(`<div id="html_8eb18d30522331f00fbb1f1a47627040" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>ESF GUILHERME REICH II</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">ESF</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">RUA VITORIA</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">GUILHERME REICH</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">1.4 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">SE</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_8aee7fc9c425871fba74acd25868142e.setContent(html_8eb18d30522331f00fbb1f1a47627040);
+            
+        
+
+        marker_af9fdca6501494b6d221e07cb9092bac.bindPopup(popup_8aee7fc9c425871fba74acd25868142e)
+        ;
+
+        
+    
+    
+            marker_af9fdca6501494b6d221e07cb9092bac.bindTooltip(
+                `<div>
+                     ESF GUILHERME REICH II - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_af9fdca6501494b6d221e07cb9092bac.setIcon(icon_1bf00fb014036bd386433cdb72b25dd0);
+            
+    
+            var marker_e6690a3518616a1d618a6bde2d4a562e = L.marker(
+                [-27.2167556, -52.015262],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_73313486291cea3599ea4ea051e9ff85 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_442fbe84c295fdc40d915ce1119970d1 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_02b4ceff8cd65da39b186580d813923f = $(`<div id="html_02b4ceff8cd65da39b186580d813923f" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>ESF SALETE</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">ESF</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">RUA JOAO ZANARDI</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">NOSSA SENHORA DA SAL</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">2.0 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">NE</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_442fbe84c295fdc40d915ce1119970d1.setContent(html_02b4ceff8cd65da39b186580d813923f);
+            
+        
+
+        marker_e6690a3518616a1d618a6bde2d4a562e.bindPopup(popup_442fbe84c295fdc40d915ce1119970d1)
+        ;
+
+        
+    
+    
+            marker_e6690a3518616a1d618a6bde2d4a562e.bindTooltip(
+                `<div>
+                     ESF SALETE - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_e6690a3518616a1d618a6bde2d4a562e.setIcon(icon_73313486291cea3599ea4ea051e9ff85);
+            
+    
+            var marker_a52d2b323d597d378d32bf9ccdf2d170 = L.marker(
+                [-27.2483118, -52.1186013],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_3c238f365d50b07a104af08b4b17eeaf = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_917acc18419893f668890e7afdf24cf5 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_0853347e140318e5404d4def51ba5265 = $(`<div id="html_0853347e140318e5404d4def51ba5265" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>PS PRESIDENTE KENNEDY</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">PS</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">PRESIDENTE KENNEDY</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">CENTRO</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">9.5 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">SW</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_917acc18419893f668890e7afdf24cf5.setContent(html_0853347e140318e5404d4def51ba5265);
+            
+        
+
+        marker_a52d2b323d597d378d32bf9ccdf2d170.bindPopup(popup_917acc18419893f668890e7afdf24cf5)
+        ;
+
+        
+    
+    
+            marker_a52d2b323d597d378d32bf9ccdf2d170.bindTooltip(
+                `<div>
+                     PS PRESIDENTE KENNEDY - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_a52d2b323d597d378d32bf9ccdf2d170.setIcon(icon_3c238f365d50b07a104af08b4b17eeaf);
+            
+    
+            var marker_b75108819db8c961cddb6b53a682cb69 = L.marker(
+                [-27.2249988, -52.0350825],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_54d16c8167ca6fdd0fe4f9de4e1de50b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_92483af38ef54f5c86b2d95495ec4416 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_0befe3f8a0bdd01470a67716daec5367 = $(`<div id="html_0befe3f8a0bdd01470a67716daec5367" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>PS SANTA CRUZ</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">PS</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">RUA CLOVIS CESAR DE OLIVEIRA</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">SANTA CRUZ</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">1.5 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">NW</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_92483af38ef54f5c86b2d95495ec4416.setContent(html_0befe3f8a0bdd01470a67716daec5367);
+            
+        
+
+        marker_b75108819db8c961cddb6b53a682cb69.bindPopup(popup_92483af38ef54f5c86b2d95495ec4416)
+        ;
+
+        
+    
+    
+            marker_b75108819db8c961cddb6b53a682cb69.bindTooltip(
+                `<div>
+                     PS SANTA CRUZ - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b75108819db8c961cddb6b53a682cb69.setIcon(icon_54d16c8167ca6fdd0fe4f9de4e1de50b);
+            
+    
+            var marker_80d85d617f05efb381f21c2b6a2c58f4 = L.marker(
+                [-27.234114, -52.201091],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_192cae748e3de89bb4c1577788a23c8d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_049a5b16eeaf40bdc9c99db9fd6f137b = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_af70621ebd9246e1a4b5bbfda78ceb62 = $(`<div id="html_af70621ebd9246e1a4b5bbfda78ceb62" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>PS ENGENHO VELHO</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">PS</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">ENGENHO VELHO</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">CENTRO</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">17.5 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">NW</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_049a5b16eeaf40bdc9c99db9fd6f137b.setContent(html_af70621ebd9246e1a4b5bbfda78ceb62);
+            
+        
+
+        marker_80d85d617f05efb381f21c2b6a2c58f4.bindPopup(popup_049a5b16eeaf40bdc9c99db9fd6f137b)
+        ;
+
+        
+    
+    
+            marker_80d85d617f05efb381f21c2b6a2c58f4.bindTooltip(
+                `<div>
+                     PS ENGENHO VELHO - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_80d85d617f05efb381f21c2b6a2c58f4.setIcon(icon_192cae748e3de89bb4c1577788a23c8d);
+            
+    
+            var marker_16b66d82bb369100284cd69a58700e41 = L.marker(
+                [-27.3380429, -51.967781],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_fdb4e7375ccbe1eeb09859102c2d7166 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_0f7af862e51330188d3329d3dc4c558e = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_88e34c2a213fcefa2e47ba656333ac53 = $(`<div id="html_88e34c2a213fcefa2e47ba656333ac53" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>PS RANCHO GRANDE</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">PS</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">RANCHO GRANDE</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">RANCHO GRANDE</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">12.9 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">SE</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_0f7af862e51330188d3329d3dc4c558e.setContent(html_88e34c2a213fcefa2e47ba656333ac53);
+            
+        
+
+        marker_16b66d82bb369100284cd69a58700e41.bindPopup(popup_0f7af862e51330188d3329d3dc4c558e)
+        ;
+
+        
+    
+    
+            marker_16b66d82bb369100284cd69a58700e41.bindTooltip(
+                `<div>
+                     PS RANCHO GRANDE - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_16b66d82bb369100284cd69a58700e41.setIcon(icon_fdb4e7375ccbe1eeb09859102c2d7166);
+            
+    
+            var marker_8fd08d15d56492eb7695e4d8063d142d = L.marker(
+                [-27.1243386, -51.9846434],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_6c9722790f1ef25600cdb93e597a29ec = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e196be27b125d5316ea8803c7519ca00 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_f0e9c33e13d51e2deac0eac551ee298c = $(`<div id="html_f0e9c33e13d51e2deac0eac551ee298c" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>PS TRES DE OUTUBRO</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">PS</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">TRES DE OUTUBRO</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">INTERIOR</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">12.7 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">NE</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_e196be27b125d5316ea8803c7519ca00.setContent(html_f0e9c33e13d51e2deac0eac551ee298c);
+            
+        
+
+        marker_8fd08d15d56492eb7695e4d8063d142d.bindPopup(popup_e196be27b125d5316ea8803c7519ca00)
+        ;
+
+        
+    
+    
+            marker_8fd08d15d56492eb7695e4d8063d142d.bindTooltip(
+                `<div>
+                     PS TRES DE OUTUBRO - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_8fd08d15d56492eb7695e4d8063d142d.setIcon(icon_6c9722790f1ef25600cdb93e597a29ec);
+            
+    
+            var marker_33588296e0c6c18b1522a5cf89e35224 = L.marker(
+                [-27.2441391, -51.9539252],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_c1d66e12c8e73e36595bab629f1eb214 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a370c8a70827f01c0fc8ed92ad95d66f = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_1c781962e72676d82cbad8bf571feb78 = $(`<div id="html_1c781962e72676d82cbad8bf571feb78" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>ESF VILA JACOB BIEZUS</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">ESF</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">RUA ANDORINHAS</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">JACOB BIEZUS</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">7.0 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">SE</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_a370c8a70827f01c0fc8ed92ad95d66f.setContent(html_1c781962e72676d82cbad8bf571feb78);
+            
+        
+
+        marker_33588296e0c6c18b1522a5cf89e35224.bindPopup(popup_a370c8a70827f01c0fc8ed92ad95d66f)
+        ;
+
+        
+    
+    
+            marker_33588296e0c6c18b1522a5cf89e35224.bindTooltip(
+                `<div>
+                     ESF VILA JACOB BIEZUS - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_33588296e0c6c18b1522a5cf89e35224.setIcon(icon_c1d66e12c8e73e36595bab629f1eb214);
+            
+    
+            var marker_b765d6b3cace75c790b6fd6e3817e23a = L.marker(
+                [-27.2466631, -52.0200085],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_19fc6013a40e3189db5d51812b580736 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_20ef375596f31d13ad56308690bdbfc9 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_8ac3e8d54aa114a8a06560e4df01245a = $(`<div id="html_8ac3e8d54aa114a8a06560e4df01245a" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>ESF GUILHERME REICH</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">ESF</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">RUA VITORIA</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">GUILHERME REICH</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">1.5 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">SE</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_20ef375596f31d13ad56308690bdbfc9.setContent(html_8ac3e8d54aa114a8a06560e4df01245a);
+            
+        
+
+        marker_b765d6b3cace75c790b6fd6e3817e23a.bindPopup(popup_20ef375596f31d13ad56308690bdbfc9)
+        ;
+
+        
+    
+    
+            marker_b765d6b3cace75c790b6fd6e3817e23a.bindTooltip(
+                `<div>
+                     ESF GUILHERME REICH - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b765d6b3cace75c790b6fd6e3817e23a.setIcon(icon_19fc6013a40e3189db5d51812b580736);
+            
+    
+            var marker_bb633bd809202f0281b311d5e25c0c52 = L.marker(
+                [-27.22889383, -52.00150967],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_459a8dbc9202ac7d893e589ea4292a65 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5aba349b49af676a4f99b247104d2fdd = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_0adda2edcdb410bbe499405fc15fa227 = $(`<div id="html_0adda2edcdb410bbe499405fc15fa227" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>ESF JARDIM EUROPA</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">ESF</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">RUA ALEXANDRE LORENZET</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">PARQUE DE EXPOSICOES</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">2.3 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">NE</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_5aba349b49af676a4f99b247104d2fdd.setContent(html_0adda2edcdb410bbe499405fc15fa227);
+            
+        
+
+        marker_bb633bd809202f0281b311d5e25c0c52.bindPopup(popup_5aba349b49af676a4f99b247104d2fdd)
+        ;
+
+        
+    
+    
+            marker_bb633bd809202f0281b311d5e25c0c52.bindTooltip(
+                `<div>
+                     ESF JARDIM EUROPA - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_bb633bd809202f0281b311d5e25c0c52.setIcon(icon_459a8dbc9202ac7d893e589ea4292a65);
+            
+    
+            var marker_a5811d7da713e2a6b08048899b85b940 = L.marker(
+                [-27.2304667, -51.9864312],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_9c7c948e1cfd4311ee6a7cfde8edc9ff = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_df3ae69e692cb5477a7886cddc387f7a = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_6fdcb25b4a80c0608a91e9b71249bb5f = $(`<div id="html_6fdcb25b4a80c0608a91e9b71249bb5f" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>ESF SAO CRISTOVAO</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">ESF</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">RUA MAURO MATIOLLO</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">SAO CRISTOVAO</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">3.7 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">NE</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_df3ae69e692cb5477a7886cddc387f7a.setContent(html_6fdcb25b4a80c0608a91e9b71249bb5f);
+            
+        
+
+        marker_a5811d7da713e2a6b08048899b85b940.bindPopup(popup_df3ae69e692cb5477a7886cddc387f7a)
+        ;
+
+        
+    
+    
+            marker_a5811d7da713e2a6b08048899b85b940.bindTooltip(
+                `<div>
+                     ESF SAO CRISTOVAO - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_a5811d7da713e2a6b08048899b85b940.setIcon(icon_9c7c948e1cfd4311ee6a7cfde8edc9ff);
+            
+    
+            var marker_3dfa2f2ed5219f096f9909dd8c0c6b3c = L.marker(
+                [-27.2349951, -52.0405281],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_2db6b6679d7921325707f380f55be74c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_cecc4d9b6fa3765fcd6c66b47ad05803 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_fc0d21ca9b77a11834f8079e24c0525a = $(`<div id="html_fc0d21ca9b77a11834f8079e24c0525a" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>ESF INDUSTRIARIOS</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">ESF</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">OTTO TRAMONTINI</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">INDUSTRIARIOS</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">1.7 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">NW</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_cecc4d9b6fa3765fcd6c66b47ad05803.setContent(html_fc0d21ca9b77a11834f8079e24c0525a);
+            
+        
+
+        marker_3dfa2f2ed5219f096f9909dd8c0c6b3c.bindPopup(popup_cecc4d9b6fa3765fcd6c66b47ad05803)
+        ;
+
+        
+    
+    
+            marker_3dfa2f2ed5219f096f9909dd8c0c6b3c.bindTooltip(
+                `<div>
+                     ESF INDUSTRIARIOS - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_3dfa2f2ed5219f096f9909dd8c0c6b3c.setIcon(icon_2db6b6679d7921325707f380f55be74c);
+            
+    
+            var marker_309e056ac8df96c70cdcccaaa7a50522 = L.marker(
+                [-27.21589969, -52.02835321],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_b85483b75fbd9f1131f9217659d175cc = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_70968a838cbf492a378f9069f2ef6295 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_e9b55118797f40fe8795ee433ce2c132 = $(`<div id="html_e9b55118797f40fe8795ee433ce2c132" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>PS JARDIM</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">PS</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">RUA LEONIDAS FAVERO</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">JARDIM</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">2.0 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">NW</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_70968a838cbf492a378f9069f2ef6295.setContent(html_e9b55118797f40fe8795ee433ce2c132);
+            
+        
+
+        marker_309e056ac8df96c70cdcccaaa7a50522.bindPopup(popup_70968a838cbf492a378f9069f2ef6295)
+        ;
+
+        
+    
+    
+            marker_309e056ac8df96c70cdcccaaa7a50522.bindTooltip(
+                `<div>
+                     PS JARDIM - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_309e056ac8df96c70cdcccaaa7a50522.setIcon(icon_b85483b75fbd9f1131f9217659d175cc);
+            
+    
+            var marker_1e6adbbef36694a7f06d4fb95e9f5be2 = L.marker(
+                [-27.2441305, -52.032473],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_25d9d87050c7d6afa5c3873d2260f7bb = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d11ff3ed39533345919fe226805098a5 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_5d931f516e21dd1d7b39a6aebfb3d07f = $(`<div id="html_5d931f516e21dd1d7b39a6aebfb3d07f" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>ESF NACOES</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">ESF</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">RUA BOLIVIA</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">NACOES</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">1.5 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">SW</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_d11ff3ed39533345919fe226805098a5.setContent(html_5d931f516e21dd1d7b39a6aebfb3d07f);
+            
+        
+
+        marker_1e6adbbef36694a7f06d4fb95e9f5be2.bindPopup(popup_d11ff3ed39533345919fe226805098a5)
+        ;
+
+        
+    
+    
+            marker_1e6adbbef36694a7f06d4fb95e9f5be2.bindTooltip(
+                `<div>
+                     ESF NACOES - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_1e6adbbef36694a7f06d4fb95e9f5be2.setIcon(icon_25d9d87050c7d6afa5c3873d2260f7bb);
+            
+    
+            var marker_24958487a726182a7a6e60df46a52533 = L.marker(
+                [-27.2657536, -51.9119779],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_b8123d6412f304b199ed07a2c299ade6 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b6abcde4722c88183b0fb3aea5611f2c = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_79acbda28846f4b2f08cfd261f2d2c0a = $(`<div id="html_79acbda28846f4b2f08cfd261f2d2c0a" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>PS BARRA BONITA</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">PS</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">BARRA BONITA</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">INTERIOR</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">11.6 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">SE</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_b6abcde4722c88183b0fb3aea5611f2c.setContent(html_79acbda28846f4b2f08cfd261f2d2c0a);
+            
+        
+
+        marker_24958487a726182a7a6e60df46a52533.bindPopup(popup_b6abcde4722c88183b0fb3aea5611f2c)
+        ;
+
+        
+    
+    
+            marker_24958487a726182a7a6e60df46a52533.bindTooltip(
+                `<div>
+                     PS BARRA BONITA - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_24958487a726182a7a6e60df46a52533.setIcon(icon_b8123d6412f304b199ed07a2c299ade6);
+            
+    
+            var marker_64894d71858903b53bcf34fa7a54428b = L.marker(
+                [-27.2425278, -52.0509926],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_7370c59d4a713aaee29a12b2a13948a2 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c969c346ac83166d3ded4685b8d5e125 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_1d3b74d571ea9f2249e15f9fe1a8fbfe = $(`<div id="html_1d3b74d571ea9f2249e15f9fe1a8fbfe" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>ESF CRISTAL</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">ESF</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">RUA PEDRO RUBINI</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">CRISTAL</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">2.9 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">SW</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_c969c346ac83166d3ded4685b8d5e125.setContent(html_1d3b74d571ea9f2249e15f9fe1a8fbfe);
+            
+        
+
+        marker_64894d71858903b53bcf34fa7a54428b.bindPopup(popup_c969c346ac83166d3ded4685b8d5e125)
+        ;
+
+        
+    
+    
+            marker_64894d71858903b53bcf34fa7a54428b.bindTooltip(
+                `<div>
+                     ESF CRISTAL - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_64894d71858903b53bcf34fa7a54428b.setIcon(icon_7370c59d4a713aaee29a12b2a13948a2);
+            
+    
+            var marker_4ad4e4eeb933cf57e7001235ce26a389 = L.marker(
+                [-27.2247233, -52.0253905],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_1271fea8f33bf31c377ea4d4e99d0bf1 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_578486dc5020fdf9e75d2a74f0017740 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_35587dd1535992e2f98a55bae653c397 = $(`<div id="html_35587dd1535992e2f98a55bae653c397" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>ESF VISTA ALEGRE</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">ESF</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">MARIO DALFOVO</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">VISTA ALEGRE</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">1.0 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">NE</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_578486dc5020fdf9e75d2a74f0017740.setContent(html_35587dd1535992e2f98a55bae653c397);
+            
+        
+
+        marker_4ad4e4eeb933cf57e7001235ce26a389.bindPopup(popup_578486dc5020fdf9e75d2a74f0017740)
+        ;
+
+        
+    
+    
+            marker_4ad4e4eeb933cf57e7001235ce26a389.bindTooltip(
+                `<div>
+                     ESF VISTA ALEGRE - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_4ad4e4eeb933cf57e7001235ce26a389.setIcon(icon_1271fea8f33bf31c377ea4d4e99d0bf1);
+            
+    
+            var marker_67efff03202dbcc68bf765905a79fc56 = L.marker(
+                [-27.2874049, -51.8702276],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_a01e0e0729e5601388a8a8cca4762012 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b7e2d85f740fe12187f7f27ca3ab2c36 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_c66bd13e7b5a80cb0ba03ec387821fb1 = $(`<div id="html_c66bd13e7b5a80cb0ba03ec387821fb1" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>PS BARRA DO TIGRE</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">PS</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">BARRA DO TIGRE</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">INTERIOR</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">16.3 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">SE</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_b7e2d85f740fe12187f7f27ca3ab2c36.setContent(html_c66bd13e7b5a80cb0ba03ec387821fb1);
+            
+        
+
+        marker_67efff03202dbcc68bf765905a79fc56.bindPopup(popup_b7e2d85f740fe12187f7f27ca3ab2c36)
+        ;
+
+        
+    
+    
+            marker_67efff03202dbcc68bf765905a79fc56.bindTooltip(
+                `<div>
+                     PS BARRA DO TIGRE - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_67efff03202dbcc68bf765905a79fc56.setIcon(icon_a01e0e0729e5601388a8a8cca4762012);
+            
+    
+            var marker_555169cf4edec1ce95ec6c9324e6eed8 = L.marker(
+                [-27.3267388, -52.0593599],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_cd868153dfea70867f467242ccf27b1d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7f8477de6032f8d3f0dbd6ce0738b727 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_2f94a7911444e1f7dab73a58ea27abbc = $(`<div id="html_2f94a7911444e1f7dab73a58ea27abbc" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>PS SAO LUIS</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">PS</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">SAO LUIZ</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">CENTRO</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">10.9 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">SW</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_7f8477de6032f8d3f0dbd6ce0738b727.setContent(html_2f94a7911444e1f7dab73a58ea27abbc);
+            
+        
+
+        marker_555169cf4edec1ce95ec6c9324e6eed8.bindPopup(popup_7f8477de6032f8d3f0dbd6ce0738b727)
+        ;
+
+        
+    
+    
+            marker_555169cf4edec1ce95ec6c9324e6eed8.bindTooltip(
+                `<div>
+                     PS SAO LUIS - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_555169cf4edec1ce95ec6c9324e6eed8.setIcon(icon_cd868153dfea70867f467242ccf27b1d);
+            
+    
+            var marker_82366244cf4692ec00e3fc3c453827ae = L.marker(
+                [-27.2867648, -52.0869413],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_0e45596ff0e7534ef044ca9b5e88bb51 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1027301e2dff9c332f287d264cbddece = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_a8413c354fef0d859e86b1a45316c628 = $(`<div id="html_a8413c354fef0d859e86b1a45316c628" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>PS SEDE BRUM</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">PS</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">SEDE BRUM</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">CENTRO</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">8.6 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">SW</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_1027301e2dff9c332f287d264cbddece.setContent(html_a8413c354fef0d859e86b1a45316c628);
+            
+        
+
+        marker_82366244cf4692ec00e3fc3c453827ae.bindPopup(popup_1027301e2dff9c332f287d264cbddece)
+        ;
+
+        
+    
+    
+            marker_82366244cf4692ec00e3fc3c453827ae.bindTooltip(
+                `<div>
+                     PS SEDE BRUM - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_82366244cf4692ec00e3fc3c453827ae.setIcon(icon_0e45596ff0e7534ef044ca9b5e88bb51);
+            
+    
+            var marker_6402459f0297a344c7a3c80a26266406 = L.marker(
+                [-27.3025472, -51.9976974],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_d9358642195c46d55f37f2b012914afa = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9a6e1da858b285258ebab1e5811c0e71 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_d307efb267c20280489bb1286dd52856 = $(`<div id="html_d307efb267c20280489bb1286dd52856" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>PS TAMANDUA</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">PS</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">TAMANDUA</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">INTERIOR</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">8.1 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">SE</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_9a6e1da858b285258ebab1e5811c0e71.setContent(html_d307efb267c20280489bb1286dd52856);
+            
+        
+
+        marker_6402459f0297a344c7a3c80a26266406.bindPopup(popup_9a6e1da858b285258ebab1e5811c0e71)
+        ;
+
+        
+    
+    
+            marker_6402459f0297a344c7a3c80a26266406.bindTooltip(
+                `<div>
+                     PS TAMANDUA - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_6402459f0297a344c7a3c80a26266406.setIcon(icon_d9358642195c46d55f37f2b012914afa);
+            
+    
+            var marker_8bb2e0868ea4f0254410a5785684c368 = L.marker(
+                [-27.1803634, -51.9189932],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_85655e5fc55300ec39c27d0534e6b98f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_91dff79e00944c776ed517fa31ab0acc = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_12aae2dbac73423cce7ef2acf78031a1 = $(`<div id="html_12aae2dbac73423cce7ef2acf78031a1" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>PS CACHIMBO</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">PS</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">CACHIMBO</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">INTERIOR</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">11.9 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">NE</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_91dff79e00944c776ed517fa31ab0acc.setContent(html_12aae2dbac73423cce7ef2acf78031a1);
+            
+        
+
+        marker_8bb2e0868ea4f0254410a5785684c368.bindPopup(popup_91dff79e00944c776ed517fa31ab0acc)
+        ;
+
+        
+    
+    
+            marker_8bb2e0868ea4f0254410a5785684c368.bindTooltip(
+                `<div>
+                     PS CACHIMBO - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_8bb2e0868ea4f0254410a5785684c368.setIcon(icon_85655e5fc55300ec39c27d0534e6b98f);
+            
+    
+            var marker_ac33c26b6e7dcef6750842a8b998dcf3 = L.marker(
+                [-27.2392716, -51.8853275],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_969687cd5a3cbaa6fa24e49c9a5e6312 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_764c88f5c21f0cf902e74b5e92484b76 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_2ffae9a8388560481413a65bc305e27a = $(`<div id="html_2ffae9a8388560481413a65bc305e27a" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>PS TIRADENTES</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">PS</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">TIRADENTES</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">CENTRO</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">13.7 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">SE</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_764c88f5c21f0cf902e74b5e92484b76.setContent(html_2ffae9a8388560481413a65bc305e27a);
+            
+        
+
+        marker_ac33c26b6e7dcef6750842a8b998dcf3.bindPopup(popup_764c88f5c21f0cf902e74b5e92484b76)
+        ;
+
+        
+    
+    
+            marker_ac33c26b6e7dcef6750842a8b998dcf3.bindTooltip(
+                `<div>
+                     PS TIRADENTES - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ac33c26b6e7dcef6750842a8b998dcf3.setIcon(icon_969687cd5a3cbaa6fa24e49c9a5e6312);
+            
+    
+            var marker_758a2e1365ce930a57e7c31b431ae3cd = L.marker(
+                [-27.2946786, -52.2271415],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_7bbf8472f6552bc5e57bb1cbd4465d06 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9243cb8f009d26dd11fa92881ed33980 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_279102d9cf1f546065a5f54b13d06062 = $(`<div id="html_279102d9cf1f546065a5f54b13d06062" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>PS TERRA VERMELHA</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">PS</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">TERRA VERMELHA</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">CENTRO</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">21.2 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">SW</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_9243cb8f009d26dd11fa92881ed33980.setContent(html_279102d9cf1f546065a5f54b13d06062);
+            
+        
+
+        marker_758a2e1365ce930a57e7c31b431ae3cd.bindPopup(popup_9243cb8f009d26dd11fa92881ed33980)
+        ;
+
+        
+    
+    
+            marker_758a2e1365ce930a57e7c31b431ae3cd.bindTooltip(
+                `<div>
+                     PS TERRA VERMELHA - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_758a2e1365ce930a57e7c31b431ae3cd.setIcon(icon_7bbf8472f6552bc5e57bb1cbd4465d06);
+            
+    
+            var marker_7d8e95df898722e17998023aedc2d0cd = L.marker(
+                [-27.23406435, -52.0283103],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_e26fe6d61f6cd8adda0f8e58b2ee8824 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a07504059b80566f8974a375cc923b0e = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_b881860a863d92e64e946faf110dd4e8 = $(`<div id="html_b881860a863d92e64e946faf110dd4e8" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>ESF PLANALTO</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">ESF</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">CORONEL PASSOS MAIA</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">PLANALTO</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">0.5 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">NW</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_a07504059b80566f8974a375cc923b0e.setContent(html_b881860a863d92e64e946faf110dd4e8);
+            
+        
+
+        marker_7d8e95df898722e17998023aedc2d0cd.bindPopup(popup_a07504059b80566f8974a375cc923b0e)
+        ;
+
+        
+    
+    
+            marker_7d8e95df898722e17998023aedc2d0cd.bindTooltip(
+                `<div>
+                     ESF PLANALTO - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7d8e95df898722e17998023aedc2d0cd.setIcon(icon_e26fe6d61f6cd8adda0f8e58b2ee8824);
+            
+    
+            var marker_d4b517fca01d70dfc77cfea64f553b69 = L.marker(
+                [-27.19669192, -52.10673809],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_aebc32f32932b33c3bbc3b92c9318d17 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_272f1e2d6be0234394e00266fa1d58b1 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_0f7bc6b92da9a25164a42942430aa6c8 = $(`<div id="html_0f7bc6b92da9a25164a42942430aa6c8" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>ESF SANTO ANTONIO</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">ESF</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">DISTRITO SANTO ANTONIO</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">CENTRO</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">9.2 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">NW</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_272f1e2d6be0234394e00266fa1d58b1.setContent(html_0f7bc6b92da9a25164a42942430aa6c8);
+            
+        
+
+        marker_d4b517fca01d70dfc77cfea64f553b69.bindPopup(popup_272f1e2d6be0234394e00266fa1d58b1)
+        ;
+
+        
+    
+    
+            marker_d4b517fca01d70dfc77cfea64f553b69.bindTooltip(
+                `<div>
+                     ESF SANTO ANTONIO - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d4b517fca01d70dfc77cfea64f553b69.setIcon(icon_aebc32f32932b33c3bbc3b92c9318d17);
+            
+    
+            var marker_90f742bec3e59645366a926894101d7e = L.marker(
+                [-27.2352949, -52.0353003],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_522f5e915744c270661f9918b9d4d205 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_660ad98f75ca669d4e02a126f6aa77a9 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_fb271208cfea86a8b6614147e9331c9c = $(`<div id="html_fb271208cfea86a8b6614147e9331c9c" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>ESF NAZARE</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">ESF</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">RUA VEREADOR JACOB SELBACH</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">NAZARE</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">1.2 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">SW</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_660ad98f75ca669d4e02a126f6aa77a9.setContent(html_fb271208cfea86a8b6614147e9331c9c);
+            
+        
+
+        marker_90f742bec3e59645366a926894101d7e.bindPopup(popup_660ad98f75ca669d4e02a126f6aa77a9)
+        ;
+
+        
+    
+    
+            marker_90f742bec3e59645366a926894101d7e.bindTooltip(
+                `<div>
+                     ESF NAZARE - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_90f742bec3e59645366a926894101d7e.setIcon(icon_522f5e915744c270661f9918b9d4d205);
+            
+    
+            var marker_87e51c1a7e4befdaabdf7873f2d43236 = L.marker(
+                [-27.22332237, -52.04730034],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_de066678278683aedffb279c2921530c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_cee4aad17596b06a3778e4f7505129ff = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_a6591020cd162f43f5d2d48d68ef4cbc = $(`<div id="html_a6591020cd162f43f5d2d48d68ef4cbc" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>ESF PETROPOLIS</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">ESF</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">RUA DAS ERVEIRAS</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">PETROPOLIS</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">2.6 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">NW</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_cee4aad17596b06a3778e4f7505129ff.setContent(html_a6591020cd162f43f5d2d48d68ef4cbc);
+            
+        
+
+        marker_87e51c1a7e4befdaabdf7873f2d43236.bindPopup(popup_cee4aad17596b06a3778e4f7505129ff)
+        ;
+
+        
+    
+    
+            marker_87e51c1a7e4befdaabdf7873f2d43236.bindTooltip(
+                `<div>
+                     ESF PETROPOLIS - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_87e51c1a7e4befdaabdf7873f2d43236.setIcon(icon_de066678278683aedffb279c2921530c);
+            
+    
+            var marker_54b677d46cec3926ac6d26b15a8d1d65 = L.marker(
+                [-27.22908463, -52.00110197],
+                {
+}
+            ).addTo(feature_group_e22e9e0b6e6c94a67880c92094162305);
+        
+    
+            var icon_dc99902918881fad00a4649f4c52a0a2 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "plus",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5c5e485015d992a8a03569ae0c6a5513 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_b83553e3d2e0b0ea409fd53fc16bd6d7 = $(`<div id="html_b83553e3d2e0b0ea409fd53fc16bd6d7" style="width: 100.0%; height: 100.0%;">             <div style="width: 320px; font-family: Arial; line-height: 1.4;">                 <h4 style="color: #e41a1c; margin-bottom: 10px; border-bottom: 2px solid #e41a1c;">                     <b>CENTRO DE SAUDE BASICA CONCORDIA</b>                 </h4>                 <table style="width: 100%; font-size: 12px; border-collapse: collapse;">                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>🏥 Tipo:</b></td><td style="padding: 4px;">PS</td></tr>                     <tr><td style="padding: 4px;"><b>🏛️ Setor:</b></td><td style="padding: 4px; color: #e41a1c; font-weight: bold;">Público</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📍 Endereço:</b></td><td style="padding: 4px;">RUA ALEXANDRE LORENZET</td></tr>                     <tr><td style="padding: 4px;"><b>🏘️ Bairro:</b></td><td style="padding: 4px;">PARQUE DE EXPOSICAO</td></tr>                     <tr style="background-color: #f5f5f5;"><td style="padding: 4px;"><b>📏 Distância:</b></td><td style="padding: 4px;">2.3 km do centro</td></tr>                     <tr><td style="padding: 4px;"><b>🗺️ Quadrante:</b></td><td style="padding: 4px;">NE</td></tr>                 </table>             </div>             </div>`)[0];
+                popup_5c5e485015d992a8a03569ae0c6a5513.setContent(html_b83553e3d2e0b0ea409fd53fc16bd6d7);
+            
+        
+
+        marker_54b677d46cec3926ac6d26b15a8d1d65.bindPopup(popup_5c5e485015d992a8a03569ae0c6a5513)
+        ;
+
+        
+    
+    
+            marker_54b677d46cec3926ac6d26b15a8d1d65.bindTooltip(
+                `<div>
+                     CENTRO DE SAUDE BASICA CONCORDIA - Público
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_54b677d46cec3926ac6d26b15a8d1d65.setIcon(icon_dc99902918881fad00a4649f4c52a0a2);
+            
+    
+            feature_group_e22e9e0b6e6c94a67880c92094162305.addTo(map_91e0adb09aa0cc2a32998b2f71ab3909);
+        
+    
+            var feature_group_ea613c46513158551766ef0ac3ae1be0 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_d5d83cc62fde766bea49c46d46924cef = L.circleMarker(
+                [-27.2333315, -52.0484409],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1b9e77", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_2c119a77ee7aaa25d711bae8c10bfc0f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_7b0824b79251acf1760bf33df4be1588 = $(`<div id="html_7b0824b79251acf1760bf33df4be1588" style="width: 100.0%; height: 100.0%;"><b>ESF NOVO HORIZONTE</b><br>ESF<br>2.4km</div>`)[0];
+                popup_2c119a77ee7aaa25d711bae8c10bfc0f.setContent(html_7b0824b79251acf1760bf33df4be1588);
+            
+        
+
+        circle_marker_d5d83cc62fde766bea49c46d46924cef.bindPopup(popup_2c119a77ee7aaa25d711bae8c10bfc0f)
+        ;
+
+        
+    
+    
+            circle_marker_d5d83cc62fde766bea49c46d46924cef.bindTooltip(
+                `<div>
+                     ESF: ESF NOVO HORIZONTE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_ebadc48182deba983a14249a8c40a5e4 = L.circleMarker(
+                [-27.2461031, -52.0202689],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1b9e77", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_292a2eb1ee30da289e21a3dec8843464 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_02e53170551646b83afc5fff3784a183 = $(`<div id="html_02e53170551646b83afc5fff3784a183" style="width: 100.0%; height: 100.0%;"><b>ESF GUILHERME REICH II</b><br>ESF<br>1.4km</div>`)[0];
+                popup_292a2eb1ee30da289e21a3dec8843464.setContent(html_02e53170551646b83afc5fff3784a183);
+            
+        
+
+        circle_marker_ebadc48182deba983a14249a8c40a5e4.bindPopup(popup_292a2eb1ee30da289e21a3dec8843464)
+        ;
+
+        
+    
+    
+            circle_marker_ebadc48182deba983a14249a8c40a5e4.bindTooltip(
+                `<div>
+                     ESF: ESF GUILHERME REICH II
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_afeed81102d079ae99482c0f6aa489b5 = L.circleMarker(
+                [-27.2167556, -52.015262],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1b9e77", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_fb2173fade6ce2c1a493dfa0cdd75f44 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_2514726ed2418f06df4184f5005cb303 = $(`<div id="html_2514726ed2418f06df4184f5005cb303" style="width: 100.0%; height: 100.0%;"><b>ESF SALETE</b><br>ESF<br>2.0km</div>`)[0];
+                popup_fb2173fade6ce2c1a493dfa0cdd75f44.setContent(html_2514726ed2418f06df4184f5005cb303);
+            
+        
+
+        circle_marker_afeed81102d079ae99482c0f6aa489b5.bindPopup(popup_fb2173fade6ce2c1a493dfa0cdd75f44)
+        ;
+
+        
+    
+    
+            circle_marker_afeed81102d079ae99482c0f6aa489b5.bindTooltip(
+                `<div>
+                     ESF: ESF SALETE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_6acf2307473aaf032a07556b7a8de71e = L.circleMarker(
+                [-27.2441391, -51.9539252],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1b9e77", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_42cd7ed8380765be0d271ae29a55b9d3 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ac89119840b398f7f1416b96b5ee9db5 = $(`<div id="html_ac89119840b398f7f1416b96b5ee9db5" style="width: 100.0%; height: 100.0%;"><b>ESF VILA JACOB BIEZUS</b><br>ESF<br>7.0km</div>`)[0];
+                popup_42cd7ed8380765be0d271ae29a55b9d3.setContent(html_ac89119840b398f7f1416b96b5ee9db5);
+            
+        
+
+        circle_marker_6acf2307473aaf032a07556b7a8de71e.bindPopup(popup_42cd7ed8380765be0d271ae29a55b9d3)
+        ;
+
+        
+    
+    
+            circle_marker_6acf2307473aaf032a07556b7a8de71e.bindTooltip(
+                `<div>
+                     ESF: ESF VILA JACOB BIEZUS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a455695a6427bf471365749d255e6134 = L.circleMarker(
+                [-27.2466631, -52.0200085],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1b9e77", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_6cb6f0c0a49284aa39da1309bd5f5372 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_462290cdb2f54e377616114f31ab43af = $(`<div id="html_462290cdb2f54e377616114f31ab43af" style="width: 100.0%; height: 100.0%;"><b>ESF GUILHERME REICH</b><br>ESF<br>1.5km</div>`)[0];
+                popup_6cb6f0c0a49284aa39da1309bd5f5372.setContent(html_462290cdb2f54e377616114f31ab43af);
+            
+        
+
+        circle_marker_a455695a6427bf471365749d255e6134.bindPopup(popup_6cb6f0c0a49284aa39da1309bd5f5372)
+        ;
+
+        
+    
+    
+            circle_marker_a455695a6427bf471365749d255e6134.bindTooltip(
+                `<div>
+                     ESF: ESF GUILHERME REICH
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_4eee318af505d7e71cba9805d79c6f77 = L.circleMarker(
+                [-27.22889383, -52.00150967],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1b9e77", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_dc51f2fa26869281aa83455735ad5508 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b5079edae721cba3f14f0e6000525c90 = $(`<div id="html_b5079edae721cba3f14f0e6000525c90" style="width: 100.0%; height: 100.0%;"><b>ESF JARDIM EUROPA</b><br>ESF<br>2.3km</div>`)[0];
+                popup_dc51f2fa26869281aa83455735ad5508.setContent(html_b5079edae721cba3f14f0e6000525c90);
+            
+        
+
+        circle_marker_4eee318af505d7e71cba9805d79c6f77.bindPopup(popup_dc51f2fa26869281aa83455735ad5508)
+        ;
+
+        
+    
+    
+            circle_marker_4eee318af505d7e71cba9805d79c6f77.bindTooltip(
+                `<div>
+                     ESF: ESF JARDIM EUROPA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_ee455f9618149ceda225320a0cc5b269 = L.circleMarker(
+                [-27.2304667, -51.9864312],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1b9e77", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_396bfcbfde5a221402b99ba44655d3bd = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ee770ad967f755ade42dec30e67acc2c = $(`<div id="html_ee770ad967f755ade42dec30e67acc2c" style="width: 100.0%; height: 100.0%;"><b>ESF SAO CRISTOVAO</b><br>ESF<br>3.7km</div>`)[0];
+                popup_396bfcbfde5a221402b99ba44655d3bd.setContent(html_ee770ad967f755ade42dec30e67acc2c);
+            
+        
+
+        circle_marker_ee455f9618149ceda225320a0cc5b269.bindPopup(popup_396bfcbfde5a221402b99ba44655d3bd)
+        ;
+
+        
+    
+    
+            circle_marker_ee455f9618149ceda225320a0cc5b269.bindTooltip(
+                `<div>
+                     ESF: ESF SAO CRISTOVAO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_934bddeaf58b777e0791890c5a074261 = L.circleMarker(
+                [-27.2349951, -52.0405281],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1b9e77", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_a4bba36397ffef0277b331a11248be0a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_353b1833fe201eccf88426a90c12e65f = $(`<div id="html_353b1833fe201eccf88426a90c12e65f" style="width: 100.0%; height: 100.0%;"><b>ESF INDUSTRIARIOS</b><br>ESF<br>1.7km</div>`)[0];
+                popup_a4bba36397ffef0277b331a11248be0a.setContent(html_353b1833fe201eccf88426a90c12e65f);
+            
+        
+
+        circle_marker_934bddeaf58b777e0791890c5a074261.bindPopup(popup_a4bba36397ffef0277b331a11248be0a)
+        ;
+
+        
+    
+    
+            circle_marker_934bddeaf58b777e0791890c5a074261.bindTooltip(
+                `<div>
+                     ESF: ESF INDUSTRIARIOS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_893acf31391696805418f74641362f36 = L.circleMarker(
+                [-27.2441305, -52.032473],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1b9e77", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_8f9f1e4398216c9859d98268ddec0417 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_515997997f4c411a663a56d13196ea5d = $(`<div id="html_515997997f4c411a663a56d13196ea5d" style="width: 100.0%; height: 100.0%;"><b>ESF NACOES</b><br>ESF<br>1.5km</div>`)[0];
+                popup_8f9f1e4398216c9859d98268ddec0417.setContent(html_515997997f4c411a663a56d13196ea5d);
+            
+        
+
+        circle_marker_893acf31391696805418f74641362f36.bindPopup(popup_8f9f1e4398216c9859d98268ddec0417)
+        ;
+
+        
+    
+    
+            circle_marker_893acf31391696805418f74641362f36.bindTooltip(
+                `<div>
+                     ESF: ESF NACOES
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_577161d89688c36ad6e3ba1db2a56be9 = L.circleMarker(
+                [-27.2425278, -52.0509926],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1b9e77", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_1122f79feea8c3e0c00a5f19e86a012c = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_5f8435785d9608d4689c727d0408591f = $(`<div id="html_5f8435785d9608d4689c727d0408591f" style="width: 100.0%; height: 100.0%;"><b>ESF CRISTAL</b><br>ESF<br>2.9km</div>`)[0];
+                popup_1122f79feea8c3e0c00a5f19e86a012c.setContent(html_5f8435785d9608d4689c727d0408591f);
+            
+        
+
+        circle_marker_577161d89688c36ad6e3ba1db2a56be9.bindPopup(popup_1122f79feea8c3e0c00a5f19e86a012c)
+        ;
+
+        
+    
+    
+            circle_marker_577161d89688c36ad6e3ba1db2a56be9.bindTooltip(
+                `<div>
+                     ESF: ESF CRISTAL
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0d815cd376a20d317ce5e3f31dd7d2df = L.circleMarker(
+                [-27.2247233, -52.0253905],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1b9e77", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_c0e32eaefa72ffe22fd43d3197f5f129 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_2854fbfa495ae8a2712bec66762a1a44 = $(`<div id="html_2854fbfa495ae8a2712bec66762a1a44" style="width: 100.0%; height: 100.0%;"><b>ESF VISTA ALEGRE</b><br>ESF<br>1.0km</div>`)[0];
+                popup_c0e32eaefa72ffe22fd43d3197f5f129.setContent(html_2854fbfa495ae8a2712bec66762a1a44);
+            
+        
+
+        circle_marker_0d815cd376a20d317ce5e3f31dd7d2df.bindPopup(popup_c0e32eaefa72ffe22fd43d3197f5f129)
+        ;
+
+        
+    
+    
+            circle_marker_0d815cd376a20d317ce5e3f31dd7d2df.bindTooltip(
+                `<div>
+                     ESF: ESF VISTA ALEGRE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_94e12cdf8cd18695091c8775bf13fca0 = L.circleMarker(
+                [-27.23406435, -52.0283103],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1b9e77", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_50d2f5b0ca98fc74596a0ae8b81a98fc = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_4a0a0386e1a161ff24a857bdc7ff683b = $(`<div id="html_4a0a0386e1a161ff24a857bdc7ff683b" style="width: 100.0%; height: 100.0%;"><b>ESF PLANALTO</b><br>ESF<br>0.5km</div>`)[0];
+                popup_50d2f5b0ca98fc74596a0ae8b81a98fc.setContent(html_4a0a0386e1a161ff24a857bdc7ff683b);
+            
+        
+
+        circle_marker_94e12cdf8cd18695091c8775bf13fca0.bindPopup(popup_50d2f5b0ca98fc74596a0ae8b81a98fc)
+        ;
+
+        
+    
+    
+            circle_marker_94e12cdf8cd18695091c8775bf13fca0.bindTooltip(
+                `<div>
+                     ESF: ESF PLANALTO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_82cb3b2a748b599bfd4fb2ad0e43f8e9 = L.circleMarker(
+                [-27.19669192, -52.10673809],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1b9e77", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_daf68ed2bd6d3ee6eb1f32c70caa681b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_2f1eee60a770c76a17a2f53727b0df43 = $(`<div id="html_2f1eee60a770c76a17a2f53727b0df43" style="width: 100.0%; height: 100.0%;"><b>ESF SANTO ANTONIO</b><br>ESF<br>9.2km</div>`)[0];
+                popup_daf68ed2bd6d3ee6eb1f32c70caa681b.setContent(html_2f1eee60a770c76a17a2f53727b0df43);
+            
+        
+
+        circle_marker_82cb3b2a748b599bfd4fb2ad0e43f8e9.bindPopup(popup_daf68ed2bd6d3ee6eb1f32c70caa681b)
+        ;
+
+        
+    
+    
+            circle_marker_82cb3b2a748b599bfd4fb2ad0e43f8e9.bindTooltip(
+                `<div>
+                     ESF: ESF SANTO ANTONIO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_40c9297be80981fda59a27802e7f18f4 = L.circleMarker(
+                [-27.2352949, -52.0353003],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1b9e77", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_b9f1900d358e2b861978163d327e864c = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_d35dbb2000bce6f17063b77f29f6d9d5 = $(`<div id="html_d35dbb2000bce6f17063b77f29f6d9d5" style="width: 100.0%; height: 100.0%;"><b>ESF NAZARE</b><br>ESF<br>1.2km</div>`)[0];
+                popup_b9f1900d358e2b861978163d327e864c.setContent(html_d35dbb2000bce6f17063b77f29f6d9d5);
+            
+        
+
+        circle_marker_40c9297be80981fda59a27802e7f18f4.bindPopup(popup_b9f1900d358e2b861978163d327e864c)
+        ;
+
+        
+    
+    
+            circle_marker_40c9297be80981fda59a27802e7f18f4.bindTooltip(
+                `<div>
+                     ESF: ESF NAZARE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_7b904e9ff2fead80599a06b3ca7f684f = L.circleMarker(
+                [-27.22332237, -52.04730034],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1b9e77", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_0a58415081f0d51d6112229c73f80f22 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c41b1ef8309f08e5dcfe133441a23384 = $(`<div id="html_c41b1ef8309f08e5dcfe133441a23384" style="width: 100.0%; height: 100.0%;"><b>ESF PETROPOLIS</b><br>ESF<br>2.6km</div>`)[0];
+                popup_0a58415081f0d51d6112229c73f80f22.setContent(html_c41b1ef8309f08e5dcfe133441a23384);
+            
+        
+
+        circle_marker_7b904e9ff2fead80599a06b3ca7f684f.bindPopup(popup_0a58415081f0d51d6112229c73f80f22)
+        ;
+
+        
+    
+    
+            circle_marker_7b904e9ff2fead80599a06b3ca7f684f.bindTooltip(
+                `<div>
+                     ESF: ESF PETROPOLIS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a80eeb8ce02fb5bf5f52e99da638d6e1 = L.circleMarker(
+                [-27.2483118, -52.1186013],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d95f02", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_6b7369e69d030ae5729a17ddde730ca0 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_728c4538e58fb13334c0ac2af569afe4 = $(`<div id="html_728c4538e58fb13334c0ac2af569afe4" style="width: 100.0%; height: 100.0%;"><b>PS PRESIDENTE KENNEDY</b><br>PS<br>9.5km</div>`)[0];
+                popup_6b7369e69d030ae5729a17ddde730ca0.setContent(html_728c4538e58fb13334c0ac2af569afe4);
+            
+        
+
+        circle_marker_a80eeb8ce02fb5bf5f52e99da638d6e1.bindPopup(popup_6b7369e69d030ae5729a17ddde730ca0)
+        ;
+
+        
+    
+    
+            circle_marker_a80eeb8ce02fb5bf5f52e99da638d6e1.bindTooltip(
+                `<div>
+                     PS: PS PRESIDENTE KENNEDY
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a40d458471b26c6638140537d0a2de29 = L.circleMarker(
+                [-27.2249988, -52.0350825],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d95f02", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_1ea5355c75236052c82eb31f09ed511e = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b2a2fd344c07a33db18bd2b495506caa = $(`<div id="html_b2a2fd344c07a33db18bd2b495506caa" style="width: 100.0%; height: 100.0%;"><b>PS SANTA CRUZ</b><br>PS<br>1.5km</div>`)[0];
+                popup_1ea5355c75236052c82eb31f09ed511e.setContent(html_b2a2fd344c07a33db18bd2b495506caa);
+            
+        
+
+        circle_marker_a40d458471b26c6638140537d0a2de29.bindPopup(popup_1ea5355c75236052c82eb31f09ed511e)
+        ;
+
+        
+    
+    
+            circle_marker_a40d458471b26c6638140537d0a2de29.bindTooltip(
+                `<div>
+                     PS: PS SANTA CRUZ
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_14776870d53eb9629b0daecacae47021 = L.circleMarker(
+                [-27.234114, -52.201091],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d95f02", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_9ee84c7cdf8916e473ded70b7504f8ea = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b55ddff959d8c1befb75c25a2817448c = $(`<div id="html_b55ddff959d8c1befb75c25a2817448c" style="width: 100.0%; height: 100.0%;"><b>PS ENGENHO VELHO</b><br>PS<br>17.5km</div>`)[0];
+                popup_9ee84c7cdf8916e473ded70b7504f8ea.setContent(html_b55ddff959d8c1befb75c25a2817448c);
+            
+        
+
+        circle_marker_14776870d53eb9629b0daecacae47021.bindPopup(popup_9ee84c7cdf8916e473ded70b7504f8ea)
+        ;
+
+        
+    
+    
+            circle_marker_14776870d53eb9629b0daecacae47021.bindTooltip(
+                `<div>
+                     PS: PS ENGENHO VELHO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a182dde8e36ab4378a6113eeec3a03dd = L.circleMarker(
+                [-27.3380429, -51.967781],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d95f02", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_1e4af4d45b76900c45f0de1fc76416ff = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_e47bf4013fd28a6e8ec245f8f7177501 = $(`<div id="html_e47bf4013fd28a6e8ec245f8f7177501" style="width: 100.0%; height: 100.0%;"><b>PS RANCHO GRANDE</b><br>PS<br>12.9km</div>`)[0];
+                popup_1e4af4d45b76900c45f0de1fc76416ff.setContent(html_e47bf4013fd28a6e8ec245f8f7177501);
+            
+        
+
+        circle_marker_a182dde8e36ab4378a6113eeec3a03dd.bindPopup(popup_1e4af4d45b76900c45f0de1fc76416ff)
+        ;
+
+        
+    
+    
+            circle_marker_a182dde8e36ab4378a6113eeec3a03dd.bindTooltip(
+                `<div>
+                     PS: PS RANCHO GRANDE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_929e47962bec47f7966ed24597c04948 = L.circleMarker(
+                [-27.1243386, -51.9846434],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d95f02", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_6ec183060bb390198e7d5d7ba4dc03e4 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_6eba236f30bc21c1f94bcebf23c78a28 = $(`<div id="html_6eba236f30bc21c1f94bcebf23c78a28" style="width: 100.0%; height: 100.0%;"><b>PS TRES DE OUTUBRO</b><br>PS<br>12.7km</div>`)[0];
+                popup_6ec183060bb390198e7d5d7ba4dc03e4.setContent(html_6eba236f30bc21c1f94bcebf23c78a28);
+            
+        
+
+        circle_marker_929e47962bec47f7966ed24597c04948.bindPopup(popup_6ec183060bb390198e7d5d7ba4dc03e4)
+        ;
+
+        
+    
+    
+            circle_marker_929e47962bec47f7966ed24597c04948.bindTooltip(
+                `<div>
+                     PS: PS TRES DE OUTUBRO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a5e71ff1fcb6305c03051a57dc25ae2c = L.circleMarker(
+                [-27.21589969, -52.02835321],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d95f02", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_633cc04e4842f0f141e1393491819a49 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_848576cb318841385ba2f9826a0a1afd = $(`<div id="html_848576cb318841385ba2f9826a0a1afd" style="width: 100.0%; height: 100.0%;"><b>PS JARDIM</b><br>PS<br>2.0km</div>`)[0];
+                popup_633cc04e4842f0f141e1393491819a49.setContent(html_848576cb318841385ba2f9826a0a1afd);
+            
+        
+
+        circle_marker_a5e71ff1fcb6305c03051a57dc25ae2c.bindPopup(popup_633cc04e4842f0f141e1393491819a49)
+        ;
+
+        
+    
+    
+            circle_marker_a5e71ff1fcb6305c03051a57dc25ae2c.bindTooltip(
+                `<div>
+                     PS: PS JARDIM
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_3db5a753820667d78b5351e9a88be3ce = L.circleMarker(
+                [-27.2657536, -51.9119779],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d95f02", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_252c1819e21d89a6f1c9d5856307b5b4 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_283ffb4e6e0800455f77208233803087 = $(`<div id="html_283ffb4e6e0800455f77208233803087" style="width: 100.0%; height: 100.0%;"><b>PS BARRA BONITA</b><br>PS<br>11.6km</div>`)[0];
+                popup_252c1819e21d89a6f1c9d5856307b5b4.setContent(html_283ffb4e6e0800455f77208233803087);
+            
+        
+
+        circle_marker_3db5a753820667d78b5351e9a88be3ce.bindPopup(popup_252c1819e21d89a6f1c9d5856307b5b4)
+        ;
+
+        
+    
+    
+            circle_marker_3db5a753820667d78b5351e9a88be3ce.bindTooltip(
+                `<div>
+                     PS: PS BARRA BONITA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_6fec0591a9986e125ac0f222c44514d3 = L.circleMarker(
+                [-27.2874049, -51.8702276],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d95f02", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_3922dbae28865754af43a2967649fcde = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ff85ee1847fe11d9aa54d8441317ed09 = $(`<div id="html_ff85ee1847fe11d9aa54d8441317ed09" style="width: 100.0%; height: 100.0%;"><b>PS BARRA DO TIGRE</b><br>PS<br>16.3km</div>`)[0];
+                popup_3922dbae28865754af43a2967649fcde.setContent(html_ff85ee1847fe11d9aa54d8441317ed09);
+            
+        
+
+        circle_marker_6fec0591a9986e125ac0f222c44514d3.bindPopup(popup_3922dbae28865754af43a2967649fcde)
+        ;
+
+        
+    
+    
+            circle_marker_6fec0591a9986e125ac0f222c44514d3.bindTooltip(
+                `<div>
+                     PS: PS BARRA DO TIGRE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c5e437dbda0ee2cf3f091a8d5c3ec2d3 = L.circleMarker(
+                [-27.3267388, -52.0593599],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d95f02", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_c3ab2d1563d06eff29b6a431794bba9b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_98c0c629f9b3c37b956a509f04df29f3 = $(`<div id="html_98c0c629f9b3c37b956a509f04df29f3" style="width: 100.0%; height: 100.0%;"><b>PS SAO LUIS</b><br>PS<br>10.9km</div>`)[0];
+                popup_c3ab2d1563d06eff29b6a431794bba9b.setContent(html_98c0c629f9b3c37b956a509f04df29f3);
+            
+        
+
+        circle_marker_c5e437dbda0ee2cf3f091a8d5c3ec2d3.bindPopup(popup_c3ab2d1563d06eff29b6a431794bba9b)
+        ;
+
+        
+    
+    
+            circle_marker_c5e437dbda0ee2cf3f091a8d5c3ec2d3.bindTooltip(
+                `<div>
+                     PS: PS SAO LUIS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_fc76e021d9c83b97648ebe1158fb8e1d = L.circleMarker(
+                [-27.2867648, -52.0869413],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d95f02", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_0abe68461bc3852c3bb3f992a29932e9 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_3e728c20fe793ba24966d160a7209ae5 = $(`<div id="html_3e728c20fe793ba24966d160a7209ae5" style="width: 100.0%; height: 100.0%;"><b>PS SEDE BRUM</b><br>PS<br>8.6km</div>`)[0];
+                popup_0abe68461bc3852c3bb3f992a29932e9.setContent(html_3e728c20fe793ba24966d160a7209ae5);
+            
+        
+
+        circle_marker_fc76e021d9c83b97648ebe1158fb8e1d.bindPopup(popup_0abe68461bc3852c3bb3f992a29932e9)
+        ;
+
+        
+    
+    
+            circle_marker_fc76e021d9c83b97648ebe1158fb8e1d.bindTooltip(
+                `<div>
+                     PS: PS SEDE BRUM
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_e647804ab1e9a4c3dbe30634e451392c = L.circleMarker(
+                [-27.3025472, -51.9976974],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d95f02", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_a381b8bf0ce23028d86177cd707a546e = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_d4ce53a6cf1eff167519da4fe4e3f266 = $(`<div id="html_d4ce53a6cf1eff167519da4fe4e3f266" style="width: 100.0%; height: 100.0%;"><b>PS TAMANDUA</b><br>PS<br>8.1km</div>`)[0];
+                popup_a381b8bf0ce23028d86177cd707a546e.setContent(html_d4ce53a6cf1eff167519da4fe4e3f266);
+            
+        
+
+        circle_marker_e647804ab1e9a4c3dbe30634e451392c.bindPopup(popup_a381b8bf0ce23028d86177cd707a546e)
+        ;
+
+        
+    
+    
+            circle_marker_e647804ab1e9a4c3dbe30634e451392c.bindTooltip(
+                `<div>
+                     PS: PS TAMANDUA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_fd7cee82ffcf59056fdda953b777998a = L.circleMarker(
+                [-27.1803634, -51.9189932],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d95f02", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_129599d0f6ed3befb0ccc784e87beb34 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_55937c4a53b381299e39e410b7ea0d2f = $(`<div id="html_55937c4a53b381299e39e410b7ea0d2f" style="width: 100.0%; height: 100.0%;"><b>PS CACHIMBO</b><br>PS<br>11.9km</div>`)[0];
+                popup_129599d0f6ed3befb0ccc784e87beb34.setContent(html_55937c4a53b381299e39e410b7ea0d2f);
+            
+        
+
+        circle_marker_fd7cee82ffcf59056fdda953b777998a.bindPopup(popup_129599d0f6ed3befb0ccc784e87beb34)
+        ;
+
+        
+    
+    
+            circle_marker_fd7cee82ffcf59056fdda953b777998a.bindTooltip(
+                `<div>
+                     PS: PS CACHIMBO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_6594dfc905ba8bda6ec31078f4d463bb = L.circleMarker(
+                [-27.2392716, -51.8853275],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d95f02", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_32b5c12eaa17d50ba2f3cdcd48cde680 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_bcbdcda7096eb3e04f9679a5e0976c78 = $(`<div id="html_bcbdcda7096eb3e04f9679a5e0976c78" style="width: 100.0%; height: 100.0%;"><b>PS TIRADENTES</b><br>PS<br>13.7km</div>`)[0];
+                popup_32b5c12eaa17d50ba2f3cdcd48cde680.setContent(html_bcbdcda7096eb3e04f9679a5e0976c78);
+            
+        
+
+        circle_marker_6594dfc905ba8bda6ec31078f4d463bb.bindPopup(popup_32b5c12eaa17d50ba2f3cdcd48cde680)
+        ;
+
+        
+    
+    
+            circle_marker_6594dfc905ba8bda6ec31078f4d463bb.bindTooltip(
+                `<div>
+                     PS: PS TIRADENTES
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b7567c540c3f3154d189a75fbbf7cd78 = L.circleMarker(
+                [-27.2946786, -52.2271415],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d95f02", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_77d07da8ae5adff15cdb16d5443db4e2 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_8ed23443e5400d707f0ab290889964a7 = $(`<div id="html_8ed23443e5400d707f0ab290889964a7" style="width: 100.0%; height: 100.0%;"><b>PS TERRA VERMELHA</b><br>PS<br>21.2km</div>`)[0];
+                popup_77d07da8ae5adff15cdb16d5443db4e2.setContent(html_8ed23443e5400d707f0ab290889964a7);
+            
+        
+
+        circle_marker_b7567c540c3f3154d189a75fbbf7cd78.bindPopup(popup_77d07da8ae5adff15cdb16d5443db4e2)
+        ;
+
+        
+    
+    
+            circle_marker_b7567c540c3f3154d189a75fbbf7cd78.bindTooltip(
+                `<div>
+                     PS: PS TERRA VERMELHA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b8b78fad7625888a261b9db143e6af1d = L.circleMarker(
+                [-27.22908463, -52.00110197],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d95f02", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ea613c46513158551766ef0ac3ae1be0);
+        
+    
+        var popup_cfe07ff9e11e1630aab7321c394bb9e7 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c47c034776edfc183a463b17a0adce8e = $(`<div id="html_c47c034776edfc183a463b17a0adce8e" style="width: 100.0%; height: 100.0%;"><b>CENTRO DE SAUDE BASICA CONCORDIA</b><br>PS<br>2.3km</div>`)[0];
+                popup_cfe07ff9e11e1630aab7321c394bb9e7.setContent(html_c47c034776edfc183a463b17a0adce8e);
+            
+        
+
+        circle_marker_b8b78fad7625888a261b9db143e6af1d.bindPopup(popup_cfe07ff9e11e1630aab7321c394bb9e7)
+        ;
+
+        
+    
+    
+            circle_marker_b8b78fad7625888a261b9db143e6af1d.bindTooltip(
+                `<div>
+                     PS: CENTRO DE SAUDE BASICA CONCORDIA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var feature_group_86ff0428a84687ba57abb40341a2f71c = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_b4612eb67f945227d7a0fee174a8c415 = L.circleMarker(
+                [-27.2333315, -52.0484409],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#edf8fb", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_58a08e2b9c40281db507d1f28554512c = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_8175c8310878637d0daa47efe837973c = $(`<div id="html_8175c8310878637d0daa47efe837973c" style="width: 100.0%; height: 100.0%;"><b>ESF NOVO HORIZONTE</b><br>Próximo (2-5km)<br>2.4km</div>`)[0];
+                popup_58a08e2b9c40281db507d1f28554512c.setContent(html_8175c8310878637d0daa47efe837973c);
+            
+        
+
+        circle_marker_b4612eb67f945227d7a0fee174a8c415.bindPopup(popup_58a08e2b9c40281db507d1f28554512c)
+        ;
+
+        
+    
+    
+            circle_marker_b4612eb67f945227d7a0fee174a8c415.bindTooltip(
+                `<div>
+                     Próximo (2-5km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_881caed6fbc34d82e820325ed1594de4 = L.circleMarker(
+                [-27.2167556, -52.015262],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#edf8fb", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_1fa636c9f382dffc865ec35e07c74a11 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_6a32cc1028c2e3a901db18d21e911534 = $(`<div id="html_6a32cc1028c2e3a901db18d21e911534" style="width: 100.0%; height: 100.0%;"><b>ESF SALETE</b><br>Próximo (2-5km)<br>2.0km</div>`)[0];
+                popup_1fa636c9f382dffc865ec35e07c74a11.setContent(html_6a32cc1028c2e3a901db18d21e911534);
+            
+        
+
+        circle_marker_881caed6fbc34d82e820325ed1594de4.bindPopup(popup_1fa636c9f382dffc865ec35e07c74a11)
+        ;
+
+        
+    
+    
+            circle_marker_881caed6fbc34d82e820325ed1594de4.bindTooltip(
+                `<div>
+                     Próximo (2-5km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_4f28d63b8096efa2bf9fdd9f9b7b968a = L.circleMarker(
+                [-27.22889383, -52.00150967],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#edf8fb", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_2fae500866e0b01ba3b84c9469522bd4 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_0af44b41c0369bfc3f3bf49124b3b5d3 = $(`<div id="html_0af44b41c0369bfc3f3bf49124b3b5d3" style="width: 100.0%; height: 100.0%;"><b>ESF JARDIM EUROPA</b><br>Próximo (2-5km)<br>2.3km</div>`)[0];
+                popup_2fae500866e0b01ba3b84c9469522bd4.setContent(html_0af44b41c0369bfc3f3bf49124b3b5d3);
+            
+        
+
+        circle_marker_4f28d63b8096efa2bf9fdd9f9b7b968a.bindPopup(popup_2fae500866e0b01ba3b84c9469522bd4)
+        ;
+
+        
+    
+    
+            circle_marker_4f28d63b8096efa2bf9fdd9f9b7b968a.bindTooltip(
+                `<div>
+                     Próximo (2-5km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_8cdc4e93f6659a11219841454e4c1647 = L.circleMarker(
+                [-27.2304667, -51.9864312],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#edf8fb", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_683e40170c9176609f5eb8e86bd52157 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_7bc24dccefb5cbd8c6a2b88a66d01d4a = $(`<div id="html_7bc24dccefb5cbd8c6a2b88a66d01d4a" style="width: 100.0%; height: 100.0%;"><b>ESF SAO CRISTOVAO</b><br>Próximo (2-5km)<br>3.7km</div>`)[0];
+                popup_683e40170c9176609f5eb8e86bd52157.setContent(html_7bc24dccefb5cbd8c6a2b88a66d01d4a);
+            
+        
+
+        circle_marker_8cdc4e93f6659a11219841454e4c1647.bindPopup(popup_683e40170c9176609f5eb8e86bd52157)
+        ;
+
+        
+    
+    
+            circle_marker_8cdc4e93f6659a11219841454e4c1647.bindTooltip(
+                `<div>
+                     Próximo (2-5km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_06e0301572128cf93ad0e16549cd2d9e = L.circleMarker(
+                [-27.21589969, -52.02835321],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#edf8fb", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_5198e55249bcb50bde8d1273b813be51 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_6d1addfe382f40578fdcba6d5143c038 = $(`<div id="html_6d1addfe382f40578fdcba6d5143c038" style="width: 100.0%; height: 100.0%;"><b>PS JARDIM</b><br>Próximo (2-5km)<br>2.0km</div>`)[0];
+                popup_5198e55249bcb50bde8d1273b813be51.setContent(html_6d1addfe382f40578fdcba6d5143c038);
+            
+        
+
+        circle_marker_06e0301572128cf93ad0e16549cd2d9e.bindPopup(popup_5198e55249bcb50bde8d1273b813be51)
+        ;
+
+        
+    
+    
+            circle_marker_06e0301572128cf93ad0e16549cd2d9e.bindTooltip(
+                `<div>
+                     Próximo (2-5km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_8275a40b2990c411579644226118cd9a = L.circleMarker(
+                [-27.2425278, -52.0509926],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#edf8fb", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_207edc24d3195f18f8e84d6de70ca67d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c549f5d6a8056a849f104aa629444e43 = $(`<div id="html_c549f5d6a8056a849f104aa629444e43" style="width: 100.0%; height: 100.0%;"><b>ESF CRISTAL</b><br>Próximo (2-5km)<br>2.9km</div>`)[0];
+                popup_207edc24d3195f18f8e84d6de70ca67d.setContent(html_c549f5d6a8056a849f104aa629444e43);
+            
+        
+
+        circle_marker_8275a40b2990c411579644226118cd9a.bindPopup(popup_207edc24d3195f18f8e84d6de70ca67d)
+        ;
+
+        
+    
+    
+            circle_marker_8275a40b2990c411579644226118cd9a.bindTooltip(
+                `<div>
+                     Próximo (2-5km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_15d6f65ad2952d0322ce477fd64bace0 = L.circleMarker(
+                [-27.22332237, -52.04730034],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#edf8fb", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_cde0dbcbbb28ba4e5fa97da5e1cacb94 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ec2a502f966ba5ee9a4eca18cc07877d = $(`<div id="html_ec2a502f966ba5ee9a4eca18cc07877d" style="width: 100.0%; height: 100.0%;"><b>ESF PETROPOLIS</b><br>Próximo (2-5km)<br>2.6km</div>`)[0];
+                popup_cde0dbcbbb28ba4e5fa97da5e1cacb94.setContent(html_ec2a502f966ba5ee9a4eca18cc07877d);
+            
+        
+
+        circle_marker_15d6f65ad2952d0322ce477fd64bace0.bindPopup(popup_cde0dbcbbb28ba4e5fa97da5e1cacb94)
+        ;
+
+        
+    
+    
+            circle_marker_15d6f65ad2952d0322ce477fd64bace0.bindTooltip(
+                `<div>
+                     Próximo (2-5km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d06ed3e5cb1f8dc2b09500004c211e5d = L.circleMarker(
+                [-27.22908463, -52.00110197],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#edf8fb", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_3a6232561b84a0da8b1bd6541464adaa = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b603c4743609a03fdbef4124ce61184d = $(`<div id="html_b603c4743609a03fdbef4124ce61184d" style="width: 100.0%; height: 100.0%;"><b>CENTRO DE SAUDE BASICA CONCORDIA</b><br>Próximo (2-5km)<br>2.3km</div>`)[0];
+                popup_3a6232561b84a0da8b1bd6541464adaa.setContent(html_b603c4743609a03fdbef4124ce61184d);
+            
+        
+
+        circle_marker_d06ed3e5cb1f8dc2b09500004c211e5d.bindPopup(popup_3a6232561b84a0da8b1bd6541464adaa)
+        ;
+
+        
+    
+    
+            circle_marker_d06ed3e5cb1f8dc2b09500004c211e5d.bindTooltip(
+                `<div>
+                     Próximo (2-5km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_5c17e55b9b49df35453cb2e679b9abf3 = L.circleMarker(
+                [-27.2461031, -52.0202689],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ccece6", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_9e3debd8f89adb66453c2f883707e01b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1e061a01d6bca7cde8e57465c644ee40 = $(`<div id="html_1e061a01d6bca7cde8e57465c644ee40" style="width: 100.0%; height: 100.0%;"><b>ESF GUILHERME REICH II</b><br>Muito Próximo (≤2km)<br>1.4km</div>`)[0];
+                popup_9e3debd8f89adb66453c2f883707e01b.setContent(html_1e061a01d6bca7cde8e57465c644ee40);
+            
+        
+
+        circle_marker_5c17e55b9b49df35453cb2e679b9abf3.bindPopup(popup_9e3debd8f89adb66453c2f883707e01b)
+        ;
+
+        
+    
+    
+            circle_marker_5c17e55b9b49df35453cb2e679b9abf3.bindTooltip(
+                `<div>
+                     Muito Próximo (≤2km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_3f188508bebee2adc3cdaf13a8b1378c = L.circleMarker(
+                [-27.2249988, -52.0350825],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ccece6", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_7b02ea00ee9b747f17b4d8b26a3bc1cf = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_396a4ec2d51f48accea5e98ba1a928d6 = $(`<div id="html_396a4ec2d51f48accea5e98ba1a928d6" style="width: 100.0%; height: 100.0%;"><b>PS SANTA CRUZ</b><br>Muito Próximo (≤2km)<br>1.5km</div>`)[0];
+                popup_7b02ea00ee9b747f17b4d8b26a3bc1cf.setContent(html_396a4ec2d51f48accea5e98ba1a928d6);
+            
+        
+
+        circle_marker_3f188508bebee2adc3cdaf13a8b1378c.bindPopup(popup_7b02ea00ee9b747f17b4d8b26a3bc1cf)
+        ;
+
+        
+    
+    
+            circle_marker_3f188508bebee2adc3cdaf13a8b1378c.bindTooltip(
+                `<div>
+                     Muito Próximo (≤2km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_91fa8d5f296c405945640dd65bd9801b = L.circleMarker(
+                [-27.2466631, -52.0200085],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ccece6", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_798eabe6fc5f1961bab3581eb904c08a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_92807a18f84f0208464e85b4abc1334d = $(`<div id="html_92807a18f84f0208464e85b4abc1334d" style="width: 100.0%; height: 100.0%;"><b>ESF GUILHERME REICH</b><br>Muito Próximo (≤2km)<br>1.5km</div>`)[0];
+                popup_798eabe6fc5f1961bab3581eb904c08a.setContent(html_92807a18f84f0208464e85b4abc1334d);
+            
+        
+
+        circle_marker_91fa8d5f296c405945640dd65bd9801b.bindPopup(popup_798eabe6fc5f1961bab3581eb904c08a)
+        ;
+
+        
+    
+    
+            circle_marker_91fa8d5f296c405945640dd65bd9801b.bindTooltip(
+                `<div>
+                     Muito Próximo (≤2km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_04b20f91294d57f3c351da97c21995ce = L.circleMarker(
+                [-27.2349951, -52.0405281],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ccece6", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_0e51a2cfc152eda69f02b2f11ac18136 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c6591e51ff95b09a6ad931cacf7231ae = $(`<div id="html_c6591e51ff95b09a6ad931cacf7231ae" style="width: 100.0%; height: 100.0%;"><b>ESF INDUSTRIARIOS</b><br>Muito Próximo (≤2km)<br>1.7km</div>`)[0];
+                popup_0e51a2cfc152eda69f02b2f11ac18136.setContent(html_c6591e51ff95b09a6ad931cacf7231ae);
+            
+        
+
+        circle_marker_04b20f91294d57f3c351da97c21995ce.bindPopup(popup_0e51a2cfc152eda69f02b2f11ac18136)
+        ;
+
+        
+    
+    
+            circle_marker_04b20f91294d57f3c351da97c21995ce.bindTooltip(
+                `<div>
+                     Muito Próximo (≤2km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_261b1b706150d959ada6fb9aff66b2d3 = L.circleMarker(
+                [-27.2441305, -52.032473],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ccece6", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_52f6c39d08cc710a2a0932569e0c6158 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_2a494dcae47851bdf342997667893d78 = $(`<div id="html_2a494dcae47851bdf342997667893d78" style="width: 100.0%; height: 100.0%;"><b>ESF NACOES</b><br>Muito Próximo (≤2km)<br>1.5km</div>`)[0];
+                popup_52f6c39d08cc710a2a0932569e0c6158.setContent(html_2a494dcae47851bdf342997667893d78);
+            
+        
+
+        circle_marker_261b1b706150d959ada6fb9aff66b2d3.bindPopup(popup_52f6c39d08cc710a2a0932569e0c6158)
+        ;
+
+        
+    
+    
+            circle_marker_261b1b706150d959ada6fb9aff66b2d3.bindTooltip(
+                `<div>
+                     Muito Próximo (≤2km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_da883a78f100ffce9176be2794ad3252 = L.circleMarker(
+                [-27.2247233, -52.0253905],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ccece6", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_82451882b4e651bb20d4c280571201f3 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_2404a83fd4ca4d7cf72cf0b0ec72510d = $(`<div id="html_2404a83fd4ca4d7cf72cf0b0ec72510d" style="width: 100.0%; height: 100.0%;"><b>ESF VISTA ALEGRE</b><br>Muito Próximo (≤2km)<br>1.0km</div>`)[0];
+                popup_82451882b4e651bb20d4c280571201f3.setContent(html_2404a83fd4ca4d7cf72cf0b0ec72510d);
+            
+        
+
+        circle_marker_da883a78f100ffce9176be2794ad3252.bindPopup(popup_82451882b4e651bb20d4c280571201f3)
+        ;
+
+        
+    
+    
+            circle_marker_da883a78f100ffce9176be2794ad3252.bindTooltip(
+                `<div>
+                     Muito Próximo (≤2km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b242bc0f12a0b3ea0b5ad149bcdb2d91 = L.circleMarker(
+                [-27.23406435, -52.0283103],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ccece6", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_ac86bff81b756d9ba99c9af32245f005 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_df4bcc67bed7bfc57c341a442bb21f36 = $(`<div id="html_df4bcc67bed7bfc57c341a442bb21f36" style="width: 100.0%; height: 100.0%;"><b>ESF PLANALTO</b><br>Muito Próximo (≤2km)<br>0.5km</div>`)[0];
+                popup_ac86bff81b756d9ba99c9af32245f005.setContent(html_df4bcc67bed7bfc57c341a442bb21f36);
+            
+        
+
+        circle_marker_b242bc0f12a0b3ea0b5ad149bcdb2d91.bindPopup(popup_ac86bff81b756d9ba99c9af32245f005)
+        ;
+
+        
+    
+    
+            circle_marker_b242bc0f12a0b3ea0b5ad149bcdb2d91.bindTooltip(
+                `<div>
+                     Muito Próximo (≤2km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d163f29b8c03a137a366b10a1c97c056 = L.circleMarker(
+                [-27.2352949, -52.0353003],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ccece6", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_77632f14266201a636dcf5f32d3095f4 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_fffa51f056404d17f9ca18139dd773e8 = $(`<div id="html_fffa51f056404d17f9ca18139dd773e8" style="width: 100.0%; height: 100.0%;"><b>ESF NAZARE</b><br>Muito Próximo (≤2km)<br>1.2km</div>`)[0];
+                popup_77632f14266201a636dcf5f32d3095f4.setContent(html_fffa51f056404d17f9ca18139dd773e8);
+            
+        
+
+        circle_marker_d163f29b8c03a137a366b10a1c97c056.bindPopup(popup_77632f14266201a636dcf5f32d3095f4)
+        ;
+
+        
+    
+    
+            circle_marker_d163f29b8c03a137a366b10a1c97c056.bindTooltip(
+                `<div>
+                     Muito Próximo (≤2km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_495be0b8877f6c8472ff38870b7dd193 = L.circleMarker(
+                [-27.2483118, -52.1186013],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#99d8c9", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_32e98119e33d3ab4cee03a9f62482432 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_2872b4f3cefb6ea71a2484156e373a0f = $(`<div id="html_2872b4f3cefb6ea71a2484156e373a0f" style="width: 100.0%; height: 100.0%;"><b>PS PRESIDENTE KENNEDY</b><br>Moderado (5-10km)<br>9.5km</div>`)[0];
+                popup_32e98119e33d3ab4cee03a9f62482432.setContent(html_2872b4f3cefb6ea71a2484156e373a0f);
+            
+        
+
+        circle_marker_495be0b8877f6c8472ff38870b7dd193.bindPopup(popup_32e98119e33d3ab4cee03a9f62482432)
+        ;
+
+        
+    
+    
+            circle_marker_495be0b8877f6c8472ff38870b7dd193.bindTooltip(
+                `<div>
+                     Moderado (5-10km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_71ebda8ffa4ce639331d9d28b17d4fdc = L.circleMarker(
+                [-27.2441391, -51.9539252],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#99d8c9", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_1bc219025d778a9927d761a7f02463cc = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_598548455bff722049372bddbbd3b24f = $(`<div id="html_598548455bff722049372bddbbd3b24f" style="width: 100.0%; height: 100.0%;"><b>ESF VILA JACOB BIEZUS</b><br>Moderado (5-10km)<br>7.0km</div>`)[0];
+                popup_1bc219025d778a9927d761a7f02463cc.setContent(html_598548455bff722049372bddbbd3b24f);
+            
+        
+
+        circle_marker_71ebda8ffa4ce639331d9d28b17d4fdc.bindPopup(popup_1bc219025d778a9927d761a7f02463cc)
+        ;
+
+        
+    
+    
+            circle_marker_71ebda8ffa4ce639331d9d28b17d4fdc.bindTooltip(
+                `<div>
+                     Moderado (5-10km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_9e4441edd2c3967e2a55dbc0601c4f0e = L.circleMarker(
+                [-27.2867648, -52.0869413],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#99d8c9", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_a13d638fb354e508242dc5bb49daa62d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1c072ff034c0ec25122001fdc3344004 = $(`<div id="html_1c072ff034c0ec25122001fdc3344004" style="width: 100.0%; height: 100.0%;"><b>PS SEDE BRUM</b><br>Moderado (5-10km)<br>8.6km</div>`)[0];
+                popup_a13d638fb354e508242dc5bb49daa62d.setContent(html_1c072ff034c0ec25122001fdc3344004);
+            
+        
+
+        circle_marker_9e4441edd2c3967e2a55dbc0601c4f0e.bindPopup(popup_a13d638fb354e508242dc5bb49daa62d)
+        ;
+
+        
+    
+    
+            circle_marker_9e4441edd2c3967e2a55dbc0601c4f0e.bindTooltip(
+                `<div>
+                     Moderado (5-10km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_8dfc6d58e3f30cb47df475be88c6e2a5 = L.circleMarker(
+                [-27.3025472, -51.9976974],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#99d8c9", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_f004c780caecda58270b430c0947831c = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_dcb729b65c78223de49ba11f93cf77c8 = $(`<div id="html_dcb729b65c78223de49ba11f93cf77c8" style="width: 100.0%; height: 100.0%;"><b>PS TAMANDUA</b><br>Moderado (5-10km)<br>8.1km</div>`)[0];
+                popup_f004c780caecda58270b430c0947831c.setContent(html_dcb729b65c78223de49ba11f93cf77c8);
+            
+        
+
+        circle_marker_8dfc6d58e3f30cb47df475be88c6e2a5.bindPopup(popup_f004c780caecda58270b430c0947831c)
+        ;
+
+        
+    
+    
+            circle_marker_8dfc6d58e3f30cb47df475be88c6e2a5.bindTooltip(
+                `<div>
+                     Moderado (5-10km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_cb299dda228a9d0c394da1e4024e7c22 = L.circleMarker(
+                [-27.19669192, -52.10673809],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#99d8c9", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_83586f43f92147398f26e0774a3392b8 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_76ab84da6bb0206cc0f53d78007a7584 = $(`<div id="html_76ab84da6bb0206cc0f53d78007a7584" style="width: 100.0%; height: 100.0%;"><b>ESF SANTO ANTONIO</b><br>Moderado (5-10km)<br>9.2km</div>`)[0];
+                popup_83586f43f92147398f26e0774a3392b8.setContent(html_76ab84da6bb0206cc0f53d78007a7584);
+            
+        
+
+        circle_marker_cb299dda228a9d0c394da1e4024e7c22.bindPopup(popup_83586f43f92147398f26e0774a3392b8)
+        ;
+
+        
+    
+    
+            circle_marker_cb299dda228a9d0c394da1e4024e7c22.bindTooltip(
+                `<div>
+                     Moderado (5-10km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_9303f5c1f501a14f77b488b20c30c10b = L.circleMarker(
+                [-27.234114, -52.201091],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#66c2a4", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_c365db22e430bb69a48d55f6903ce0e4 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_0d7f47571480427f6827b6fad2a23a25 = $(`<div id="html_0d7f47571480427f6827b6fad2a23a25" style="width: 100.0%; height: 100.0%;"><b>PS ENGENHO VELHO</b><br>Distante (10-20km)<br>17.5km</div>`)[0];
+                popup_c365db22e430bb69a48d55f6903ce0e4.setContent(html_0d7f47571480427f6827b6fad2a23a25);
+            
+        
+
+        circle_marker_9303f5c1f501a14f77b488b20c30c10b.bindPopup(popup_c365db22e430bb69a48d55f6903ce0e4)
+        ;
+
+        
+    
+    
+            circle_marker_9303f5c1f501a14f77b488b20c30c10b.bindTooltip(
+                `<div>
+                     Distante (10-20km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c5add676997496a5eff6df9bd3629f26 = L.circleMarker(
+                [-27.3380429, -51.967781],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#66c2a4", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_8236897de1ff562cfbf952e5e55b722d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_142cd7d68a8d63964058e1949c07307e = $(`<div id="html_142cd7d68a8d63964058e1949c07307e" style="width: 100.0%; height: 100.0%;"><b>PS RANCHO GRANDE</b><br>Distante (10-20km)<br>12.9km</div>`)[0];
+                popup_8236897de1ff562cfbf952e5e55b722d.setContent(html_142cd7d68a8d63964058e1949c07307e);
+            
+        
+
+        circle_marker_c5add676997496a5eff6df9bd3629f26.bindPopup(popup_8236897de1ff562cfbf952e5e55b722d)
+        ;
+
+        
+    
+    
+            circle_marker_c5add676997496a5eff6df9bd3629f26.bindTooltip(
+                `<div>
+                     Distante (10-20km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_036a441a1933aaf84167ff45fdae3b24 = L.circleMarker(
+                [-27.1243386, -51.9846434],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#66c2a4", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_526316c81756b762dd3b9e8b9aedee04 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1c8818f092e1e828321fa8ea3ed4ffc8 = $(`<div id="html_1c8818f092e1e828321fa8ea3ed4ffc8" style="width: 100.0%; height: 100.0%;"><b>PS TRES DE OUTUBRO</b><br>Distante (10-20km)<br>12.7km</div>`)[0];
+                popup_526316c81756b762dd3b9e8b9aedee04.setContent(html_1c8818f092e1e828321fa8ea3ed4ffc8);
+            
+        
+
+        circle_marker_036a441a1933aaf84167ff45fdae3b24.bindPopup(popup_526316c81756b762dd3b9e8b9aedee04)
+        ;
+
+        
+    
+    
+            circle_marker_036a441a1933aaf84167ff45fdae3b24.bindTooltip(
+                `<div>
+                     Distante (10-20km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_dbdbad2be807eca4c90b079e9b696a05 = L.circleMarker(
+                [-27.2657536, -51.9119779],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#66c2a4", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_d6ca5a1fdae1e75cd7a1cb39df689572 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a1051a869f31e6c62cadbbe2a90f85e2 = $(`<div id="html_a1051a869f31e6c62cadbbe2a90f85e2" style="width: 100.0%; height: 100.0%;"><b>PS BARRA BONITA</b><br>Distante (10-20km)<br>11.6km</div>`)[0];
+                popup_d6ca5a1fdae1e75cd7a1cb39df689572.setContent(html_a1051a869f31e6c62cadbbe2a90f85e2);
+            
+        
+
+        circle_marker_dbdbad2be807eca4c90b079e9b696a05.bindPopup(popup_d6ca5a1fdae1e75cd7a1cb39df689572)
+        ;
+
+        
+    
+    
+            circle_marker_dbdbad2be807eca4c90b079e9b696a05.bindTooltip(
+                `<div>
+                     Distante (10-20km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_39ca4ab03d56235abffc5c2291d8073c = L.circleMarker(
+                [-27.2874049, -51.8702276],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#66c2a4", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_13ee5750bf2465fb9678c8e185955ac4 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_680a14080af613cd250af6cd814e5e1a = $(`<div id="html_680a14080af613cd250af6cd814e5e1a" style="width: 100.0%; height: 100.0%;"><b>PS BARRA DO TIGRE</b><br>Distante (10-20km)<br>16.3km</div>`)[0];
+                popup_13ee5750bf2465fb9678c8e185955ac4.setContent(html_680a14080af613cd250af6cd814e5e1a);
+            
+        
+
+        circle_marker_39ca4ab03d56235abffc5c2291d8073c.bindPopup(popup_13ee5750bf2465fb9678c8e185955ac4)
+        ;
+
+        
+    
+    
+            circle_marker_39ca4ab03d56235abffc5c2291d8073c.bindTooltip(
+                `<div>
+                     Distante (10-20km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_1b63be21a083e97a35624f5025f84651 = L.circleMarker(
+                [-27.3267388, -52.0593599],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#66c2a4", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_06ff647e53bfc786bdc57007e3bde044 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_cfd917c366fb3d6a50ca05ea34a830ae = $(`<div id="html_cfd917c366fb3d6a50ca05ea34a830ae" style="width: 100.0%; height: 100.0%;"><b>PS SAO LUIS</b><br>Distante (10-20km)<br>10.9km</div>`)[0];
+                popup_06ff647e53bfc786bdc57007e3bde044.setContent(html_cfd917c366fb3d6a50ca05ea34a830ae);
+            
+        
+
+        circle_marker_1b63be21a083e97a35624f5025f84651.bindPopup(popup_06ff647e53bfc786bdc57007e3bde044)
+        ;
+
+        
+    
+    
+            circle_marker_1b63be21a083e97a35624f5025f84651.bindTooltip(
+                `<div>
+                     Distante (10-20km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_9943487e90938012b98a0c650315f068 = L.circleMarker(
+                [-27.1803634, -51.9189932],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#66c2a4", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_7c2621404273345e83a0c763aef8c409 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_d0b78ca87b8a4151196b109c6a2e604b = $(`<div id="html_d0b78ca87b8a4151196b109c6a2e604b" style="width: 100.0%; height: 100.0%;"><b>PS CACHIMBO</b><br>Distante (10-20km)<br>11.9km</div>`)[0];
+                popup_7c2621404273345e83a0c763aef8c409.setContent(html_d0b78ca87b8a4151196b109c6a2e604b);
+            
+        
+
+        circle_marker_9943487e90938012b98a0c650315f068.bindPopup(popup_7c2621404273345e83a0c763aef8c409)
+        ;
+
+        
+    
+    
+            circle_marker_9943487e90938012b98a0c650315f068.bindTooltip(
+                `<div>
+                     Distante (10-20km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_e36ae457667c0b47187e64984b15eb9f = L.circleMarker(
+                [-27.2392716, -51.8853275],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#66c2a4", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_8c29cc4be3bc0d18f7ae9f53afac9efc = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_56323d1f90649f0dab3366b8e096a022 = $(`<div id="html_56323d1f90649f0dab3366b8e096a022" style="width: 100.0%; height: 100.0%;"><b>PS TIRADENTES</b><br>Distante (10-20km)<br>13.7km</div>`)[0];
+                popup_8c29cc4be3bc0d18f7ae9f53afac9efc.setContent(html_56323d1f90649f0dab3366b8e096a022);
+            
+        
+
+        circle_marker_e36ae457667c0b47187e64984b15eb9f.bindPopup(popup_8c29cc4be3bc0d18f7ae9f53afac9efc)
+        ;
+
+        
+    
+    
+            circle_marker_e36ae457667c0b47187e64984b15eb9f.bindTooltip(
+                `<div>
+                     Distante (10-20km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_531f38c449a8a2d4ccd68ecdc8112066 = L.circleMarker(
+                [-27.2946786, -52.2271415],
+                {"bubblingMouseEvents": true, "color": "darkblue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#238b45", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 1}
+            ).addTo(feature_group_86ff0428a84687ba57abb40341a2f71c);
+        
+    
+        var popup_84fa8582b381648eb6d89f5fe45ebc29 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_0c2e2d3ce2e39d961aca205cb4070476 = $(`<div id="html_0c2e2d3ce2e39d961aca205cb4070476" style="width: 100.0%; height: 100.0%;"><b>PS TERRA VERMELHA</b><br>Muito Distante (>20km)<br>21.2km</div>`)[0];
+                popup_84fa8582b381648eb6d89f5fe45ebc29.setContent(html_0c2e2d3ce2e39d961aca205cb4070476);
+            
+        
+
+        circle_marker_531f38c449a8a2d4ccd68ecdc8112066.bindPopup(popup_84fa8582b381648eb6d89f5fe45ebc29)
+        ;
+
+        
+    
+    
+            circle_marker_531f38c449a8a2d4ccd68ecdc8112066.bindTooltip(
+                `<div>
+                     Muito Distante (>20km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var feature_group_a735e0b758531a3c080a9db948dc16e9 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var heat_map_19ce65ddda4951e3aa288c4c488481a5 = L.heatLayer(
+                [[-27.2333315, -52.0484409, 1], [-27.2461031, -52.0202689, 1], [-27.2167556, -52.015262, 1], [-27.2483118, -52.1186013, 1], [-27.2249988, -52.0350825, 1], [-27.234114, -52.201091, 1], [-27.3380429, -51.967781, 1], [-27.1243386, -51.9846434, 1], [-27.2441391, -51.9539252, 1], [-27.2466631, -52.0200085, 1], [-27.22889383, -52.00150967, 1], [-27.2304667, -51.9864312, 1], [-27.2349951, -52.0405281, 1], [-27.21589969, -52.02835321, 1], [-27.2441305, -52.032473, 1], [-27.2657536, -51.9119779, 1], [-27.2425278, -52.0509926, 1], [-27.2247233, -52.0253905, 1], [-27.2874049, -51.8702276, 1], [-27.3267388, -52.0593599, 1], [-27.2867648, -52.0869413, 1], [-27.3025472, -51.9976974, 1], [-27.1803634, -51.9189932, 1], [-27.2392716, -51.8853275, 1], [-27.2946786, -52.2271415, 1], [-27.23406435, -52.0283103, 1], [-27.19669192, -52.10673809, 1], [-27.2352949, -52.0353003, 1], [-27.22332237, -52.04730034, 1], [-27.22908463, -52.00110197, 1]],
+                {
+  "minOpacity": 0.3,
+  "maxZoom": 15,
+  "radius": 20,
+  "blur": 15,
+}
+            );
+        
+    
+            heat_map_19ce65ddda4951e3aa288c4c488481a5.addTo(feature_group_a735e0b758531a3c080a9db948dc16e9);
+        
+    
+            var feature_group_43413d42cac113366373728d1093e280 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_ef199d62fcddc8f00093f0768bcc8114 = L.marker(
+                [-27.2335, -52.0238],
+                {
+}
+            ).addTo(feature_group_43413d42cac113366373728d1093e280);
+        
+    
+            var icon_51ff06b14e4ee2dd22083b2fa2641bce = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "black",
+  "iconColor": "white",
+  "icon": "star",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_77e59146b2b015311be1a5846cfe8543 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a534088bd44bdc2d8eaa5911533cc386 = $(`<div id="html_a534088bd44bdc2d8eaa5911533cc386" style="width: 100.0%; height: 100.0%;"><b>🏛️ Centro de Concórdia</b><br>Ponto de referência da análise</div>`)[0];
+                popup_77e59146b2b015311be1a5846cfe8543.setContent(html_a534088bd44bdc2d8eaa5911533cc386);
+            
+        
+
+        marker_ef199d62fcddc8f00093f0768bcc8114.bindPopup(popup_77e59146b2b015311be1a5846cfe8543)
+        ;
+
+        
+    
+    
+            marker_ef199d62fcddc8f00093f0768bcc8114.bindTooltip(
+                `<div>
+                     Centro da Cidade
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ef199d62fcddc8f00093f0768bcc8114.setIcon(icon_51ff06b14e4ee2dd22083b2fa2641bce);
+            
+    
+            var circle_718806093a77da986cbc052e5b717bc1 = L.circle(
+                [-27.2335, -52.0238],
+                {"bubblingMouseEvents": true, "color": "#ccece6", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ccece6", "fillOpacity": 0.1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2000, "stroke": true, "weight": 2}
+            ).addTo(feature_group_43413d42cac113366373728d1093e280);
+        
+    
+        var popup_c35b3dccaeb6ec1a644b752b63cf4ae3 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a87b3e706c37ddae41a02ea1d964ea9f = $(`<div id="html_a87b3e706c37ddae41a02ea1d964ea9f" style="width: 100.0%; height: 100.0%;">Raio de 2km</div>`)[0];
+                popup_c35b3dccaeb6ec1a644b752b63cf4ae3.setContent(html_a87b3e706c37ddae41a02ea1d964ea9f);
+            
+        
+
+        circle_718806093a77da986cbc052e5b717bc1.bindPopup(popup_c35b3dccaeb6ec1a644b752b63cf4ae3)
+        ;
+
+        
+    
+    
+            circle_718806093a77da986cbc052e5b717bc1.bindTooltip(
+                `<div>
+                     Área de 2km do centro
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_e2713eac903d97fcbe5e58b5b25a6d52 = L.circle(
+                [-27.2335, -52.0238],
+                {"bubblingMouseEvents": true, "color": "#99d8c9", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#99d8c9", "fillOpacity": 0.1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5000, "stroke": true, "weight": 2}
+            ).addTo(feature_group_43413d42cac113366373728d1093e280);
+        
+    
+        var popup_34279a36b5d968a10a603162ef3215a5 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_02d106552b7996d57ce2e5ab920daca4 = $(`<div id="html_02d106552b7996d57ce2e5ab920daca4" style="width: 100.0%; height: 100.0%;">Raio de 5km</div>`)[0];
+                popup_34279a36b5d968a10a603162ef3215a5.setContent(html_02d106552b7996d57ce2e5ab920daca4);
+            
+        
+
+        circle_e2713eac903d97fcbe5e58b5b25a6d52.bindPopup(popup_34279a36b5d968a10a603162ef3215a5)
+        ;
+
+        
+    
+    
+            circle_e2713eac903d97fcbe5e58b5b25a6d52.bindTooltip(
+                `<div>
+                     Área de 5km do centro
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_927c0bf1576a2db59a1d8b08d36a68c9 = L.circle(
+                [-27.2335, -52.0238],
+                {"bubblingMouseEvents": true, "color": "#66c2a4", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#66c2a4", "fillOpacity": 0.1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10000, "stroke": true, "weight": 2}
+            ).addTo(feature_group_43413d42cac113366373728d1093e280);
+        
+    
+        var popup_723cca554a93970f6d152e92b1f7ac0c = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_d3635f903fe3ef348d803b678b6a8f61 = $(`<div id="html_d3635f903fe3ef348d803b678b6a8f61" style="width: 100.0%; height: 100.0%;">Raio de 10km</div>`)[0];
+                popup_723cca554a93970f6d152e92b1f7ac0c.setContent(html_d3635f903fe3ef348d803b678b6a8f61);
+            
+        
+
+        circle_927c0bf1576a2db59a1d8b08d36a68c9.bindPopup(popup_723cca554a93970f6d152e92b1f7ac0c)
+        ;
+
+        
+    
+    
+            circle_927c0bf1576a2db59a1d8b08d36a68c9.bindTooltip(
+                `<div>
+                     Área de 10km do centro
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_dfbe1289e3fd83becbde12ad620f92b4 = L.circle(
+                [-27.2335, -52.0238],
+                {"bubblingMouseEvents": true, "color": "#238b45", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#238b45", "fillOpacity": 0.1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20000, "stroke": true, "weight": 2}
+            ).addTo(feature_group_43413d42cac113366373728d1093e280);
+        
+    
+        var popup_210c610bf56674ff166bea5846a59074 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_e0d1d8332638332a782f203c635ceac5 = $(`<div id="html_e0d1d8332638332a782f203c635ceac5" style="width: 100.0%; height: 100.0%;">Raio de 20km</div>`)[0];
+                popup_210c610bf56674ff166bea5846a59074.setContent(html_e0d1d8332638332a782f203c635ceac5);
+            
+        
+
+        circle_dfbe1289e3fd83becbde12ad620f92b4.bindPopup(popup_210c610bf56674ff166bea5846a59074)
+        ;
+
+        
+    
+    
+            circle_dfbe1289e3fd83becbde12ad620f92b4.bindTooltip(
+                `<div>
+                     Área de 20km do centro
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_43413d42cac113366373728d1093e280.addTo(map_91e0adb09aa0cc2a32998b2f71ab3909);
+        
+    
+            var layer_control_e10b524c9ff8b32546c753819bc6edc9_layers = {
+                base_layers : {
+                    "openstreetmap" : tile_layer_034f0fb7a628a3aff8d879bd9b40fa33,
+                },
+                overlays :  {
+                    "\ud83d\udcca An\u00e1lise por Setor" : feature_group_e22e9e0b6e6c94a67880c92094162305,
+                    "\ud83c\udfe5 An\u00e1lise por Tipo" : feature_group_ea613c46513158551766ef0ac3ae1be0,
+                    "\ud83d\udccf An\u00e1lise por Dist\u00e2ncia" : feature_group_86ff0428a84687ba57abb40341a2f71c,
+                    "\ud83d\udd25 Mapa de Calor" : feature_group_a735e0b758531a3c080a9db948dc16e9,
+                    "\ud83d\udccd Refer\u00eancias" : feature_group_43413d42cac113366373728d1093e280,
+                },
+            };
+            let layer_control_e10b524c9ff8b32546c753819bc6edc9 = L.control.layers(
+                layer_control_e10b524c9ff8b32546c753819bc6edc9_layers.base_layers,
+                layer_control_e10b524c9ff8b32546c753819bc6edc9_layers.overlays,
+                {
+  "position": "topleft",
+  "collapsed": true,
+  "autoZIndex": true,
+}
+            ).addTo(map_91e0adb09aa0cc2a32998b2f71ab3909);
+
+        
+    
+            var measure_control_9de7cc795f6e9ecacf8ee5cc4899435a = new L.Control.Measure(
+                {
+  "position": "topleft",
+  "primaryLengthUnit": "meters",
+  "secondaryLengthUnit": "miles",
+  "primaryAreaUnit": "sqmeters",
+  "secondaryAreaUnit": "acres",
+});
+            map_91e0adb09aa0cc2a32998b2f71ab3909.addControl(measure_control_9de7cc795f6e9ecacf8ee5cc4899435a);
+
+            // Workaround for using this plugin with Leaflet>=1.8.0
+            // https://github.com/ljagis/leaflet-measure/issues/171
+            L.Control.Measure.include({
+                _setCaptureMarkerIcon: function () {
+                    // disable autopan
+                    this._captureMarker.options.autoPanOnFocus = false;
+                    // default function
+                    this._captureMarker.setIcon(
+                        L.divIcon({
+                            iconSize: this._map.getSize().multiplyBy(2)
+                        })
+                    );
+                },
+            });
+
+        
+    
+            L.control.fullscreen(
+                {
+  "position": "topleft",
+  "title": "Full Screen",
+  "titleCancel": "Exit Full Screen",
+  "forceSeparateButton": false,
+}
+            ).addTo(map_91e0adb09aa0cc2a32998b2f71ab3909);
+        
+    
+            var tile_layer_361b2c34761dfcdb567f0ae540031b83 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detect_retina": false, "max_native_zoom": 19, "max_zoom": 19, "min_zoom": 0, "no_wrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+            var mini_map_eabf0da3fc2c650283c5a14c57b7667b = new L.Control.MiniMap(
+                tile_layer_361b2c34761dfcdb567f0ae540031b83,
+                {
+  "position": "bottomright",
+  "width": 150,
+  "height": 150,
+  "collapsedWidth": 25,
+  "collapsedHeight": 25,
+  "zoomLevelOffset": -5,
+  "centerFixed": false,
+  "zoomAnimation": false,
+  "toggleDisplay": true,
+  "autoToggleDisplay": false,
+  "minimized": false,
+}
+            );
+            map_91e0adb09aa0cc2a32998b2f71ab3909.addControl(mini_map_eabf0da3fc2c650283c5a14c57b7667b);
+        
+</script>
+</html>
