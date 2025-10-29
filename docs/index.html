@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapas e Dashboards - Saúde Concórdia/SC</title>
+  <style>
+    :root {
+      --bg-light: #f5f7fa;
+      --bg-dark: #181a1b;
+      --card-light: #fff;
+      --card-dark: #23272b;
+      --text-light: #222;
+      --text-dark: #f5f7fa;
+      --accent: #1976d2;
+    }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg-light);
+      color: var(--text-light);
+      margin: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .dark-mode {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+    header {
+      padding: 2rem 1rem 1rem 1rem;
+      text-align: center;
+    }
+    h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: 2.2rem;
+    }
+    .toggle-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 0.5rem 1.2rem;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-bottom: 1rem;
+      transition: background 0.2s;
+    }
+    .toggle-btn:hover {
+      background: #1565c0;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1rem;
+    }
+    .card {
+      background: var(--card-light);
+      color: var(--text-light);
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem 1.2rem;
+      min-width: 260px;
+      max-width: 320px;
+      text-align: center;
+      transition: background 0.3s, color 0.3s;
+    }
+    .dark-mode .card {
+      background: var(--card-dark);
+      color: var(--text-dark);
+    }
+    .card h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0.7rem;
+    }
+    .card a {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .card a:hover {
+      background: #1565c0;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem 1rem 1rem 1rem;
+      font-size: 0.95rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Mapas e Dashboards - Saúde Concórdia/SC</h1>
+    <button class="toggle-btn" onclick="toggleDarkMode()">Alternar modo escuro</button>
+    <p>Projeto IFSC Geoprocessamento | Autor: Ronan Armando Caetano</p>
+  </header>
+  <div class="container">
+    <div class="card">
+      <h2>Mapa Avançado ColorBrewer</h2>
+      <a href="mapa_avancado_colorbrewer.html" target="_blank">Abrir Mapa</a>
+    </div>
+    <div class="card">
+      <h2>Mapa Estabelecimentos Concórdia</h2>
+      <a href="mapa_estabelecimentos_concordia.html" target="_blank">Abrir Mapa</a>
+    </div>
+    <div class="card">
+      <h2>Mapa Unidades Saúde Concórdia</h2>
+      <a href="mapa_unidades_saude_concordia.html" target="_blank">Abrir Mapa</a>
+    </div>
+    <div class="card">
+      <h2>Mapa Postos Públicos Concórdia</h2>
+      <a href="mapa_postos_publicos_concordia.html" target="_blank">Abrir Mapa</a>
+    </div>
+    <div class="card">
+      <h2>Dashboard Completo ColorBrewer</h2>
+      <a href="dashboard_completo_colorbrewer.html" target="_blank">Abrir Dashboard</a>
+    </div>
+  </div>
+  <footer>
+    &copy; 2025 Ronan Armando Caetano | IFSC Geoprocessamento<br>
+    Powered by GitHub Pages & Copilot
+  </footer>
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
+</body>
+</html>
