@@ -1,164 +1,90 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mapas e Dashboards - Saúde Concórdia/SC</title>
-  <style>
-    :root {
-      --bg-light: #f5f7fa;
-      --bg-dark: #181a1b;
-      --card-light: #fff;
-      --card-dark: #23272b;
-      --text-light: #222;
-      --text-dark: #f5f7fa;
-      --accent: #1976d2;
-    }
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: var(--bg-light);
-      color: var(--text-light);
-      margin: 0;
-      transition: background 0.3s, color 0.3s;
-    }
-    .dark-mode {
-      background: var(--bg-dark);
-      color: var(--text-dark);
-    }
-    header {
-      padding: 2rem 1rem 1rem 1rem;
-      text-align: center;
-    }
-    h1 {
-      margin: 0 0 0.5rem 0;
-      font-size: 2.2rem;
-    }
 
-    <header>
-      <h1>Análise Espacial dos Estabelecimentos de Saúde - Concórdia/SC</h1>
-      <button class="toggle-btn" onclick="toggleDarkMode()">Alternar modo escuro</button>
+  <header>
+    <h1>Análise Espacial dos Estabelecimentos de Saúde - Concórdia/SC</h1>
+    <button class="toggle-btn" onclick="toggleDarkMode()">Alternar modo escuro</button>
+    <div style="max-width:900px;margin:2rem auto 0 auto;text-align:left;background:rgba(255,255,255,0.7);border-radius:12px;padding:1.2rem;box-shadow:0 1px 8px rgba(0,0,0,0.05);">
+      <h2>README do Projeto</h2>
       <p><strong>Autor:</strong> Ronan Armando Caetano<br>
       <strong>Instituição:</strong> IFSC - Técnico em Geoprocessamento</p>
-      <div style="max-width:900px;margin:2rem auto 0 auto;text-align:left;background:rgba(255,255,255,0.7);border-radius:12px;padding:1.2rem;box-shadow:0 1px 8px rgba(0,0,0,0.05);">
-        <h2>Referências de Software Utilizado</h2>
-        <ul>
-          <li>Python (Análise e automação): pandas, numpy, folium, matplotlib, seaborn, geopandas, shapely</li>
-          <li>QGIS (Geoprocessamento avançado, Voronoi, shapefiles)</li>
-          <li>Jupyter Notebook (Documentação interativa)</li>
-          <li>GitHub Pages (Publicação web)</li>
-          <li>VS Code (Ambiente de desenvolvimento)</li>
-          <li>Git (Controle de versão)</li>
-          <li>Copilot (Assistente de programação AI)</li>
-        </ul>
-        <h2>O que subir para o repositório</h2>
-        <ul>
-          <li><strong>docs/</strong> com mapas HTML e dashboards PNG</li>
-          <li><strong>02_SCRIPTS/</strong> com scripts Python principais</li>
-          <li><strong>01_DADOS/processados/</strong> com dados limpos</li>
-          <li><strong>03_RESULTADOS/shapefiles/</strong> com shapefiles gerados</li>
-          <li><strong>04_DOCUMENTACAO/</strong> com relatórios e notebooks</li>
-          <li>Arquivos de metadados e README</li>
-        </ul>
-        <h2>Exemplo de Estrutura Final</h2>
-        <pre style="background:#f5f7fa;padding:1rem;border-radius:8px;overflow-x:auto;font-size:0.95em;">
-  docs/
-     mapa_avancado_colorbrewer.html
-     mapa_estabelecimentos_concordia.html
-     mapa_unidades_saude_concordia.html
-     DASHBOARD_ANALISE_ESPACIAL_CONCORDIA.png
-  01_DADOS/processados/
-     concordia_saude_simples.csv
-     estabelecimentos_concordia_qgis.csv
-
-    <header>
-      <h1>Análise Espacial dos Estabelecimentos de Saúde - Concórdia/SC</h1>
-      <button class="toggle-btn" onclick="toggleDarkMode()">Alternar modo escuro</button>
-      <div style="max-width:900px;margin:2rem auto 0 auto;text-align:left;background:rgba(255,255,255,0.7);border-radius:12px;padding:1.2rem;box-shadow:0 1px 8px rgba(0,0,0,0.05);">
-        <h2>README do Projeto</h2>
-        <p><strong>Autor:</strong> Ronan Armando Caetano<br>
-        <strong>Instituição:</strong> IFSC - Técnico em Geoprocessamento</p>
-        <h3>Referências de Software Utilizado</h3>
-        <ul>
-          <li>Python (Análise e automação)
-            <ul>
-              <li>pandas</li>
-              <li>numpy</li>
-              <li>folium</li>
-              <li>matplotlib</li>
-              <li>seaborn</li>
-              <li>geopandas</li>
-              <li>shapely</li>
-            </ul>
-          </li>
-          <li>QGIS (Geoprocessamento avançado, Voronoi, shapefiles)</li>
-          <li>Jupyter Notebook (Documentação interativa)</li>
-          <li>GitHub Pages (Publicação web)</li>
-          <li>VS Code (Ambiente de desenvolvimento)</li>
-          <li>Git (Controle de versão)</li>
-          <li>Copilot (Assistente de programação AI)</li>
-        </ul>
-        <h3>O que subir para o repositório</h3>
-        <ul>
-          <li><strong>docs/</strong> com mapas HTML e dashboards PNG
-            <ul>
-              <li>mapa_avancado_colorbrewer.html</li>
-              <li>mapa_estabelecimentos_concordia.html</li>
-              <li>mapa_unidades_saude_concordia.html</li>
-              <li>DASHBOARD_ANALISE_ESPACIAL_CONCORDIA.png</li>
-            </ul>
-          </li>
-          <li><strong>02_SCRIPTS/</strong> com scripts Python principais
-            <ul>
-              <li>dashboard_simples.py</li>
-              <li>ANALISE_ESPACIAL_corrigido.py</li>
-              <li>Análise_da_distribuicao_PS_publico.py</li>
-              <li>mapa_concordia.py</li>
-              <li>preparacao_qgis.py</li>
-            </ul>
-          </li>
-          <li><strong>01_DADOS/processados/</strong> com dados limpos
-            <ul>
-              <li>concordia_saude_simples.csv</li>
-              <li>estabelecimentos_concordia_qgis.csv</li>
-              <li>estabelecimentos_concordia_wkt.csv</li>
-            </ul>
-          </li>
-          <li><strong>03_RESULTADOS/shapefiles/</strong> com shapefiles gerados
-            <ul>
-              <li>areas_influencia_voronoi.*</li>
-              <li>voronoi_recortado.*</li>
-              <li>Centroide_concordia.*</li>
-              <li>Concordia_sencitario.*</li>
-            </ul>
-          </li>
-          <li><strong>04_DOCUMENTACAO/</strong> com relatórios e notebooks
-            <ul>
-              <li>RELATORIO_TECNICO_ANALISE_ESPACIAL_CONCORDIA.md</li>
-              <li>Analise_Espacial_Concordia_Demonstrativo.ipynb</li>
-              <li>APRESENTACAO_EXECUTIVA.md</li>
-            </ul>
-          </li>
-          <li>Arquivos de metadados e README
-            <ul>
-              <li>METADADOS_estabelecimentos.txt</li>
-              <li>README.md</li>
-              <li>README_ORGANIZACIONAL.md</li>
-              <li>INDICE_GERAL_PROJETO.md</li>
-            </ul>
-          </li>
-        </ul>
-        <h3>Não subir:</h3>
-        <ul>
-          <li>Dados originais brutos (CNES completo, Excel original)</li>
-          <li>Arquivos temporários, outputs intermediários, PDFs de referência</li>
-        </ul>
-        <h3>Exemplo de Estrutura Final</h3>
-        <pre style="background:#f5f7fa;padding:1rem;border-radius:8px;overflow-x:auto;font-size:0.95em;">
-        <div class="card">
-          <h3>Dashboard PNG Consolidado</h3>
-          <p>Resumo visual dos principais indicadores e mapas em formato PNG para fácil apresentação.</p>
-          <a href="DASHBOARD_ANALISE_ESPACIAL_CONCORDIA.png" target="_blank">Abrir Dashboard PNG</a>
-        </div>
+      <h3>Referências de Software Utilizado</h3>
+      <ul>
+        <li>Python (Análise e automação)
+          <ul>
+            <li>pandas</li>
+            <li>numpy</li>
+            <li>folium</li>
+            <li>matplotlib</li>
+            <li>seaborn</li>
+            <li>geopandas</li>
+            <li>shapely</li>
+          </ul>
+        </li>
+        <li>QGIS (Geoprocessamento avançado, Voronoi, shapefiles)</li>
+        <li>Jupyter Notebook (Documentação interativa)</li>
+        <li>GitHub Pages (Publicação web)</li>
+        <li>VS Code (Ambiente de desenvolvimento)</li>
+        <li>Git (Controle de versão)</li>
+        <li>Copilot (Assistente de programação AI)</li>
+      </ul>
+      <h3>O que subir para o repositório</h3>
+      <ul>
+        <li><strong>docs/</strong> com mapas HTML e dashboards PNG
+          <ul>
+            <li>mapa_avancado_colorbrewer.html</li>
+            <li>mapa_estabelecimentos_concordia.html</li>
+            <li>mapa_unidades_saude_concordia.html</li>
+            <li>DASHBOARD_ANALISE_ESPACIAL_CONCORDIA.png</li>
+          </ul>
+        </li>
+        <li><strong>02_SCRIPTS/</strong> com scripts Python principais
+          <ul>
+            <li>dashboard_simples.py</li>
+            <li>ANALISE_ESPACIAL_corrigido.py</li>
+            <li>Análise_da_distribuicao_PS_publico.py</li>
+            <li>mapa_concordia.py</li>
+            <li>preparacao_qgis.py</li>
+          </ul>
+        </li>
+        <li><strong>01_DADOS/processados/</strong> com dados limpos
+          <ul>
+            <li>concordia_saude_simples.csv</li>
+            <li>estabelecimentos_concordia_qgis.csv</li>
+            <li>estabelecimentos_concordia_wkt.csv</li>
+          </ul>
+        </li>
+        <li><strong>03_RESULTADOS/shapefiles/</strong> com shapefiles gerados
+          <ul>
+            <li>areas_influencia_voronoi.*</li>
+            <li>voronoi_recortado.*</li>
+            <li>Centroide_concordia.*</li>
+            <li>Concordia_sencitario.*</li>
+          </ul>
+        </li>
+        <li><strong>04_DOCUMENTACAO/</strong> com relatórios e notebooks
+          <ul>
+            <li>RELATORIO_TECNICO_ANALISE_ESPACIAL_CONCORDIA.md</li>
+            <li>Analise_Espacial_Concordia_Demonstrativo.ipynb</li>
+            <li>APRESENTACAO_EXECUTIVA.md</li>
+          </ul>
+        </li>
+        <li>Arquivos de metadados e README
+          <ul>
+            <li>METADADOS_estabelecimentos.txt</li>
+            <li>README.md</li>
+            <li>README_ORGANIZACIONAL.md</li>
+            <li>INDICE_GERAL_PROJETO.md</li>
+          </ul>
+        </li>
+      </ul>
+      <h3>Não subir:</h3>
+      <ul>
+        <li>Dados originais brutos (CNES completo, Excel original)</li>
+        <li>Arquivos temporários, outputs intermediários, PDFs de referência</li>
+      </ul>
+      <h3>Exemplo de Estrutura Final</h3>
+      <pre style="background:#f5f7fa;padding:1rem;border-radius:8px;overflow-x:auto;font-size:0.95em;">
       </div>
     </section>
 
@@ -188,6 +114,16 @@
           <li>Projeto realizado por <strong>Ronan Armando Caetano</strong></li>
           <li>Instituição: <strong>IFSC - Técnico em Geoprocessamento</strong></li>
           <li>Assistência AI: <strong>GitHub Copilot</strong></li>
+      <h3>Créditos</h3>
+      <ul>
+        <li>Projeto realizado por <strong>Ronan Armando Caetano</strong></li>
+        <li>Instituição: <strong>IFSC - Técnico em Geoprocessamento</strong></li>
+        <li>Assistência AI: <strong>GitHub Copilot</strong></li>
+        <li>Outubro 2025</li>
+      </ul>
+      <p>Para dúvidas ou sugestões, abra uma issue no repositório ou entre em contato.</p>
+    </div>
+  </header>
           <li>Outubro 2025</li>
         </ul>
         <p>Para dúvidas ou sugestões, abra uma issue no repositório ou entre em contato.</p>
