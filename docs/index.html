@@ -5,7 +5,46 @@ Te<!DOCTYPE html>
     <meta charset="UTF-8">
     <title>Mapas e Dashboards - Saúde Concórdia/SC</title>
     <style>
-  body { font-family: Arial, sans-serif; margin: 2em; background: #f9f9f9; color: #222; }
+  .dark-mode header {
+    background: #181c1f !important;
+    color: #fff !important;
+  }
+  .dark-mode header h1 {
+    color: #fff !important;
+    text-shadow: 0 2px 6px #22282b;
+  }
+  .dark-mode header p,
+  .dark-mode header strong {
+    color: #fff !important;
+  }
+  .dark-mode section {
+    background: #22282b !important;
+    color: #fff !important;
+    border-radius: 10px;
+  }
+  .dark-mode section h2,
+  .dark-mode section h3 {
+    color: #2CA25F !important;
+    text-shadow: 0 2px 6px #181c1f;
+  }
+  .dark-mode section p,
+  .dark-mode section ul,
+  .dark-mode section li {
+    color: #fff !important;
+  }
+  .dark-mode .card:nth-child(1) h2,
+  .dark-mode .card:nth-child(2) h2 {
+    color: #2CA25F !important;
+    text-shadow: 0 2px 6px #181c1f, 0 1px 0 #22282b;
+  }
+  .dark-mode .card:nth-child(1) p,
+  .dark-mode .card:nth-child(2) p,
+  .dark-mode .card:nth-child(1) small,
+  .dark-mode .card:nth-child(2) small {
+    color: #fff !important;
+    text-shadow: 0 1px 2px #181c1f;
+  }
+  body { font-family: Arial, sans-serif; margin: 2em; background: #fff2a6; color: #222; }
   h1, h2, h3 { color: #2a5d84; }
   .container { max-width: 900px; margin: 2rem auto; }
       .card {
@@ -39,12 +78,29 @@ Te<!DOCTYPE html>
   .card p { color: #444; margin-bottom: 0.7em; }
   .toggle-btn { float: right; margin-top: 0.5em; }
   footer { font-size: 0.95rem; color: #888; text-align: center; margin-top: 2em; }
-  .dark-mode { background: #23272e !important; color: #fff !important; }
-  .dark-mode .card { background: #2a2f2e !important; color: #fff !important; }
-  .dark-mode h1, .dark-mode h2, .dark-mode h3 { color: #99D8C9 !important; }
-  .dark-mode a { color: #2CA25F !important; }
-  .dark-mode .card p, .dark-mode .card small { color: #e0e0e0 !important; }
-  .dark-mode footer { color: #bbb !important; }
+  .dark-mode { background: #181c1f !important; color: #e0e0e0 !important; }
+  .dark-mode .card {
+    background: #22282b !important;
+    color: #e0e0e0 !important;
+    box-shadow: 0 1px 8px rgba(44,162,95,0.10);
+  }
+  .dark-mode h1, .dark-mode h2, .dark-mode h3 {
+    color: #2CA25F !important;
+    text-shadow: 0 1px 2px #181c1f;
+  }
+  .dark-mode a {
+    background: #2CA25F !important;
+    color: #fff !important;
+    border-radius: 6px;
+    font-weight: bold;
+    box-shadow: 0 1px 4px rgba(44,162,95,0.18);
+  }
+  .dark-mode .card p, .dark-mode .card small {
+    color: #f5f5f5 !important;
+  }
+  .dark-mode footer {
+    color: #bbb !important;
+  }
     </style>
   </head>
   <body>
@@ -103,14 +159,22 @@ Te<!DOCTYPE html>
       <a href="mapa_unidades_saude_concordia.html" target="_blank">Abrir Mapa</a>
     </div>
     <div class="card">
-      <h2>Dashboard Interativo</h2>
-      <p>Painel com gráficos, estatísticas e mapas consolidados para análise completa do projeto.</p>
-      <small><em>Foco: Integração dos resultados, síntese visual dos indicadores, mapas e estatísticas.</em></small>
-      <a href="dashboard_completo_colorbrewer.html" target="_blank">Abrir Dashboard</a>
+  <h2>Dashboard Interativo</h2>
+  <p>Painel com gráficos, estatísticas e mapas consolidados para análise completa do projeto.</p>
+  <small><em>Foco: Integração dos resultados, síntese visual dos indicadores, mapas e estatísticas.</em></small>
+  <a href="dashboard_completo_colorbrewer.html" target="_blank">Abrir Dashboard</a>
     </div>
   </div>
   <footer>
     &copy; 2025 Ronan Armando Caetano | IFSC Geoprocessamento<br>
+    <strong>Referências de Software Utilizado:</strong><br>
+    Python (pandas, numpy, folium, matplotlib, seaborn, geopandas, shapely)<br>
+    QGIS (geoprocessamento avançado, Voronoi, shapefiles)<br>
+    Jupyter Notebook (documentação interativa)<br>
+    GitHub Pages (publicação web)<br>
+    Visual Studio Code<br>
+    <em>Assistente de programação: GitHub Copilot</em><br>
+    <br>
     Powered by GitHub Pages & Copilot
   </footer>
   <script>
