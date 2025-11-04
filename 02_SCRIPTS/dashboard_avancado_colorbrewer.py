@@ -578,9 +578,7 @@ def criar_mapa_avancado_treelayer(df):
 
     centro_concordia = [-27.2335, -52.0238]
 
-    # Mapa base
-    # Definir bounds do município para limitar zoom e navegação
-    bounds = [[-27.32, -52.13], [-27.15, -51.95]]  # Aproximação para Concórdia
+    # Mapa base (bounds serão ajustados pelo limite municipal, quando disponível)
     mapa = folium.Map(
         location=centro_concordia,
         zoom_start=12,
@@ -590,34 +588,8 @@ def criar_mapa_avancado_treelayer(df):
         tiles=None,
         prefer_canvas=True,
     )
-    # Forçar limites de navegação e zoom
-    mapa.fit_bounds(bounds)
-    mapa.options['maxBounds'] = bounds
-    mapa.options['minZoom'] = 10
-    mapa.options['maxZoom'] = 16
 
-    # === Limite Municipal de Concórdia (opcional, fallback local) ===
-    # Nota: Este é um fallback caso o shapefile local exista
-    # Os limites principais são carregados pela função carregar_limites_ibge()
-    try:
-        if gpd is not None and os.path.isfile("Concordia_sencitario.shp"):
-            limite_mun = gpd.read_file(r"Concordia_sencitario.shp")
-            limite_mun = limite_mun.to_crs(epsg=4326)
-            limite_mun["geometry"] = limite_mun["geometry"].simplify(0.0001)
-            folium.GeoJson(
-                limite_mun,
-                name="Limite Municipal (Local)",
-                style_function=lambda x: {
-                    'color': '#238b45',
-                    'weight': 2,
-                    'fill': True,
-                    'fillColor': '#238b45',
-                    'fillOpacity': 0.08
-                },
-                tooltip=folium.GeoJsonTooltip(fields=["CD_MUN"], aliases=["Município"])
-            ).add_to(mapa)
-    except Exception as e:
-        print(f"⚠️ Shapefile local não disponível ou erro: {e}")
+    # Nota: Limite municipal local só será usado se IBGE falhar (adicionado mais abaixo)
 
     # OpenStreetMap
     osm = folium.TileLayer(
@@ -627,14 +599,7 @@ def criar_mapa_avancado_treelayer(df):
     )
     osm.add_to(mapa)
     
-    # Satellite (Esri)
-    satellite = folium.TileLayer(
-        tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        attr='Esri',
-        name='Satélite',
-        control=True
-    )
-    satellite.add_to(mapa)
+    # (Removido Satélite para layout mais limpo por padrão)
     
     # CartoDB Positron (claro)
     positron = folium.TileLayer(
@@ -677,7 +642,7 @@ def criar_mapa_avancado_treelayer(df):
     # === CAMADAS TEMÁTICAS ===
     
     # 1. CAMADA POR SETOR (Público/Privado) - ColorBrewer Set1
-    grupo_setor = folium.FeatureGroup(name="Por Setor")
+    grupo_setor = folium.FeatureGroup(name="Por Setor", show=True)
     cores_setor = {'Público': COLORBREWER_QUALITATIVE['Set1_8'][0], 
                    'Privado': COLORBREWER_QUALITATIVE['Set1_8'][1]}
     
@@ -718,7 +683,7 @@ def criar_mapa_avancado_treelayer(df):
     grupo_setor.add_to(mapa)
     
     # 2. CAMADA POR TIPO - ColorBrewer Dark2
-    grupo_tipo = folium.FeatureGroup(name="Por Tipo de Estabelecimento")
+    grupo_tipo = folium.FeatureGroup(name="Por Tipo de Estabelecimento", show=False)
     tipos_unicos = df['tipo_descricao'].unique()
     cores_tipo = {tipo: COLORBREWER_QUALITATIVE['Dark2_8'][i % 8] 
                   for i, tipo in enumerate(tipos_unicos)}
@@ -746,7 +711,7 @@ def criar_mapa_avancado_treelayer(df):
     grupo_tipo.add_to(mapa)
     
     # 3. CAMADA POR DISTÂNCIA - ColorBrewer BuGn
-    grupo_distancia = folium.FeatureGroup(name="Por Distância do Centro")
+    grupo_distancia = folium.FeatureGroup(name="Por Distância do Centro", show=False)
     categorias_dist = df['categoria_distancia'].unique()
     cores_distancia = {cat: COLORBREWER_SEQUENTIAL['BuGn_5'][i % 5] 
                       for i, cat in enumerate(categorias_dist)}
@@ -775,7 +740,7 @@ def criar_mapa_avancado_treelayer(df):
     grupo_distancia.add_to(mapa)
     
     # 4. CAMADA DE CALOR - HeatMap
-    grupo_calor = folium.FeatureGroup(name="Análises Espaciais")
+    grupo_calor = folium.FeatureGroup(name="Análises Espaciais", show=False)
     
     # Mapa de calor geral
     heat_data = [[row[lat_col], row[lon_col], 1] 
@@ -816,7 +781,7 @@ def criar_mapa_avancado_treelayer(df):
     grupo_calor.add_to(mapa)
     
     # 5. CAMADA DE REFERÊNCIAS
-    grupo_ref = folium.FeatureGroup(name="Referências Geográficas")
+    grupo_ref = folium.FeatureGroup(name="Referências Geográficas", show=True)
     
     # Centro da cidade
     folium.Marker(
@@ -851,6 +816,16 @@ def criar_mapa_avancado_treelayer(df):
     # === CAMADAS DE LIMITES (Municipal e Estadual) ===
     # Carregar limites do IBGE
     gdf_estado, gdf_municipio = carregar_limites_ibge()
+
+    # Simplificar geometrias para visual mais limpo e melhor performance
+    if gpd is not None and gdf_municipio is not None and hasattr(gdf_municipio, 'empty') and not gdf_municipio.empty:
+        try:
+            _gdf = gdf_municipio.to_crs(31982)
+            _gdf['geometry'] = _gdf['geometry'].buffer(0)
+            _gdf['geometry'] = _gdf['geometry'].simplify(100)
+            gdf_municipio = _gdf.to_crs(4326)
+        except Exception:
+            pass
     
     # Grupo para limite estadual (base layer, sempre visível)
     grupo_lim_estadual = folium.FeatureGroup(name="🗺️ Limite Estadual (Santa Catarina)", show=True)
@@ -863,7 +838,7 @@ def criar_mapa_avancado_treelayer(df):
                 name='Limite Estadual (SC)',
                 style_function=lambda x: {
                     'color': '#2c7fb8',        # Azul mais escuro para melhor visibilidade
-                    'weight': 2.5,              # Linha mais espessa
+                    'weight': 1.5,              # Linha moderada
                     'fillColor': 'transparent', # Sem preenchimento
                     'fillOpacity': 0,
                     'dashArray': '5, 5'        # Linha tracejada para diferenciar
@@ -885,14 +860,14 @@ def criar_mapa_avancado_treelayer(df):
     if gdf_municipio is not None and not gdf_municipio.empty:
         try:
             # Adicionar limite municipal com destaque
-            folium.GeoJson(
+            gj_mun = folium.GeoJson(
                 data=gdf_municipio.__geo_interface__,
                 name='Limite Municipal (Concórdia)',
                 style_function=lambda x: {
                     'color': '#238b45',        # Verde escuro (ColorBrewer)
-                    'weight': 3.5,              # Linha mais grossa para destaque
+                    'weight': 3.0,              # Linha de destaque
                     'fillColor': '#66c2a4',     # Verde claro suave
-                    'fillOpacity': 0.15,        # Preenchimento leve
+                    'fillOpacity': 0.08,        # Preenchimento mais leve
                     'dashArray': None           # Linha contínua
                 },
                 highlight_function=lambda x: {
@@ -902,7 +877,17 @@ def criar_mapa_avancado_treelayer(df):
                 },
                 tooltip=folium.Tooltip('Município de Concórdia'),
                 popup=folium.Popup('<b>Município de Concórdia/SC</b><br>Código IBGE: 420430<br>Área: ~799 km²<br>Fonte: IBGE', max_width=250)
-            ).add_to(grupo_lim_municipio)
+            )
+            gj_mun.add_to(grupo_lim_municipio)
+
+            # Ajustar bounds do mapa com base no limite municipal
+            try:
+                minx, miny, maxx, maxy = gdf_municipio.total_bounds
+                bounds = [[miny, minx], [maxy, maxx]]
+                mapa.fit_bounds(bounds)
+                mapa.options['maxBounds'] = bounds
+            except Exception:
+                pass
             print("✅ Limite municipal adicionado ao mapa")
         except Exception as e:
             print(f"⚠️ Erro ao adicionar limite municipal: {e}")
@@ -919,7 +904,7 @@ def criar_mapa_avancado_treelayer(df):
                 'Limites Administrativos': [grupo_lim_estadual, grupo_lim_municipio],
                 'Referências': [grupo_ref]
             },
-            collapsed=False
+            collapsed=True
         ).add_to(mapa)
     except Exception as e:
         print(f"⚠️ Falha ao ativar GroupedLayerControl: {e}. Usando LayerControl simples.")
@@ -1427,6 +1412,16 @@ def main():
     saida_mapa = os.path.join(MAPAS_DIR, 'mapa_avancado_colorbrewer.html')
     mapa_avancado.save(saida_mapa)
     print(f"✅ Mapa avançado salvo: {saida_mapa}")
+
+    # Copiar para docs/ para publicação (GitHub Pages)
+    try:
+        docs_path = os.path.join(ROOT_DIR, 'docs')
+        os.makedirs(docs_path, exist_ok=True)
+        import shutil
+        shutil.copyfile(saida_mapa, os.path.join(docs_path, 'mapa_avancado_colorbrewer.html'))
+        print("📤 Copiado para docs/mapa_avancado_colorbrewer.html")
+    except Exception as e:
+        print(f"⚠️ Não foi possível copiar para docs/: {e}")
     
     # 3. Gerar dashboard visual completo
     try:
