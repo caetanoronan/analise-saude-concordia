@@ -1,194 +1,72 @@
-Te<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-br">
-
-  <head>
+<head>
     <meta charset="UTF-8">
-    <title>Mapas e Dashboards - Saúde Concórdia/SC</title>
+    <meta http-equiv="refresh" content="0; url=dashboard_interativo_saude.html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecionando - Análise Espacial Saúde Concórdia/SC</title>
     <style>
-  .dark-mode header {
-    background: #181c1f !important;
-    color: #fff !important;
-  }
-  .dark-mode header h1 {
-    color: #fff !important;
-    text-shadow: 0 2px 6px #22282b;
-  }
-  .dark-mode header p,
-  .dark-mode header strong {
-    color: #fff !important;
-  }
-  .dark-mode section {
-    background: #22282b !important;
-    color: #fff !important;
-    border-radius: 10px;
-  }
-  .dark-mode section h2,
-  .dark-mode section h3 {
-    color: #2CA25F !important;
-    text-shadow: 0 2px 6px #181c1f;
-  }
-  .dark-mode section p,
-  .dark-mode section ul,
-  .dark-mode section li {
-    color: #fff !important;
-  }
-  .dark-mode .card:nth-child(1) h2,
-  .dark-mode .card:nth-child(2) h2 {
-    color: #2CA25F !important;
-    text-shadow: 0 2px 6px #181c1f, 0 1px 0 #22282b;
-  }
-  .dark-mode .card:nth-child(1) p,
-  .dark-mode .card:nth-child(2) p,
-  .dark-mode .card:nth-child(1) small,
-  .dark-mode .card:nth-child(2) small {
-    color: #fff !important;
-    text-shadow: 0 1px 2px #181c1f;
-  }
-  body { font-family: Arial, sans-serif; margin: 2em; background: #fff2a6; color: #222; }
-  h1, h2, h3 { color: #2a5d84; }
-  .container { max-width: 900px; margin: 2rem auto; }
-      .card {
-        background: linear-gradient(135deg, #E5F5F9 0%, #99D8C9 70%, #2CA25F 100%);
-        border-radius: 10px;
-        box-shadow: 0 1px 8px rgba(0,0,0,0.07);
-        padding: 1.2rem;
-        margin-bottom: 1.5rem;
-        color: #184d3a;
-      }
-      .card h2 {
-        margin-top: 0;
-        color: #2CA25F;
-        text-shadow: 0 1px 0 #E5F5F9;
-      }
-      .card a {
-        background: #2CA25F;
-        color: #fff !important;
-        padding: 0.5em 1.2em;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: bold;
-        box-shadow: 0 1px 4px rgba(44,162,95,0.12);
-        transition: background 0.2s;
-        display: inline-block;
-        margin-top: 0.7em;
-      }
-      .card a:hover {
-        background: #184d3a;
-      }
-  .card p { color: #444; margin-bottom: 0.7em; }
-  .toggle-btn { float: right; margin-top: 0.5em; }
-  footer { font-size: 0.95rem; color: #888; text-align: center; margin-top: 2em; }
-  .dark-mode { background: #181c1f !important; color: #e0e0e0 !important; }
-  .dark-mode .card {
-    background: #22282b !important;
-    color: #e0e0e0 !important;
-    box-shadow: 0 1px 8px rgba(44,162,95,0.10);
-  }
-  .dark-mode h1, .dark-mode h2, .dark-mode h3 {
-    color: #2CA25F !important;
-    text-shadow: 0 1px 2px #181c1f;
-  }
-  .dark-mode a {
-    background: #2CA25F !important;
-    color: #fff !important;
-    border-radius: 6px;
-    font-weight: bold;
-    box-shadow: 0 1px 4px rgba(44,162,95,0.18);
-  }
-  .dark-mode .card p, .dark-mode .card small {
-    color: #f5f5f5 !important;
-  }
-  .dark-mode footer {
-    color: #bbb !important;
-  }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .icon { font-size: 64px; margin-bottom: 20px; animation: spin 2s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        h1 { font-size: 28px; margin-bottom: 15px; font-weight: 700; }
+        p { font-size: 16px; margin-bottom: 25px; opacity: 0.9; line-height: 1.6; }
+        .link {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .credits {
+            margin-top: 25px;
+            font-size: 13px;
+            opacity: 0.8;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
     </style>
-  </head>
-  <body>
-    <header style="max-width:900px;margin:2rem auto 0 auto;text-align:left;background:rgba(255,255,255,0.85);border-radius:12px;padding:1.2rem;box-shadow:0 1px 8px rgba(0,0,0,0.05);">
-      <h1>Análise Espacial dos Estabelecimentos de Saúde - Concórdia/SC</h1>
-      <button class="toggle-btn" onclick="toggleDarkMode()">Alternar modo escuro</button>
-      <p><strong>Produto:</strong> Mapas interativos, dashboards e relatório técnico<br>
-      <strong>Município:</strong> Concórdia/SC<br>
-      <strong>Autor:</strong> Ronan Armando Caetano<br>
-      <strong>Instituição:</strong> IFSC - Técnico em Geoprocessamento<br>
-      <strong>Data:</strong> Outubro de 2025</p>
-      <p style="font-size:0.98em;color:#555;margin-top:0.7em;">Este projeto segue padrões cartográficos, acessibilidade e documentação em português brasileiro conforme diretrizes UFSC.</p>
-    </header>
-
-    <section style="max-width:900px;margin:2rem auto 0 auto;background:rgba(229,245,249,0.7);border-radius:10px;padding:1.2rem;box-shadow:0 1px 6px rgba(44,162,95,0.07);">
-      <h2 style="color:#2CA25F;">Introdução e Orientações</h2>
-      <p>
-        Este painel apresenta os principais resultados da análise espacial dos estabelecimentos de saúde de Concórdia/SC. Foram processados dados do CNES, classificados os tipos de unidades e gerados mapas interativos para facilitar a compreensão da cobertura e distribuição dos serviços de saúde no município.
-      </p>
-      <h3>Como utilizar os mapas:</h3>
-      <ul>
-        <li><strong>Navegue</strong> pelos mapas clicando nos botões "Abrir Mapa" de cada card.</li>
-        <li><strong>Explore</strong> os marcadores para visualizar informações detalhadas de cada unidade.</li>
-        <li><strong>Utilize</strong> os controles de camadas para alternar entre diferentes tipos de estabelecimentos e áreas de influência.</li>
-        <li><strong>Consulte</strong> o dashboard para visualizar gráficos, estatísticas e síntese dos resultados.</li>
-        <li>Todos os mapas são responsivos e podem ser acessados em dispositivos móveis.</li>
-      </ul>
-      <p>
-        Os mapas e dashboards foram desenvolvidos seguindo padrões de qualidade geoespacial, garantindo precisão, acessibilidade e clareza visual para apoio ao planejamento territorial e à gestão pública.
-      </p>
-    </section>
-  <div class="container">
-    <!-- Mapa Geral será movido para depois do Estabelecimentos -->
-    <div class="card">
-      <h2>🗺️ Mapa Avançado com Contexto Regional</h2>
-      <p>Visualização interativa com múltiplas camadas temáticas (setor, tipo, distância), limites administrativos (estadual, municipal e 31 municípios vizinhos), mapas de calor e controles agrupados para análise territorial completa.</p>
-      <small><em>Foco: Contexto regional, análise de clusters, padrões espaciais, áreas de influência, sobreposição de camadas e navegação avançada para apoio ao planejamento territorial integrado. Utiliza paleta ColorBrewer para visualização científica.</em></small>
-      <a href="mapa_avancado_colorbrewer.html" target="_blank">Abrir Mapa</a>
+</head>
+<body>
+    <div class="container">
+        <div class="icon"></div>
+        <h1>Redirecionando para Dashboard Interativo</h1>
+        <p>Você está sendo redirecionado automaticamente para o<br><strong>Dashboard Interativo de Análise Espacial</strong><br>dos Estabelecimentos de Saúde de Concórdia/SC</p>
+        <a href="dashboard_interativo_saude.html" class="link">Clique aqui se não for redirecionado automaticamente</a>
+        <div class="credits">
+            <p><strong>Autor:</strong> Ronan Armando Caetano<br>Graduando em Ciências Biológicas (UFSC) | Técnico em Geoprocessamento (IFSC)</p>
+        </div>
     </div>
-    <div class="card">
-      <h2>Estabelecimentos</h2>
-      <p>Compara tipos de unidades (privado/público), perfil de atendimento e serviços ofertados.</p>
-      <small><em>Foco: Classificação CNES, distribuição por tipo, análise estatística dos serviços.</em></small>
-      <a href="mapa_estabelecimentos_concordia.html" target="_blank">Abrir Mapa</a>
-    </div>
-    <div class="card">
-      <h2>Mapa Geral</h2>
-      <p>Visualiza a distribuição espacial dos 418 estabelecimentos de saúde em Concórdia.</p>
-      <small><em>Foco: Cobertura georreferenciada, densidade e proximidade dos serviços ao centro urbano.</em></small>
-      <a href="mapa_unidades_saude_concordia.html" target="_blank">Abrir Mapa</a>
-    </div>
-    <div class="card" style="border: 3px solid #2CA25F; background: linear-gradient(135deg, #E5F5F9 0%, #99D8C9 50%, #2CA25F 100%);">
-      <h2 style="font-size: 1.6em;">⭐ Dashboard Profissional Completo (NOVO)</h2>
-      <p><strong>Análise avançada com recursos profissionais interativos!</strong> Dashboard completo com 6 tipos de gráficos dinâmicos, filtros em tempo real (setor, tipo, distância, quadrante), exportação PDF, tema claro/escuro e estatísticas reativas.</p>
-      <small><em>Recursos: Filtros dinâmicos • 6 tipos de gráficos (rosca, barras, linha, radar, heatmap, agrupado) • Exportar PDF e JSON • Tema alternável • Cards estatísticos reativos • Notificações toast • Design responsivo mobile/desktop</em></small>
-      <a href="dashboard_profissional_completo.html" target="_blank" style="font-size: 1.1em; padding: 0.7em 1.5em;">Abrir Dashboard Profissional</a>
-    </div>
-    
-    <div class="card">
-      <h2>📊 Dashboard Interativo Completo</h2>
-      <p>Painel com gráficos, estatísticas, links para todos os mapas e referências técnicas completas. Ideal para visão geral do projeto.</p>
-      <small><em>Foco: Integração dos resultados, síntese visual dos indicadores, navegação entre mapas, referências de software (Python, QGIS, Chart.js).</em></small>
-      <a href="dashboard_interativo_saude.html" target="_blank">Abrir Dashboard Completo</a>
-    </div>
-    
-    <div class="card">
-      <h2>Dashboard Colorbrewer (Versão Anterior)</h2>
-      <p>Painel com gráficos e estatísticas consolidadas usando paleta ColorBrewer.</p>
-      <small><em>Foco: Visualização estática dos indicadores principais.</em></small>
-      <a href="dashboard_completo_colorbrewer.html" target="_blank">Abrir Dashboard</a>
-    </div>
-  </div>
-  <footer>
-    &copy; 2025 Ronan Armando Caetano | IFSC Geoprocessamento<br>
-    <strong>Referências de Software Utilizado:</strong><br>
-    Python (pandas, numpy, folium, matplotlib, seaborn, geopandas, shapely)<br>
-    QGIS (geoprocessamento avançado, Voronoi, shapefiles)<br>
-    Jupyter Notebook (documentação interativa)<br>
-    GitHub Pages (publicação web)<br>
-    Visual Studio Code<br>
-    <em>Assistente de programação: GitHub Copilot</em><br>
-    <br>
-    Powered by GitHub Pages & Copilot
-  </footer>
-  <script>
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark-mode');
-    }
-  </script>
+    <script>
+        setTimeout(function() { window.location.href = 'dashboard_interativo_saude.html'; }, 100);
+    </script>
 </body>
 </html>
