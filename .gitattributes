@@ -1,0 +1,29 @@
+# Git LFS tracking for heavy geospatial and binary formats
+
+# Geospatial vectors (Shapefile family)
+*.shp filter=lfs diff=lfs merge=lfs -text
+*.dbf filter=lfs diff=lfs merge=lfs -text
+*.shx filter=lfs diff=lfs merge=lfs -text
+*.cpg filter=lfs diff=lfs merge=lfs -text
+*.prj filter=lfs diff=lfs merge=lfs -text
+
+# GeoPackages and rasters
+*.gpkg filter=lfs diff=lfs merge=lfs -text
+*.tif filter=lfs diff=lfs merge=lfs -text
+*.tiff filter=lfs diff=lfs merge=lfs -text
+
+# Documents and images
+*.pdf filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.jpeg filter=lfs diff=lfs merge=lfs -text
+
+# Spreadsheets and archives
+*.xlsx filter=lfs diff=lfs merge=lfs -text
+*.xls filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text
+
+# QGIS projects
+*.qgz filter=lfs diff=lfs merge=lfs -text
+
+# Note: HTML and CSV remain as regular text (no LFS)
