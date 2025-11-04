@@ -66,6 +66,133 @@ COLORBREWER_QUALITATIVE = {
     'Accent_8': ['#7fc97f', '#beaed4', '#fdc086', '#ffff99', '#386cb0', '#f0027f', '#bf5b17', '#666666']
 }
 
+def carregar_municipios_vizinhos():
+    """
+    Carrega municípios vizinhos de Concórdia para contexto regional no mapa.
+    
+    Returns:
+        GeoDataFrame com municípios da região ou None
+    """
+    print("📥 Carregando municípios vizinhos para contexto regional...")
+    
+    if gpd is None:
+        return None
+    
+    try:
+        shp_municipios = os.path.join(ROOT_DIR, "SC_Municipios_2024", "SC_Municipios_2024.shp")
+        if os.path.isfile(shp_municipios):
+            gdf_sc = gpd.read_file(shp_municipios)
+            if gdf_sc.crs is None or gdf_sc.crs.to_epsg() != 4326:
+                gdf_sc = gdf_sc.to_crs(epsg=4326)
+            
+            # Filtrar Concórdia e vizinhos num raio de ~50km
+            from shapely.geometry import Point
+            centro = Point(-52.0238, -27.2335)
+            gdf_sc['dist_centro'] = gdf_sc.geometry.centroid.distance(centro)
+            vizinhos = gdf_sc[gdf_sc['dist_centro'] < 0.6].copy()  # ~60km
+            
+            # Simplificar geometrias
+            gdf_viz_proj = vizinhos.to_crs(31982)
+            gdf_viz_proj['geometry'] = gdf_viz_proj['geometry'].simplify(200)
+            vizinhos = gdf_viz_proj.to_crs(4326)
+            
+            print(f"   ✅ {len(vizinhos)} municípios vizinhos carregados")
+            return vizinhos
+    except Exception as e:
+        print(f"   ⚠️ Erro ao carregar municípios vizinhos: {e}")
+    
+    return None
+
+def carregar_limites_distritais():
+    """
+    Carrega limites distritais (setores censitários) de Concórdia para análise.
+    Tenta múltiplas fontes:
+    1. Shapefile local (Concordia_sencitario.shp)
+    2. API IBGE de setores censitários (Censo 2022)
+    3. GeoPackage SC_setores_CD2022.gpkg
+    
+    Returns:
+        GeoDataFrame com setores censitários ou None
+    """
+    print("📥 Carregando limites distritais (setores censitários)...")
+    
+    if gpd is None:
+        print("   ⚠️ GeoPandas não disponível")
+        return None
+    
+    # Tentativa 1: Shapefile local de setores censitários
+    try:
+        shp_setores = os.path.join(ROOT_DIR, "Concordia_sencitario.shp")
+        if os.path.isfile(shp_setores):
+            gdf_setores = gpd.read_file(shp_setores)
+            if gdf_setores.crs is None or gdf_setores.crs.to_epsg() != 4326:
+                gdf_setores = gdf_setores.to_crs(epsg=4326)
+            
+            # Simplificar geometrias para melhor performance
+            gdf_setores_proj = gdf_setores.to_crs(31982)
+            gdf_setores_proj['geometry'] = gdf_setores_proj['geometry'].buffer(0)
+            gdf_setores_proj['geometry'] = gdf_setores_proj['geometry'].simplify(50)
+            gdf_setores = gdf_setores_proj.to_crs(4326)
+            
+            print(f"   ✅ {len(gdf_setores)} setores censitários carregados (shapefile local)")
+            return gdf_setores
+    except Exception as e:
+        print(f"   ⚠️ Shapefile local não encontrado: {e}")
+    
+    # Tentativa 2: GeoPackage SC_setores_CD2022.gpkg
+    try:
+        gpkg_path = os.path.join(ROOT_DIR, "SC_setores_CD2022.gpkg")
+        if os.path.isfile(gpkg_path):
+            print(f"   → Carregando do GeoPackage...")
+            gdf_sc_setores = gpd.read_file(gpkg_path)
+            if gdf_sc_setores.crs is None or gdf_sc_setores.crs.to_epsg() != 4326:
+                gdf_sc_setores = gdf_sc_setores.to_crs(epsg=4326)
+            
+            # Filtrar apenas setores de Concórdia (código IBGE 420430)
+            # Coluna CD_MUN ou similar com código do município
+            mun_cols = [c for c in gdf_sc_setores.columns if 'MUN' in c.upper() and 'CD' in c.upper()]
+            if mun_cols:
+                gdf_setores = gdf_sc_setores[gdf_sc_setores[mun_cols[0]].astype(str).str.contains('420430', na=False)]
+                
+                if not gdf_setores.empty:
+                    # Simplificar geometrias
+                    gdf_setores_proj = gdf_setores.to_crs(31982)
+                    gdf_setores_proj['geometry'] = gdf_setores_proj['geometry'].buffer(0)
+                    gdf_setores_proj['geometry'] = gdf_setores_proj['geometry'].simplify(50)
+                    gdf_setores = gdf_setores_proj.to_crs(4326)
+                    
+                    print(f"   ✅ {len(gdf_setores)} setores censitários carregados (GeoPackage)")
+                    return gdf_setores
+    except Exception as e:
+        print(f"   ⚠️ GeoPackage não disponível: {e}")
+    
+    # Tentativa 3: API IBGE (última opção, mais lento)
+    if requests:
+        try:
+            print("   → Tentando API IBGE para setores censitários...")
+            # Nota: A API de setores é pesada; documentação limitada
+            # URL hipotética (verificar disponibilidade real)
+            url_setores = f"https://servicodados.ibge.gov.br/api/v3/malhas/municipios/420430/setores?formato=application/vnd.geo+json"
+            
+            resp = requests.get(url_setores, timeout=60)
+            if resp.status_code == 200:
+                geojson_setores = resp.json()
+                gdf_setores = gpd.GeoDataFrame.from_features(geojson_setores['features'])
+                gdf_setores.crs = "EPSG:4326"
+                
+                # Simplificar
+                gdf_setores_proj = gdf_setores.to_crs(31982)
+                gdf_setores_proj['geometry'] = gdf_setores_proj['geometry'].simplify(50)
+                gdf_setores = gdf_setores_proj.to_crs(4326)
+                
+                print(f"   ✅ {len(gdf_setores)} setores carregados via API IBGE")
+                return gdf_setores
+        except Exception as e:
+            print(f"   ⚠️ API IBGE de setores não disponível: {e}")
+    
+    print("   ⚠️ Nenhuma fonte de setores censitários disponível")
+    return None
+
 def carregar_limites_ibge():
     """
     Carrega limites municipais e estaduais do IBGE via API com fallbacks robustos
@@ -813,9 +940,15 @@ def criar_mapa_avancado_treelayer(df):
     
     grupo_ref.add_to(mapa)
 
-    # === CAMADAS DE LIMITES (Municipal e Estadual) ===
+    # === CAMADAS DE LIMITES (Municipal, Estadual, Distritais e Vizinhos) ===
     # Carregar limites do IBGE
     gdf_estado, gdf_municipio = carregar_limites_ibge()
+    
+    # Carregar municípios vizinhos para contexto regional
+    gdf_vizinhos = carregar_municipios_vizinhos()
+    
+    # Carregar limites distritais (setores censitários)
+    gdf_distritos = carregar_limites_distritais()
 
     # Simplificar geometrias para visual mais limpo e melhor performance
     if gpd is not None and gdf_municipio is not None and hasattr(gdf_municipio, 'empty') and not gdf_municipio.empty:
@@ -895,13 +1028,85 @@ def criar_mapa_avancado_treelayer(df):
         print("⚠️ Limite municipal não disponível")
     
     grupo_lim_municipio.add_to(mapa)
+    
+    # Grupo para municípios vizinhos (contexto regional)
+    grupo_vizinhos = folium.FeatureGroup(name="🗺️ Municípios Vizinhos", show=False)
+    
+    if gdf_vizinhos is not None and not gdf_vizinhos.empty:
+        try:
+            for idx, row in gdf_vizinhos.iterrows():
+                nome_mun = row.get('NM_MUN', 'Município')
+                area_km2 = row.get('AREA_KM2', 0)
+                
+                folium.GeoJson(
+                    data=row['geometry'].__geo_interface__,
+                    style_function=lambda x: {
+                        'color': '#969696',         # Cinza neutro
+                        'weight': 1.0,
+                        'fillColor': '#cccccc',
+                        'fillOpacity': 0.03,
+                        'dashArray': '2, 4'
+                    },
+                    highlight_function=lambda x: {
+                        'weight': 2.0,
+                        'fillOpacity': 0.1
+                    },
+                    tooltip=folium.Tooltip(nome_mun),
+                    popup=folium.Popup(f'<b>{nome_mun}</b><br>Área: {area_km2:.1f} km²', max_width=200)
+                ).add_to(grupo_vizinhos)
+            
+            print(f"✅ {len(gdf_vizinhos)} municípios vizinhos adicionados ao mapa")
+        except Exception as e:
+            print(f"⚠️ Erro ao adicionar municípios vizinhos: {e}")
+    
+    grupo_vizinhos.add_to(mapa)
+    
+    # Grupo para limites distritais (setores censitários)
+    grupo_lim_distritos = folium.FeatureGroup(name="📍 Limites Distritais/Setores", show=False)
+    
+    if gdf_distritos is not None and not gdf_distritos.empty:
+        try:
+            # Identificar coluna de identificação do setor
+            id_cols = [c for c in gdf_distritos.columns if c.upper() in ['CD_SETOR', 'CD_GEOCODI', 'GEOCODIGO', 'ID']]
+            id_col = id_cols[0] if id_cols else None
+            
+            # Adicionar setores como subdivisões distritais
+            for idx, row in gdf_distritos.iterrows():
+                setor_id = row[id_col] if id_col else f"Setor {idx+1}"
+                
+                # Criar GeoJson para cada setor
+                setor_geojson = folium.GeoJson(
+                    data=row['geometry'].__geo_interface__,
+                    style_function=lambda x: {
+                        'color': '#fd8d3c',         # Laranja (ColorBrewer)
+                        'weight': 1.5,
+                        'fillColor': '#fdd0a2',     # Laranja claro
+                        'fillOpacity': 0.05,        # Muito transparente
+                        'dashArray': '3, 3'         # Linha pontilhada
+                    },
+                    highlight_function=lambda x: {
+                        'weight': 2.5,
+                        'fillOpacity': 0.15
+                    },
+                    tooltip=folium.Tooltip(f'Setor {setor_id}'),
+                    popup=folium.Popup(f'<b>Setor Censitário</b><br>ID: {setor_id}<br>Fonte: IBGE Censo 2022', max_width=200)
+                )
+                setor_geojson.add_to(grupo_lim_distritos)
+            
+            print(f"✅ {len(gdf_distritos)} setores distritais adicionados ao mapa")
+        except Exception as e:
+            print(f"⚠️ Erro ao adicionar setores distritais: {e}")
+    else:
+        print("⚠️ Limites distritais não disponíveis")
+    
+    grupo_lim_distritos.add_to(mapa)
 
     # === CONTROLE DE CAMADAS AGRUPADAS ===
     try:
         GroupedLayerControl(
             groups={
                 'Temas': [grupo_setor, grupo_tipo, grupo_distancia, grupo_calor, grupo_raio_esfps, grupo_calor_raio3km],
-                'Limites Administrativos': [grupo_lim_estadual, grupo_lim_municipio],
+                'Limites Administrativos': [grupo_lim_estadual, grupo_lim_municipio, grupo_vizinhos, grupo_lim_distritos],
                 'Referências': [grupo_ref]
             },
             collapsed=True
