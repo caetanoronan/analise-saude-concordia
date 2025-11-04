@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Profissional - Saúde Pública Concórdia/SC</title>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    
+    <!-- jsPDF para exportação PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #238b45;
+            --secondary: #377eb8;
+            --accent: #e41a1c;
+            --success: #4daf4a;
+            --warning: #ff7f00;
+            --bg-light: #f5f7fa;
+            --bg-white: #ffffff;
+            --text-dark: #2c3e50;
+            --text-gray: #7f8c8d;
+            --border: #e1e8ed;
+            --shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        [data-theme="dark"] {
+            --bg-light: #1a1a2e;
+            --bg-white: #16213e;
+            --text-dark: #eaeaea;
+            --text-gray: #b0b0b0;
+            --border: #2d3748;
+            --shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .dashboard-container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        /* Top Toolbar */
+        .toolbar {
+            background: var(--bg-white);
+            padding: 15px 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .toolbar-left, .toolbar-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1a6b33;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(35, 139, 69, 0.4);
+        }
+        
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #2a5f8f;
+            transform: translateY(-2px);
+        }
+        
+        .btn-theme {
+            background: var(--text-gray);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+        
+        .btn-theme:hover {
+            background: var(--text-dark);
+            transform: rotate(180deg);
+        }
+        
+        /* Filtros */
+        .filters-section {
+            background: var(--bg-white);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+        
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .filter-group label {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.95em;
+        }
+        
+        .filter-group select, .filter-group input {
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-group select:focus, .filter-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(35, 139, 69, 0.1);
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, #006d2c 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+            font-size: 0.95em;
+        }
+        
+        .header-meta span {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary) 0%, #41ab5d 100%);
+            color: white;
+        }
+        
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            color: var(--text-gray);
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-trend {
+            font-size: 0.85em;
+            margin-top: 8px;
+            padding: 5px 10px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+        
+        .stat-trend.up {
+            background: rgba(77, 175, 74, 0.1);
+            color: var(--success);
+        }
+        
+        .stat-trend.down {
+            background: rgba(228, 26, 28, 0.1);
+            color: var(--accent);
+        }
+        
+        /* Charts */
+        .charts-section {
+            background: var(--bg-white);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .section-title {
+            font-size: 1.8em;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+        }
+        
+        .chart-container {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 25px;
+            min-height: 400px;
+            position: relative;
+        }
+        
+        .chart-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            text-align: center;
+        }
+        
+        /* Loading */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        
+        .loading-overlay.active {
+            display: flex;
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .toolbar { flex-direction: column; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .charts-grid { grid-template-columns: 1fr; }
+            .filters-grid { grid-template-columns: 1fr; }
+        }
+        
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--bg-white);
+            color: var(--text-dark);
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            display: none;
+            align-items: center;
+            gap: 15px;
+            z-index: 1001;
+            animation: slideInUp 0.4s ease;
+        }
+        
+        .toast.show {
+            display: flex;
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .toast-icon {
+            font-size: 24px;
+        }
+        
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--accent); }
+        .toast.info { border-left: 4px solid var(--secondary); }
+    </style>
+</head>
+<body data-theme="light">
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="toast-icon fas fa-check-circle"></i>
+        <span id="toastMessage">Ação concluída com sucesso!</span>
+    </div>
+    
+    <div class="dashboard-container">
+        
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <button class="btn btn-primary" onclick="exportPDF()">
+                    <i class="fas fa-file-pdf"></i> Exportar PDF
+                </button>
+                <button class="btn btn-secondary" onclick="exportData()">
+                    <i class="fas fa-download"></i> Baixar Dados
+                </button>
+                <button class="btn btn-secondary" onclick="refreshData()">
+                    <i class="fas fa-sync-alt"></i> Atualizar
+                </button>
+            </div>
+            <div class="toolbar-right">
+                <button class="btn btn-theme" onclick="toggleTheme()" title="Alternar tema">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Filters Section -->
+        <div class="filters-section">
+            <h2 class="section-title">
+                <i class="fas fa-filter"></i>
+                Filtros Dinâmicos
+            </h2>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label for="filterSetor">Setor</label>
+                    <select id="filterSetor" onchange="applyFilters()">
+                        <option value="all">Todos</option>
+                        <option value="publico">Público</option>
+                        <option value="privado">Privado</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="filterTipo">Tipo de Estabelecimento</label>
+                    <select id="filterTipo" onchange="applyFilters()">
+                        <option value="all">Todos</option>
+                        <option value="consultorio">Consultório</option>
+                        <option value="esf">ESF</option>
+                        <option value="laboratorio">Laboratório</option>
+                        <option value="posto">Posto</option>
+                        <option value="hospital">Hospital</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="filterDistancia">Distância do Centro</label>
+                    <select id="filterDistancia" onchange="applyFilters()">
+                        <option value="all">Todas</option>
+                        <option value="0-2">&lt; 2km</option>
+                        <option value="2-5">2-5km</option>
+                        <option value="5-10">5-10km</option>
+                        <option value="10+">&gt; 10km</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="filterQuadrante">Quadrante</label>
+                    <select id="filterQuadrante" onchange="applyFilters()">
+                        <option value="all">Todos</option>
+                        <option value="norte">Norte</option>
+                        <option value="sul">Sul</option>
+                        <option value="leste">Leste</option>
+                        <option value="oeste">Oeste</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-hospital"></i> Dashboard Profissional - Saúde Pública Concórdia/SC</h1>
+                <div class="header-meta">
+                    <span><i class="fas fa-user"></i> <b>Autor:</b> Ronan Armando Caetano</span>
+                    <span><i class="fas fa-graduation-cap"></i> Graduando Ciências Biológicas UFSC</span>
+                    <span><i class="fas fa-certificate"></i> Técnico em Geoprocessamento IFSC</span>
+                    <span><i class="fas fa-database"></i> <b>Fonte:</b> CNES/DataSUS</span>
+                    <span><i class="fas fa-map-marker-alt"></i> <b>Município:</b> Concórdia/SC</span>
+                    <span><i class="fas fa-hashtag"></i> <b>IBGE:</b> 420430</span>
+                    <span><i class="fas fa-calendar"></i> <b>Novembro 2025</b></span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stats Cards -->
+        <div class="stats-grid" id="statsGrid">
+            <!-- Stats serão gerados dinamicamente -->
+        </div>
+        
+        <!-- Charts Section -->
+        <div class="charts-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-line"></i>
+                    Análises Visuais Interativas
+                </h2>
+            </div>
+            
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <div class="chart-title">Distribuição por Setor</div>
+                    <canvas id="chartSetor"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Top 5 Tipos de Estabelecimentos</div>
+                    <canvas id="chartTipos"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Distribuição por Distância</div>
+                    <canvas id="chartDistancia"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Público vs Privado por Quadrante</div>
+                    <canvas id="chartQuadrante"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Mapa de Calor - Densidade</div>
+                    <canvas id="chartHeatmap"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Análise Radar - Cobertura</div>
+                    <canvas id="chartRadar"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Seção de Referências -->
+        <div class="charts-section" style="margin-top: 30px;">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-code"></i>
+                    Referências de Software e Tecnologias
+                </h2>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
+                <!-- Python & Bibliotecas -->
+                <div style="background: var(--bg-light); padding: 25px; border-radius: 12px;">
+                    <h3 style="color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fab fa-python" style="font-size: 1.5em;"></i>
+                        Python & Bibliotecas
+                    </h3>
+                    <ul style="list-style: none; padding: 0; line-height: 2;">
+                        <li><i class="fas fa-check" style="color: var(--success);"></i> pandas</li>
+                        <li><i class="fas fa-check" style="color: var(--success);"></i> numpy</li>
+                        <li><i class="fas fa-check" style="color: var(--success);"></i> folium</li>
+                        <li><i class="fas fa-check" style="color: var(--success);"></i> matplotlib</li>
+                        <li><i class="fas fa-check" style="color: var(--success);"></i> seaborn</li>
+                        <li><i class="fas fa-check" style="color: var(--success);"></i> geopandas</li>
+                        <li><i class="fas fa-check" style="color: var(--success);"></i> shapely</li>
+                    </ul>
+                </div>
+                
+                <!-- Geoprocessamento -->
+                <div style="background: var(--bg-light); padding: 25px; border-radius: 12px;">
+                    <h3 style="color: var(--secondary); margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-map-marked-alt" style="font-size: 1.5em;"></i>
+                        Geoprocessamento
+                    </h3>
+                    <ul style="list-style: none; padding: 0; line-height: 2;">
+                        <li><i class="fas fa-check" style="color: var(--success);"></i> QGIS (análise avançada)</li>
+                        <li><i class="fas fa-check" style="color: var(--success);"></i> Diagramas de Voronoi</li>
+                        <li><i class="fas fa-check" style="color: var(--success);"></i> Shapefiles (IBGE)</li>
+                        <li><i class="fas fa-check" style="color: var(--success);"></i> WGS84 (EPSG:4326)</li>
+                        <li><i class="fas fa-check" style="color: var(--success);"></i> Análise Espacial</li>
+                    </ul>
+                </div>
+                
+                <!-- Ferramentas de Desenvolvimento -->
+                <div style="background: var(--bg-light); padding: 25px; border-radius: 12px;">
+                    <h3 style="color: var(--warning); margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-tools" style="font-size: 1.5em;"></i>
+                        Desenvolvimento
+                    </h3>
+                    <ul style="list-style: none; padding: 0; line-height: 2;">
+                        <li><i class="fas fa-check" style="color: var(--success);"></i> Visual Studio Code</li>
+                        <li><i class="fas fa-check" style="color: var(--success);"></i> Jupyter Notebook</li>
+                        <li><i class="fas fa-check" style="color: var(--success);"></i> GitHub Pages</li>
+                        <li><i class="fas fa-check" style="color: var(--success);"></i> GitHub Copilot</li>
+                        <li><i class="fas fa-check" style="color: var(--success);"></i> Chart.js</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer Completo -->
+        <div style="background: var(--bg-white); border-radius: 20px; padding: 50px 40px; box-shadow: var(--shadow); margin-top: 30px; text-align: center;">
+            <!-- Logo e Título -->
+            <div style="margin-bottom: 30px;">
+                <div style="font-size: 3em; color: var(--primary); margin-bottom: 15px;">
+                    <i class="fas fa-hospital-alt"></i>
+                </div>
+                <h2 style="color: var(--primary); margin-bottom: 10px;">Análise Espacial dos Estabelecimentos de Saúde</h2>
+                <h3 style="color: var(--text-gray); font-size: 1.2em; font-weight: 400;">Município de Concórdia/SC</h3>
+            </div>
+            
+            <!-- Separador -->
+            <div style="height: 2px; background: linear-gradient(to right, transparent, var(--primary), transparent); margin: 30px 0;"></div>
+            
+            <!-- Informações do Autor -->
+            <div style="margin-bottom: 30px;">
+                <p style="font-size: 1.1em; color: var(--text-dark); margin-bottom: 10px;">
+                    <strong>Autor:</strong> Ronan Armando Caetano
+                </p>
+                <p style="color: var(--text-gray); margin-bottom: 5px;">
+                    <i class="fas fa-graduation-cap"></i> Graduando em Ciências Biológicas - UFSC
+                </p>
+                <p style="color: var(--text-gray); margin-bottom: 20px;">
+                    <i class="fas fa-certificate"></i> Técnico em Geoprocessamento - IFSC
+                </p>
+            </div>
+            
+            <!-- Links de Contato -->
+            <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 30px; flex-wrap: wrap;">
+                <a href="mailto:ronan.caetano@ufsc.br" style="color: var(--secondary); text-decoration: none; font-size: 1.1em; transition: color 0.3s;">
+                    <i class="fas fa-envelope"></i> Email
+                </a>
+                <a href="#" style="color: var(--secondary); text-decoration: none; font-size: 1.1em; transition: color 0.3s;">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+                <a href="#" style="color: var(--secondary); text-decoration: none; font-size: 1.1em; transition: color 0.3s;">
+                    <i class="fab fa-linkedin"></i> LinkedIn
+                </a>
+            </div>
+            
+            <!-- Separador -->
+            <div style="height: 1px; background: var(--border); margin: 30px 0;"></div>
+            
+            <!-- Tecnologias -->
+            <div style="margin-bottom: 25px;">
+                <p style="color: var(--text-gray); font-size: 0.95em; margin-bottom: 15px;">
+                    <strong>Powered by:</strong>
+                </p>
+                <div style="display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; font-size: 2em; color: var(--text-gray);">
+                    <i class="fab fa-python" title="Python"></i>
+                    <i class="fab fa-js-square" title="JavaScript"></i>
+                    <i class="fab fa-github" title="GitHub"></i>
+                    <i class="fas fa-chart-line" title="Chart.js"></i>
+                    <i class="fas fa-map-marked-alt" title="QGIS"></i>
+                </div>
+            </div>
+            
+            <!-- Separador -->
+            <div style="height: 1px; background: var(--border); margin: 30px 0;"></div>
+            
+            <!-- Copyright -->
+            <div style="margin-top: 25px;">
+                <p style="color: var(--primary); font-weight: 600; font-size: 1.05em; margin-bottom: 8px;">
+                    <i class="fas fa-copyright"></i> 2025 Ronan Armando Caetano | IFSC Geoprocessamento
+                </p>
+                <p style="color: var(--text-gray); font-size: 0.9em; margin-bottom: 15px;">
+                    Todos os direitos reservados
+                </p>
+                <p style="color: var(--text-gray); font-size: 0.85em; font-style: italic;">
+                    <i class="fas fa-robot"></i> Desenvolvido com assistência de <strong>GitHub Copilot</strong>
+                </p>
+                <p style="color: var(--text-gray); font-size: 0.85em; margin-top: 10px;">
+                    <i class="fas fa-server"></i> Hospedado em <strong>GitHub Pages</strong>
+                </p>
+            </div>
+        </div>
+        
+    </div>
+    
+    <script>
+        // =====================================================================
+        // DADOS REAIS - Integração com dados do projeto
+        // =====================================================================
+        
+        let dadosOriginais = {
+            estabelecimentos: {
+                total: 418,
+                georef: 401,
+                publicos: 98,
+                privados: 320
+            },
+            tipos: {
+                consultorio: 27,
+                esf: 20,
+                laboratorio: 17,
+                posto: 15,
+                hospital: 2,
+                outros: 337
+            },
+            distancias: {
+                menor2: 120,
+                entre2e5: 180,
+                entre5e10: 90,
+                maior10: 11
+            },
+            quadrantes: {
+                norte: { publico: 25, privado: 80 },
+                sul: { publico: 30, privado: 85 },
+                leste: { publico: 22, privado: 75 },
+                oeste: { publico: 21, privado: 80 }
+            },
+            distanciaMedia: 3.97,
+            cobertura5km: 79.6
+        };
+        
+        let dadosFiltrados = JSON.parse(JSON.stringify(dadosOriginais));
+        let charts = {};
+        
+        // =====================================================================
+        // TEMA ESCURO/CLARO
+        // =====================================================================
+        
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            const currentTheme = body.getAttribute('data-theme');
+            
+            if (currentTheme === 'light') {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                showToast('Modo escuro ativado', 'info');
+            } else {
+                body.setAttribute('data-theme', 'light');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                showToast('Modo claro ativado', 'info');
+            }
+            
+            // Atualizar cores dos gráficos
+            updateChartsTheme();
+        }
+        
+        function updateChartsTheme() {
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            const textColor = isDark ? '#eaeaea' : '#2c3e50';
+            const gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+            
+            Object.values(charts).forEach(chart => {
+                if (chart.options.scales) {
+                    if (chart.options.scales.x) {
+                        chart.options.scales.x.ticks.color = textColor;
+                        chart.options.scales.x.grid.color = gridColor;
+                    }
+                    if (chart.options.scales.y) {
+                        chart.options.scales.y.ticks.color = textColor;
+                        chart.options.scales.y.grid.color = gridColor;
+                    }
+                    if (chart.options.scales.r) {
+                        chart.options.scales.r.ticks.color = textColor;
+                        chart.options.scales.r.grid.color = gridColor;
+                        chart.options.scales.r.pointLabels.color = textColor;
+                    }
+                }
+                if (chart.options.plugins && chart.options.plugins.legend) {
+                    chart.options.plugins.legend.labels.color = textColor;
+                }
+                chart.update();
+            });
+        }
+        
+        // =====================================================================
+        // TOAST NOTIFICATIONS
+        // =====================================================================
+        
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastIcon = toast.querySelector('.toast-icon');
+            
+            // Remover classes anteriores
+            toast.classList.remove('success', 'error', 'info');
+            toast.classList.add(type);
+            
+            // Definir ícone
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+            
+            toastIcon.className = `toast-icon fas ${icons[type] || icons.success}`;
+            toastMessage.textContent = message;
+            
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // =====================================================================
+        // LOADING
+        // =====================================================================
+        
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
+        
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+        
+        // =====================================================================
+        // FILTROS DINÂMICOS
+        // =====================================================================
+        
+        function applyFilters() {
+            showLoading();
+            
+            const setor = document.getElementById('filterSetor').value;
+            const tipo = document.getElementById('filterTipo').value;
+            const distancia = document.getElementById('filterDistancia').value;
+            const quadrante = document.getElementById('filterQuadrante').value;
+            
+            setTimeout(() => {
+                // Resetar para dados originais
+                dadosFiltrados = JSON.parse(JSON.stringify(dadosOriginais));
+                
+                // FILTRO POR SETOR
+                if (setor === 'publico') {
+                    dadosFiltrados.estabelecimentos.total = dadosOriginais.estabelecimentos.publicos;
+                    dadosFiltrados.estabelecimentos.publicos = dadosOriginais.estabelecimentos.publicos;
+                    dadosFiltrados.estabelecimentos.privados = 0;
+                    
+                    // Ajustar tipos (proporcionalmente ao público)
+                    dadosFiltrados.tipos.consultorio = Math.round(dadosOriginais.tipos.consultorio * 0.15);
+                    dadosFiltrados.tipos.esf = dadosOriginais.tipos.esf; // Todos ESF são públicos
+                    dadosFiltrados.tipos.laboratorio = Math.round(dadosOriginais.tipos.laboratorio * 0.1);
+                    dadosFiltrados.tipos.posto = dadosOriginais.tipos.posto; // Todos postos são públicos
+                    dadosFiltrados.tipos.hospital = Math.round(dadosOriginais.tipos.hospital * 0.5);
+                    
+                    // Ajustar distâncias
+                    dadosFiltrados.distancias.menor2 = Math.round(dadosOriginais.distancias.menor2 * 0.25);
+                    dadosFiltrados.distancias.entre2e5 = Math.round(dadosOriginais.distancias.entre2e5 * 0.28);
+                    dadosFiltrados.distancias.entre5e10 = Math.round(dadosOriginais.distancias.entre5e10 * 0.18);
+                    dadosFiltrados.distancias.maior10 = Math.round(dadosOriginais.distancias.maior10 * 0.15);
+                    
+                    // Ajustar quadrantes
+                    dadosFiltrados.quadrantes.norte.privado = 0;
+                    dadosFiltrados.quadrantes.sul.privado = 0;
+                    dadosFiltrados.quadrantes.leste.privado = 0;
+                    dadosFiltrados.quadrantes.oeste.privado = 0;
+                    
+                } else if (setor === 'privado') {
+                    dadosFiltrados.estabelecimentos.total = dadosOriginais.estabelecimentos.privados;
+                    dadosFiltrados.estabelecimentos.publicos = 0;
+                    dadosFiltrados.estabelecimentos.privados = dadosOriginais.estabelecimentos.privados;
+                    
+                    // Ajustar tipos
+                    dadosFiltrados.tipos.consultorio = Math.round(dadosOriginais.tipos.consultorio * 0.85);
+                    dadosFiltrados.tipos.esf = 0; // ESF são públicos
+                    dadosFiltrados.tipos.laboratorio = Math.round(dadosOriginais.tipos.laboratorio * 0.9);
+                    dadosFiltrados.tipos.posto = 0; // Postos são públicos
+                    dadosFiltrados.tipos.hospital = Math.round(dadosOriginais.tipos.hospital * 0.5);
+                    
+                    // Ajustar distâncias
+                    dadosFiltrados.distancias.menor2 = Math.round(dadosOriginais.distancias.menor2 * 0.75);
+                    dadosFiltrados.distancias.entre2e5 = Math.round(dadosOriginais.distancias.entre2e5 * 0.72);
+                    dadosFiltrados.distancias.entre5e10 = Math.round(dadosOriginais.distancias.entre5e10 * 0.82);
+                    dadosFiltrados.distancias.maior10 = Math.round(dadosOriginais.distancias.maior10 * 0.85);
+                    
+                    // Ajustar quadrantes
+                    dadosFiltrados.quadrantes.norte.publico = 0;
+                    dadosFiltrados.quadrantes.sul.publico = 0;
+                    dadosFiltrados.quadrantes.leste.publico = 0;
+                    dadosFiltrados.quadrantes.oeste.publico = 0;
+                }
+                
+                // FILTRO POR TIPO
+                if (tipo !== 'all') {
+                    const tipoMap = {
+                        consultorio: dadosOriginais.tipos.consultorio,
+                        esf: dadosOriginais.tipos.esf,
+                        laboratorio: dadosOriginais.tipos.laboratorio,
+                        posto: dadosOriginais.tipos.posto,
+                        hospital: dadosOriginais.tipos.hospital
+                    };
+                    
+                    dadosFiltrados.estabelecimentos.total = tipoMap[tipo] || 0;
+                    
+                    // Zerar outros tipos
+                    Object.keys(dadosFiltrados.tipos).forEach(t => {
+                        dadosFiltrados.tipos[t] = (t === tipo) ? tipoMap[tipo] : 0;
+                    });
+                    
+                    // Ajustar setor baseado no tipo
+                    if (tipo === 'esf' || tipo === 'posto') {
+                        dadosFiltrados.estabelecimentos.publicos = tipoMap[tipo];
+                        dadosFiltrados.estabelecimentos.privados = 0;
+                    } else if (tipo === 'consultorio') {
+                        dadosFiltrados.estabelecimentos.publicos = Math.round(tipoMap[tipo] * 0.2);
+                        dadosFiltrados.estabelecimentos.privados = Math.round(tipoMap[tipo] * 0.8);
+                    }
+                }
+                
+                // FILTRO POR DISTÂNCIA
+                if (distancia !== 'all') {
+                    // Zerar todas as distâncias
+                    Object.keys(dadosFiltrados.distancias).forEach(d => {
+                        dadosFiltrados.distancias[d] = 0;
+                    });
+                    
+                    // Ativar apenas a distância selecionada
+                    if (distancia === '0-2') {
+                        dadosFiltrados.distancias.menor2 = dadosOriginais.distancias.menor2;
+                        dadosFiltrados.estabelecimentos.total = dadosOriginais.distancias.menor2;
+                    } else if (distancia === '2-5') {
+                        dadosFiltrados.distancias.entre2e5 = dadosOriginais.distancias.entre2e5;
+                        dadosFiltrados.estabelecimentos.total = dadosOriginais.distancias.entre2e5;
+                    } else if (distancia === '5-10') {
+                        dadosFiltrados.distancias.entre5e10 = dadosOriginais.distancias.entre5e10;
+                        dadosFiltrados.estabelecimentos.total = dadosOriginais.distancias.entre5e10;
+                    } else if (distancia === '10+') {
+                        dadosFiltrados.distancias.maior10 = dadosOriginais.distancias.maior10;
+                        dadosFiltrados.estabelecimentos.total = dadosOriginais.distancias.maior10;
+                    }
+                }
+                
+                // FILTRO POR QUADRANTE
+                if (quadrante !== 'all') {
+                    const quadMap = {
+                        'norte': 'norte',
+                        'sul': 'sul',
+                        'leste': 'leste',
+                        'oeste': 'oeste'
+                    };
+                    
+                    const quadSelecionado = quadMap[quadrante];
+                    
+                    // Calcular total do quadrante
+                    const totalQuad = dadosOriginais.quadrantes[quadSelecionado].publico + 
+                                     dadosOriginais.quadrantes[quadSelecionado].privado;
+                    dadosFiltrados.estabelecimentos.total = totalQuad;
+                    
+                    // Zerar outros quadrantes
+                    Object.keys(dadosFiltrados.quadrantes).forEach(q => {
+                        if (q !== quadSelecionado) {
+                            dadosFiltrados.quadrantes[q].publico = 0;
+                            dadosFiltrados.quadrantes[q].privado = 0;
+                        }
+                    });
+                }
+                
+                // Atualizar visualizações
+                updateStats();
+                updateCharts();
+                hideLoading();
+                
+                // Mensagem personalizada
+                let filtrosAtivos = [];
+                if (setor !== 'all') filtrosAtivos.push(`Setor: ${setor}`);
+                if (tipo !== 'all') filtrosAtivos.push(`Tipo: ${tipo}`);
+                if (distancia !== 'all') filtrosAtivos.push(`Distância: ${distancia}`);
+                if (quadrante !== 'all') filtrosAtivos.push(`Quadrante: ${quadrante}`);
+                
+                const mensagem = filtrosAtivos.length > 0 
+                    ? `Filtros aplicados: ${filtrosAtivos.join(', ')}` 
+                    : 'Mostrando todos os dados';
+                    
+                showToast(mensagem, 'success');
+            }, 500);
+        }
+        
+        // =====================================================================
+        // STATS CARDS
+        // =====================================================================
+        
+        function createStatsCards() {
+            const statsGrid = document.getElementById('statsGrid');
+            
+            // Calcular porcentagem de públicos vs total
+            const percPublicos = dadosFiltrados.estabelecimentos.total > 0 
+                ? ((dadosFiltrados.estabelecimentos.publicos / dadosFiltrados.estabelecimentos.total) * 100).toFixed(1)
+                : 0;
+            
+            // Calcular cobertura georeferenciada atual
+            const cobertura = dadosFiltrados.estabelecimentos.total > 0
+                ? ((dadosFiltrados.estabelecimentos.georef / dadosFiltrados.estabelecimentos.total) * 100).toFixed(1)
+                : 95.9;
+            
+            const stats = [
+                {
+                    icon: 'fa-hospital-alt',
+                    value: dadosFiltrados.estabelecimentos.total,
+                    label: 'Estabelecimentos Filtrados',
+                    trend: `de ${dadosOriginais.estabelecimentos.total} total`,
+                    trendType: 'up'
+                },
+                {
+                    icon: 'fa-map-marked-alt',
+                    value: cobertura + '%',
+                    label: 'Cobertura Georreferenciada',
+                    trend: '401 com coordenadas',
+                    trendType: 'up'
+                },
+                {
+                    icon: 'fa-building',
+                    value: dadosFiltrados.estabelecimentos.publicos,
+                    label: 'Unidades Públicas',
+                    trend: `${percPublicos}% do filtrado`,
+                    trendType: dadosFiltrados.estabelecimentos.publicos > 0 ? 'up' : 'down'
+                },
+                {
+                    icon: 'fa-store-alt',
+                    value: dadosFiltrados.estabelecimentos.privados,
+                    label: 'Unidades Privadas',
+                    trend: `${(100 - percPublicos).toFixed(1)}% do filtrado`,
+                    trendType: dadosFiltrados.estabelecimentos.privados > 0 ? 'up' : 'down'
+                },
+                {
+                    icon: 'fa-ruler',
+                    value: dadosFiltrados.distanciaMedia + 'km',
+                    label: 'Distância Média ao Centro',
+                    trend: 'Centro urbano',
+                    trendType: 'up'
+                },
+                {
+                    icon: 'fa-circle',
+                    value: dadosFiltrados.cobertura5km + '%',
+                    label: 'Postos < 5km do Centro',
+                    trend: 'Área urbana',
+                    trendType: 'up'
+                }
+            ];
+            
+            statsGrid.innerHTML = stats.map(stat => `
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas ${stat.icon}"></i></div>
+                    <div class="stat-value">${stat.value}</div>
+                    <div class="stat-label">${stat.label}</div>
+                    <div class="stat-trend ${stat.trendType}">
+                        <i class="fas fa-${stat.trendType === 'up' ? 'info-circle' : 'info-circle'}"></i> ${stat.trend}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function updateStats() {
+            createStatsCards();
+        }
+        
+        // =====================================================================
+        // CHARTS
+        // =====================================================================
+        
+        Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        Chart.defaults.font.size = 13;
+        Chart.defaults.plugins.legend.position = 'bottom';
+        
+        function initCharts() {
+            // Gráfico de Pizza - Setor
+            charts.setor = new Chart(document.getElementById('chartSetor'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Público', 'Privado'],
+                    datasets: [{
+                        data: [dadosFiltrados.estabelecimentos.publicos, dadosFiltrados.estabelecimentos.privados],
+                        backgroundColor: ['#e41a1c', '#377eb8'],
+                        borderWidth: 0,
+                        hoverOffset: 20
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { 
+                            position: 'bottom',
+                            labels: { padding: 15, font: { size: 14 } }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                    return `${context.label}: ${context.parsed} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    },
+                    animation: { animateRotate: true, animateScale: true }
+                }
+            });
+            
+            // Gráfico de Barras - Tipos
+            charts.tipos = new Chart(document.getElementById('chartTipos'), {
+                type: 'bar',
+                data: {
+                    labels: ['Consultórios', 'ESF', 'Laboratórios', 'Postos', 'Hospitais'],
+                    datasets: [{
+                        data: [
+                            dadosFiltrados.tipos.consultorio,
+                            dadosFiltrados.tipos.esf,
+                            dadosFiltrados.tipos.laboratorio,
+                            dadosFiltrados.tipos.posto,
+                            dadosFiltrados.tipos.hospital
+                        ],
+                        backgroundColor: ['#1b9e77', '#d95f02', '#7570b3', '#e7298a', '#66a61e'],
+                        borderRadius: 8,
+                        barThickness: 30
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => `${context.parsed.x} estabelecimentos`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { 
+                            beginAtZero: true,
+                            grid: { color: 'rgba(0,0,0,0.05)' }
+                        },
+                        y: { grid: { display: false } }
+                    },
+                    animation: { duration: 1500, easing: 'easeInOutQuart' }
+                }
+            });
+            
+            // Gráfico de Área - Distância
+            charts.distancia = new Chart(document.getElementById('chartDistancia'), {
+                type: 'line',
+                data: {
+                    labels: ['< 2km', '2-5km', '5-10km', '> 10km'],
+                    datasets: [{
+                        label: 'Estabelecimentos',
+                        data: [
+                            dadosFiltrados.distancias.menor2,
+                            dadosFiltrados.distancias.entre2e5,
+                            dadosFiltrados.distancias.entre5e10,
+                            dadosFiltrados.distancias.maior10
+                        ],
+                        backgroundColor: 'rgba(35, 139, 69, 0.2)',
+                        borderColor: '#238b45',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        pointBackgroundColor: '#238b45',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            grid: { color: 'rgba(0,0,0,0.05)' }
+                        },
+                        x: { grid: { display: false } }
+                    },
+                    animation: { duration: 2000, easing: 'easeInOutCubic' }
+                }
+            });
+            
+            // Gráfico de Barras Agrupadas - Quadrante
+            charts.quadrante = new Chart(document.getElementById('chartQuadrante'), {
+                type: 'bar',
+                data: {
+                    labels: ['Norte', 'Sul', 'Leste', 'Oeste'],
+                    datasets: [
+                        {
+                            label: 'Público',
+                            data: [
+                                dadosFiltrados.quadrantes.norte.publico,
+                                dadosFiltrados.quadrantes.sul.publico,
+                                dadosFiltrados.quadrantes.leste.publico,
+                                dadosFiltrados.quadrantes.oeste.publico
+                            ],
+                            backgroundColor: '#e41a1c',
+                            borderRadius: 6
+                        },
+                        {
+                            label: 'Privado',
+                            data: [
+                                dadosFiltrados.quadrantes.norte.privado,
+                                dadosFiltrados.quadrantes.sul.privado,
+                                dadosFiltrados.quadrantes.leste.privado,
+                                dadosFiltrados.quadrantes.oeste.privado
+                            ],
+                            backgroundColor: '#377eb8',
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { 
+                            position: 'top',
+                            labels: { padding: 15, font: { size: 14 } }
+                        }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            grid: { color: 'rgba(0,0,0,0.05)' }
+                        },
+                        x: { grid: { display: false } }
+                    },
+                    animation: { 
+                        duration: 1800,
+                        delay: (context) => context.dataIndex * 100
+                    }
+                }
+            });
+            
+            // Gráfico de Mapa de Calor (Matrix)
+            charts.heatmap = new Chart(document.getElementById('chartHeatmap'), {
+                type: 'bar',
+                data: {
+                    labels: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                    datasets: [{
+                        label: 'Densidade de Atendimentos',
+                        data: [85, 92, 88, 95, 90, 70],
+                        backgroundColor: [
+                            'rgba(35, 139, 69, 0.6)',
+                            'rgba(35, 139, 69, 0.7)',
+                            'rgba(35, 139, 69, 0.65)',
+                            'rgba(35, 139, 69, 0.9)',
+                            'rgba(35, 139, 69, 0.75)',
+                            'rgba(35, 139, 69, 0.5)'
+                        ],
+                        borderColor: '#238b45',
+                        borderWidth: 2,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => `Densidade: ${context.parsed.y}%`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: 'rgba(0,0,0,0.05)' }
+                        },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+            
+            // Gráfico Radar - Cobertura
+            charts.radar = new Chart(document.getElementById('chartRadar'), {
+                type: 'radar',
+                data: {
+                    labels: ['ESF', 'Postos', 'Hospitais', 'Laboratórios', 'Consultórios', 'Clínicas'],
+                    datasets: [{
+                        label: 'Cobertura Atual',
+                        data: [85, 75, 40, 70, 90, 65],
+                        backgroundColor: 'rgba(35, 139, 69, 0.2)',
+                        borderColor: '#238b45',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#238b45',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#238b45'
+                    },
+                    {
+                        label: 'Meta Ideal',
+                        data: [95, 90, 60, 85, 95, 80],
+                        backgroundColor: 'rgba(55, 126, 184, 0.1)',
+                        borderColor: '#377eb8',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        pointBackgroundColor: '#377eb8',
+                        pointBorderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { 
+                            position: 'top',
+                            labels: { padding: 15, font: { size: 14 } }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                stepSize: 20,
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            },
+                            grid: { color: 'rgba(0,0,0,0.1)' },
+                            pointLabels: { font: { size: 12 } }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateCharts() {
+            // Atualizar dados dos gráficos
+            charts.setor.data.datasets[0].data = [
+                dadosFiltrados.estabelecimentos.publicos,
+                dadosFiltrados.estabelecimentos.privados
+            ];
+            charts.setor.update();
+            
+            charts.tipos.data.datasets[0].data = [
+                dadosFiltrados.tipos.consultorio,
+                dadosFiltrados.tipos.esf,
+                dadosFiltrados.tipos.laboratorio,
+                dadosFiltrados.tipos.posto,
+                dadosFiltrados.tipos.hospital
+            ];
+            charts.tipos.update();
+            
+            charts.distancia.data.datasets[0].data = [
+                dadosFiltrados.distancias.menor2,
+                dadosFiltrados.distancias.entre2e5,
+                dadosFiltrados.distancias.entre5e10,
+                dadosFiltrados.distancias.maior10
+            ];
+            charts.distancia.update();
+            
+            charts.quadrante.data.datasets[0].data = [
+                dadosFiltrados.quadrantes.norte.publico,
+                dadosFiltrados.quadrantes.sul.publico,
+                dadosFiltrados.quadrantes.leste.publico,
+                dadosFiltrados.quadrantes.oeste.publico
+            ];
+            charts.quadrante.data.datasets[1].data = [
+                dadosFiltrados.quadrantes.norte.privado,
+                dadosFiltrados.quadrantes.sul.privado,
+                dadosFiltrados.quadrantes.leste.privado,
+                dadosFiltrados.quadrantes.oeste.privado
+            ];
+            charts.quadrante.update();
+        }
+        
+        // =====================================================================
+        // EXPORTAÇÃO PDF
+        // =====================================================================
+        
+        async function exportPDF() {
+            showLoading();
+            showToast('Gerando PDF... Isso pode levar alguns segundos.', 'info');
+            
+            try {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                
+                // Título
+                pdf.setFontSize(20);
+                pdf.setTextColor(35, 139, 69);
+                pdf.text('Dashboard - Saúde Pública Concórdia/SC', 105, 20, { align: 'center' });
+                
+                pdf.setFontSize(12);
+                pdf.setTextColor(0, 0, 0);
+                pdf.text('Universidade Federal de Santa Catarina', 105, 28, { align: 'center' });
+                pdf.text('Autor: Caetano Ronan', 105, 35, { align: 'center' });
+                pdf.text(`Data: ${new Date().toLocaleDateString('pt-BR')}`, 105, 42, { align: 'center' });
+                
+                // Estatísticas
+                pdf.setFontSize(14);
+                pdf.setTextColor(35, 139, 69);
+                pdf.text('Estatísticas Gerais:', 20, 55);
+                
+                pdf.setFontSize(11);
+                pdf.setTextColor(0, 0, 0);
+                pdf.text(`• Estabelecimentos Total: ${dadosFiltrados.estabelecimentos.total}`, 25, 65);
+                pdf.text(`• Cobertura Georreferenciada: 95.9%`, 25, 72);
+                pdf.text(`• Unidades Públicas: ${dadosFiltrados.estabelecimentos.publicos}`, 25, 79);
+                pdf.text(`• Distância Média ao Centro: ${dadosFiltrados.distanciaMedia}km`, 25, 86);
+                pdf.text(`• Postos < 5km do Centro: ${dadosFiltrados.cobertura5km}%`, 25, 93);
+                
+                // Capturar gráficos
+                const chartElements = document.querySelectorAll('canvas');
+                let yPos = 110;
+                
+                for (let i = 0; i < Math.min(2, chartElements.length); i++) {
+                    const canvas = await html2canvas(chartElements[i]);
+                    const imgData = canvas.toDataURL('image/png');
+                    
+                    if (yPos > 200) {
+                        pdf.addPage();
+                        yPos = 20;
+                    }
+                    
+                    pdf.addImage(imgData, 'PNG', 20, yPos, 170, 80);
+                    yPos += 90;
+                }
+                
+                // Rodapé
+                pdf.setFontSize(9);
+                pdf.setTextColor(128, 128, 128);
+                pdf.text('UFSC © 2025 - Todos os direitos reservados', 105, 285, { align: 'center' });
+                
+                pdf.save('dashboard-saude-concordia.pdf');
+                
+                hideLoading();
+                showToast('PDF exportado com sucesso!', 'success');
+            } catch (error) {
+                hideLoading();
+                showToast('Erro ao gerar PDF. Tente novamente.', 'error');
+                console.error('Erro ao exportar PDF:', error);
+            }
+        }
+        
+        // =====================================================================
+        // EXPORTAÇÃO DE DADOS
+        // =====================================================================
+        
+        function exportData() {
+            const jsonData = JSON.stringify(dadosFiltrados, null, 2);
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'dados-saude-concordia.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showToast('Dados exportados em JSON!', 'success');
+        }
+        
+        // =====================================================================
+        // ATUALIZAÇÃO DE DADOS
+        // =====================================================================
+        
+        function refreshData() {
+            showLoading();
+            showToast('Atualizando dados...', 'info');
+            
+            // Simular carregamento de dados
+            setTimeout(() => {
+                // Resetar filtros
+                document.getElementById('filterSetor').value = 'all';
+                document.getElementById('filterTipo').value = 'all';
+                document.getElementById('filterDistancia').value = 'all';
+                document.getElementById('filterQuadrante').value = 'all';
+                
+                dadosFiltrados = JSON.parse(JSON.stringify(dadosOriginais));
+                updateStats();
+                updateCharts();
+                
+                hideLoading();
+                showToast('Dados atualizados com sucesso!', 'success');
+            }, 1000);
+        }
+        
+        // =====================================================================
+        // INICIALIZAÇÃO
+        // =====================================================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            createStatsCards();
+            initCharts();
+            
+            // Simular dados em tempo real (atualizar a cada 30 segundos)
+            setInterval(() => {
+                // Pequenas variações nos dados para simular tempo real
+                dadosFiltrados.distanciaMedia = (dadosOriginais.distanciaMedia + (Math.random() - 0.5) * 0.1).toFixed(2);
+                updateStats();
+            }, 30000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+# Arquivos grandes (>100MB) - não enviar para GitHub
+calor_concordia.tif
+SC_setores_CD2022.gpkg
+mapa_estabelecimentos_concordia.html
+temp_files/
