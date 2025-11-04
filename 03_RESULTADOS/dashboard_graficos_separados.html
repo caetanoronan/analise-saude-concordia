@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <script>
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+    }
+    </script>
+    <meta charset="UTF-8">
+    <title>Dashboard - Gráficos Separados e Explicativos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+    body.dark-mode { background: #1a2426; }
+    .container.dark-mode { background: #222e31; color: #e0f2f1; }
+    body.dark-mode h1, body.dark-mode h2 { color: #99d8c9; }
+    body.dark-mode .grafico-card { background: #223; border-left: 5px solid #66c2a4; color: #e0f2f1; }
+    body.dark-mode .grafico-explicacao, body.dark-mode th, body.dark-mode td { color: #e0f2f1; }
+    body.dark-mode .grafico-img { border: 3px solid #99d8c9; }
+    body.dark-mode th { background: #223; color: #99d8c9; }
+    body.dark-mode .footer { color: #99d8c9; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #ccece6; margin: 0; padding: 0; }
+        .container { max-width: 980px; margin: 32px auto; background: #fff; border-radius: 14px; box-shadow: 0 2px 16px rgba(0,0,0,0.10); padding: 36px; }
+        h1 { color: #238b45; margin-bottom: 8px; font-size: 2.2em; }
+        h2 { color: #66c2a4; margin-top: 36px; font-size: 1.4em; }
+        .grafico-card { background: #edf8fb; border-left: 5px solid #238b45; border-radius: 10px; padding: 22px 28px; margin-bottom: 36px; box-shadow: 0 1px 6px rgba(0,0,0,0.04); display: flex; flex-wrap: wrap; align-items: flex-start; }
+        .grafico-img { width: 320px; max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.10); margin-right: 32px; margin-bottom: 12px; background: #fff; border: 3px solid #66c2a4; }
+        .grafico-explicacao { flex: 1; min-width: 220px; font-size: 1.08em; color: #333; }
+        @media (max-width: 700px) {
+            .container { padding: 12px; }
+            h1 { font-size: 1.3em; }
+            h2 { font-size: 1.1em; }
+            .grafico-card { flex-direction: column; padding: 12px 10px; }
+            .grafico-img { margin-right: 0; margin-bottom: 18px; width: 100%; }
+        }
+        .footer { margin-top: 48px; font-size: 0.97em; color: #66c2a4; text-align: center; }
+    </style>
+</head>
+<body>
+    <button onclick="toggleDarkMode()" style="position:fixed;top:18px;right:18px;z-index:10001;background:#238b45;color:#fff;border:none;border-radius:6px;padding:8px 18px;font-size:1em;box-shadow:0 2px 8px rgba(0,0,0,0.15);cursor:pointer;">Alternar Modo Dark</button>
+    <div class="container">
+        <h1>Dashboard - Gráficos Separados e Explicativos</h1>
+        <h2>Distribuição das Distâncias ao Centro</h2>
+        <div class="grafico-card">
+            <img src="grafico_distancias.png" alt="Distribuição das Distâncias ao Centro" class="grafico-img">
+            <div class="grafico-explicacao">
+                <b>O que mostra?</b><br>
+                Este gráfico apresenta a frequência de estabelecimentos de saúde em relação à distância do centro urbano de Concórdia.<br><br>
+                <b>Interpretação:</b><br>
+                A maioria dos estabelecimentos está localizada a menos de 10 km do centro, com concentração máxima próxima ao núcleo urbano. A linha vermelha indica a média das distâncias (8,9 km), evidenciando boa acessibilidade para grande parte da população. Pontos mais distantes representam áreas rurais ou periféricas, sugerindo oportunidades para expansão da rede.
+            </div>
+        </div>
+        <!-- Adicione outros gráficos aqui, cada um em sua própria grafico-card -->
+        <div class="footer">
+            <b>Projeto:</b> Análise Espacial dos Estabelecimentos de Saúde &mdash; Concórdia/SC<br>
+            <b>Contato:</b> caetano.ronan@ufsc.br &mdash; <b>Data:</b> Outubro 2025<br>
+            <b>UFSC</b> &copy; 2025
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Explicativo - Saúde Concórdia/SC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f8f8f8; margin: 0; padding: 0; }
+        .container { max-width: 900px; margin: 32px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px; }
+        h1 { color: #238b45; margin-bottom: 8px; }
+        h2 { color: #377eb8; margin-top: 32px; }
+        .img-dashboard { width: 100%; max-width: 800px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.10); margin: 24px 0; }
+        .grafico { margin: 32px 0; }
+        .explicacao { background: #edf8fb; border-left: 4px solid #238b45; padding: 18px 22px; border-radius: 8px; margin-bottom: 24px; }
+        table { border-collapse: collapse; width: 100%; margin: 18px 0; }
+        th, td { border: 1px solid #ccece6; padding: 8px 12px; text-align: center; }
+        th { background: #ccece6; color: #238b45; }
+        .footer { margin-top: 40px; font-size: 0.95em; color: #666; text-align: center; }
+        .badge { display: inline-block; background: #ccece6; color: #238b45; border-radius: 6px; padding: 2px 10px; font-size: 0.95em; margin-left: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard Explicativo - Saúde Pública Concórdia/SC <span class="badge">Outubro 2025</span></h1>
+        <div class="explicacao">
+            <b>Este painel apresenta os principais gráficos, tabelas e mapas da análise espacial dos estabelecimentos de saúde de Concórdia/SC, com explicações detalhadas para cada visualização.</b>
+        </div>
+        <h2>1. Estatísticas Gerais</h2>
+        <table>
+            <tr><th>Total de Estabelecimentos</th><th>Públicos</th><th>Privados</th><th>Cobertura Georreferenciada</th></tr>
+            <tr><td>30</td><td>30 (100%)</td><td>0 (0%)</td><td>100%</td></tr>
+        </table>
+        <div class="explicacao">
+            <b>Interpretação:</b> Todos os estabelecimentos mapeados são públicos, com cobertura total de coordenadas válidas, garantindo precisão na análise espacial.
+        </div>
+        <h2>2. Acessibilidade</h2>
+        <table>
+            <tr><th>Distância Média</th><th>Distância Mínima</th><th>Distância Máxima</th><th>Desvio Padrão</th></tr>
+            <tr><td>6,72 km</td><td>0,45 km</td><td>21,22 km</td><td>5,91 km</td></tr>
+        </table>
+        <div class="explicacao">
+            <b>Interpretação:</b> A maioria dos estabelecimentos está próxima ao centro urbano, facilitando o acesso da população. Apenas 1 unidade está a mais de 20 km do centro.
+        </div>
+        <h2>3. Distribuição por Proximidade</h2>
+        <table>
+            <tr><th>≤ 2km</th><th>≤ 5km</th><th>≤ 10km</th><th>> 20km</th></tr>
+            <tr><td>8 (26,7%)</td><td>16 (53,3%)</td><td>21 (70,0%)</td><td>1 (3,3%)</td></tr>
+        </table>
+        <div class="explicacao">
+            <b>Interpretação:</b> Mais da metade dos estabelecimentos está a menos de 5 km do centro, indicando boa cobertura urbana.
+        </div>
+        <h2>4. Por Tipo de Estabelecimento</h2>
+        <table>
+            <tr><th>Tipo</th><th>Quantidade</th><th>Dist. Média</th><th>Dist. Min</th><th>Dist. Max</th><th>Públicos</th></tr>
+            <tr><td>ESF</td><td>15</td><td>2,7 km</td><td>0,5 km</td><td>9,2 km</td><td>15</td></tr>
+            <tr><td>PS</td><td>15</td><td>10,7 km</td><td>1,5 km</td><td>21,2 km</td><td>15</td></tr>
+        </table>
+        <div class="explicacao">
+            <b>Interpretação:</b> As ESFs estão mais próximas do centro, enquanto os PS estão distribuídos em áreas mais periféricas, ampliando o alcance territorial.
+        </div>
+        <h2>5. Por Quadrante Geográfico</h2>
+        <table>
+            <tr><th>Quadrante</th><th>Estabelecimentos</th><th>Dist. Média</th><th>Públicos</th><th>% Público</th></tr>
+            <tr><td>NE</td><td>7</td><td>5,1 km</td><td>7</td><td>100%</td></tr>
+            <tr><td>NW</td><td>8</td><td>4,7 km</td><td>8</td><td>100%</td></tr>
+            <tr><td>SE</td><td>8</td><td>9,1 km</td><td>8</td><td>100%</td></tr>
+            <tr><td>SW</td><td>7</td><td>8,0 km</td><td>7</td><td>100%</td></tr>
+        </table>
+        <div class="explicacao">
+            <b>Interpretação:</b> Todos os quadrantes da cidade possuem cobertura pública, com distâncias médias variando conforme a densidade populacional e localização dos bairros.
+        </div>
+        <h2>6. Visualização dos Dashboards</h2>
+        <div class="grafico">
+            <img src="dashboard_completo_colorbrewer.png" alt="Dashboard Completo ColorBrewer" class="img-dashboard">
+            <div class="explicacao">
+                <b>Este dashboard apresenta o panorama geral, mapas interativos e camadas temáticas, facilitando a análise visual da distribuição dos estabelecimentos.</b>
+            </div>
+        </div>
+        <div class="grafico">
+            <img src="dashboard_colorbrewer_simplificado.png" alt="Dashboard Simplificado ColorBrewer" class="img-dashboard">
+            <div class="explicacao">
+                <b>Versão simplificada do dashboard, destacando apenas os principais indicadores e mapas básicos para consulta rápida.</b>
+            </div>
+        </div>
+        <div class="footer">
+            <b>Projeto:</b> Análise Espacial dos Estabelecimentos de Saúde &mdash; Concórdia/SC<br>
+            <b>Contato:</b> caetano.ronan@ufsc.br &mdash; <b>Data:</b> Outubro 2025<br>
+            <b>UFSC</b> &copy; 2025
+        </div>
+    </div>
+</body>
+</html>

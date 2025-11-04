@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <script>
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+    }
+    </script>
+    <meta charset="UTF-8">
+    <title>Dashboard Interativo - Saúde Concórdia/SC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+    body.dark-mode { background: #1a2426; }
+    .container.dark-mode { background: #222e31; color: #e0f2f1; }
+    body.dark-mode h1, body.dark-mode h2, body.dark-mode .card-title { color: #99d8c9; }
+    body.dark-mode .card { background: #223; border-left: 5px solid #66c2a4; color: #e0f2f1; }
+    body.dark-mode .card-content, body.dark-mode th, body.dark-mode td { color: #e0f2f1; }
+    body.dark-mode .img-dashboard { border: 3px solid #99d8c9; }
+    body.dark-mode th { background: #223; color: #99d8c9; }
+    body.dark-mode .footer { color: #99d8c9; }
+    body.dark-mode .badge { background: #238b45; color: #fff; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #ccece6; margin: 0; padding: 0; }
+        .container { max-width: 980px; margin: 32px auto; background: #fff; border-radius: 14px; box-shadow: 0 2px 16px rgba(0,0,0,0.10); padding: 36px; }
+        h1 { color: #238b45; margin-bottom: 8px; font-size: 2.2em; }
+        h2 { color: #66c2a4; margin-top: 36px; font-size: 1.4em; }
+        .card { background: #edf8fb; border-left: 5px solid #238b45; border-radius: 10px; padding: 22px 28px; margin-bottom: 28px; box-shadow: 0 1px 6px rgba(0,0,0,0.04); }
+        .card-title { font-size: 1.15em; color: #238b45; margin-bottom: 8px; font-weight: bold; }
+        .card-content { font-size: 1.08em; color: #333; }
+        .img-dashboard { width: 100%; max-width: 850px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.10); margin: 24px 0; border: 3px solid #66c2a4; }
+        table { border-collapse: collapse; width: 100%; margin: 18px 0; }
+        th, td { border: 1px solid #ccece6; padding: 8px 12px; text-align: center; }
+        th { background: #ccece6; color: #238b45; }
+        .footer { margin-top: 48px; font-size: 0.97em; color: #66c2a4; text-align: center; }
+        .badge { display: inline-block; background: #66c2a4; color: #fff; border-radius: 6px; padding: 2px 10px; font-size: 0.95em; margin-left: 8px; }
+        @media (max-width: 700px) {
+            .container { padding: 12px; }
+            h1 { font-size: 1.3em; }
+            h2 { font-size: 1.1em; }
+            .card { padding: 12px 10px; }
+        }
+    </style>
+</head>
+<body>
+    <button onclick="toggleDarkMode()" style="position:fixed;top:18px;right:18px;z-index:10001;background:#238b45;color:#fff;border:none;border-radius:6px;padding:8px 18px;font-size:1em;box-shadow:0 2px 8px rgba(0,0,0,0.15);cursor:pointer;">Alternar Modo Dark</button>
+    <div class="container">
+    <h1>Dashboard Interativo - Saúde Pública Concórdia/SC <span class="badge">Outubro 2025</span></h1>
+    <img src="DASHBOARD_ANALISE_ESPACIAL_CONCORDIA.png" alt="Dashboard Analítico" class="img-dashboard">
+        <div class="card">
+            <div class="card-title">📋 Sobre esta Análise</div>
+            <div class="card-content">
+                Este dashboard apresenta uma análise espacial completa dos estabelecimentos de saúde de Concórdia/SC, utilizando técnicas de geoprocessamento, mapas interativos e visualização temática com paletas ColorBrewer. O objetivo é apoiar o planejamento territorial e a gestão pública municipal.
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">🏥 Estatísticas Gerais</div>
+            <div class="card-content">
+                <table>
+                    <tr><th>Total de Estabelecimentos</th><th>Públicos</th><th>Privados</th><th>Cobertura Georreferenciada</th></tr>
+                    <tr><td>30</td><td>30 (100%)</td><td>0 (0%)</td><td>100%</td></tr>
+                </table>
+                Todos os estabelecimentos mapeados são públicos, com cobertura total de coordenadas válidas.
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">📏 Acessibilidade</div>
+            <div class="card-content">
+                <table>
+                    <tr><th>Distância Média</th><th>Distância Mínima</th><th>Distância Máxima</th><th>Desvio Padrão</th></tr>
+                    <tr><td>6,72 km</td><td>0,45 km</td><td>21,22 km</td><td>5,91 km</td></tr>
+                </table>
+                A maioria dos estabelecimentos está próxima ao centro urbano, facilitando o acesso da população.
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">📊 Distribuição por Proximidade</div>
+            <div class="card-content">
+                <table>
+                    <tr><th>≤ 2km</th><th>≤ 5km</th><th>≤ 10km</th><th>> 20km</th></tr>
+                    <tr><td>8 (26,7%)</td><td>16 (53,3%)</td><td>21 (70,0%)</td><td>1 (3,3%)</td></tr>
+                </table>
+                Mais da metade dos estabelecimentos está a menos de 5 km do centro.
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">🏷️ Por Tipo de Estabelecimento</div>
+            <div class="card-content">
+                <table>
+                    <tr><th>Tipo</th><th>Quantidade</th><th>Dist. Média</th><th>Dist. Min</th><th>Dist. Max</th><th>Públicos</th></tr>
+                    <tr><td>ESF</td><td>15</td><td>2,7 km</td><td>0,5 km</td><td>9,2 km</td><td>15</td></tr>
+                    <tr><td>PS</td><td>15</td><td>10,7 km</td><td>1,5 km</td><td>21,2 km</td><td>15</td></tr>
+                </table>
+                As ESFs estão mais próximas do centro, enquanto os PS estão distribuídos em áreas mais periféricas.
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">🗺️ Por Quadrante Geográfico</div>
+            <div class="card-content">
+                <table>
+                    <tr><th>Quadrante</th><th>Estabelecimentos</th><th>Dist. Média</th><th>Públicos</th><th>% Público</th></tr>
+                    <tr><td>NE</td><td>7</td><td>5,1 km</td><td>7</td><td>100%</td></tr>
+                    <tr><td>NW</td><td>8</td><td>4,7 km</td><td>8</td><td>100%</td></tr>
+                    <tr><td>SE</td><td>8</td><td>9,1 km</td><td>8</td><td>100%</td></tr>
+                    <tr><td>SW</td><td>7</td><td>8,0 km</td><td>7</td><td>100%</td></tr>
+                </table>
+                Todos os quadrantes da cidade possuem cobertura pública.
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">🖼️ Visualização dos Dashboards</div>
+            <div class="card-content">
+                <img src="dashboard_completo_colorbrewer.png" alt="Dashboard Completo ColorBrewer" class="img-dashboard">
+                <img src="dashboard_colorbrewer_simplificado.png" alt="Dashboard Simplificado ColorBrewer" class="img-dashboard">
+                Os dashboards apresentam mapas interativos, camadas temáticas e indicadores visuais para consulta rápida.
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">💡 Principais Insights e Recomendações</div>
+            <div class="card-content">
+                <ul>
+                    <li>Distribuição equilibrada: 70% dos estabelecimentos estão a menos de 10km do centro</li>
+                    <li>Acessibilidade pública: 53% dos postos públicos estão dentro de 5km</li>
+                    <li>Diversidade de serviços: 2 tipos principais de unidades</li>
+                    <li>Cobertura territorial: presença em todos os quadrantes</li>
+                    <li>Recomendações: fortalecer transporte sanitário, ampliar telemedicina, otimizar especialidades</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer">
+            <b>Projeto:</b> Análise Espacial dos Estabelecimentos de Saúde &mdash; Concórdia/SC<br>
+            <b>Contato:</b> caetano.ronan@ufsc.br &mdash; <b>Data:</b> Outubro 2025<br>
+            <b>UFSC</b> &copy; 2025
+        </div>
+    </div>
+</body>
+</html>

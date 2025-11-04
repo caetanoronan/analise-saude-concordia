@@ -963,17 +963,39 @@ def criar_mapa_avancado_treelayer(df):
                   font-weight: 600;">
             Município de Concórdia/SC
         </p>
-        <p style="margin: 5px 0 0 0; 
+    </div>
+    '''
+    
+    # === ADICIONAR RODAPÉ COM CRÉDITOS ===
+    rodape_html = '''
+    <div style="position: fixed; 
+                bottom: 10px; 
+                left: 50%; 
+                transform: translateX(-50%);
+                width: auto;
+                max-width: 95%;
+                height: auto;
+                background-color: rgba(255, 255, 255, 0.95);
+                border: 2px solid #238b45;
+                border-radius: 8px;
+                z-index: 9999;
+                padding: 10px 20px;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+                text-align: center;
+                font-family: 'Arial', sans-serif;">
+        <p style="margin: 0; 
                   padding: 0; 
                   font-size: 12px; 
-                  color: #666;
-                  font-style: italic;">
-            Fonte: CNES/DataSUS | IBGE | Elaboração: UFSC
+                  color: #333;
+                  line-height: 1.6;">
+            <b>Fonte:</b> CNES/DataSUS | IBGE | 
+            <b>Autor:</b> Ronan Armando Caetano, Graduando em Ciências Biológicas UFSC e Técnico em Geoprocessamento IFSC
         </p>
     </div>
     '''
     
     mapa.get_root().html.add_child(folium.Element(titulo_html))
+    mapa.get_root().html.add_child(folium.Element(rodape_html))
     
     print("✅ Mapa avançado criado com TreeLayerControl")
     return mapa

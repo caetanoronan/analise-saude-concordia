@@ -1,0 +1,4 @@
+﻿"date","username","product","sku","model","quantity","unit_type","applied_cost_per_quantity","gross_amount","discount_amount","net_amount","exceeds_quota","total_monthly_quota","organization","cost_center_name"
+"2025-10-28","caetanoronan","copilot","copilot_premium_request","Auto: Claude Sonnet 4.5","7.200000000000001","requests","0.04","0.288","0.288","0","False","300","",""
+"2025-10-28","caetanoronan","copilot","copilot_premium_request","Auto: GPT-5","9.000000000000002","requests","0.04","0.35999999999999993","0.35999999999999993","0","False","300","",""
+"2025-10-28","caetanoronan","copilot","copilot_premium_request","Claude Sonnet 4","4","requests","0.04","0.16","0.16","0","False","300","",""

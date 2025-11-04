@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Avançado - Saúde Concórdia/SC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f8f8f8; margin: 0; padding: 0; }
+        .container { max-width: 900px; margin: 32px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px; }
+        h1 { color: #238b45; margin-bottom: 8px; }
+        h2 { color: #377eb8; margin-top: 32px; }
+        .img-dashboard { width: 100%; max-width: 800px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.10); margin: 24px 0; }
+        .info { font-size: 1.1em; margin-bottom: 18px; }
+        ul { margin: 0 0 18px 24px; }
+        .footer { margin-top: 40px; font-size: 0.95em; color: #666; text-align: center; }
+        .badge { display: inline-block; background: #ccece6; color: #238b45; border-radius: 6px; padding: 2px 10px; font-size: 0.95em; margin-left: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard Avançado - Saúde Pública Concórdia/SC <span class="badge">Outubro 2025</span></h1>
+        <div class="info">
+            <b>Autor:</b> Caetano Ronan &mdash; <b>Instituição:</b> UFSC<br>
+            <b>Fonte dos dados:</b> CNES/DataSUS<br>
+            <b>Município:</b> Concórdia/SC &mdash; <b>Código IBGE:</b> 420430<br>
+            <b>Estabelecimentos mapeados:</b> 418 (401 com coordenadas válidas)
+        </div>
+        <h2>Resumo Executivo</h2>
+        <ul>
+            <li><b>95,9%</b> de cobertura georreferenciada</li>
+            <li><b>98</b> unidades públicas mapeadas (<b>23,4%</b> do total)</li>
+            <li><b>79,6%</b> dos postos públicos a menos de 5km do centro urbano</li>
+            <li><b>3,97 km</b> distância média dos estabelecimentos ao centro</li>
+            <li><b>5 mapas HTML</b> interativos gerados</li>
+        </ul>
+        <h2>Visualização do Dashboard</h2>
+        <img src="dashboard_completo_colorbrewer.png" alt="Dashboard Avançado ColorBrewer" class="img-dashboard">
+        <h2>Metodologia</h2>
+        <ul>
+            <li>Processamento dos dados via <b>pandas</b> e <b>GeoPandas</b></li>
+            <li>Mapas interativos com <b>Folium</b> e <b>TreeLayerControl</b></li>
+            <li>Paletas <b>ColorBrewer</b> para visualização temática</li>
+            <li>Filtro espacial rigoroso por limites municipais</li>
+            <li>Popups detalhados com endereço, bairro e distância</li>
+        </ul>
+        <h2>Principais Insights</h2>
+        <ul>
+            <li><b>Distribuição Equilibrada:</b> maioria dos estabelecimentos próximos ao centro</li>
+            <li><b>Acessibilidade Pública:</b> alta concentração de postos públicos em áreas urbanas</li>
+            <li><b>Diversidade de Serviços:</b> ampla variedade de tipos de unidades</li>
+            <li><b>Cobertura Territorial:</b> presença em todos os quadrantes da cidade</li>
+        </ul>
+        <h2>Conclusões</h2>
+        <ul>
+            <li>Rede pública bem distribuída, mas com oportunidades de expansão em áreas rurais</li>
+            <li>Recomendações para fortalecer transporte sanitário e telemedicina</li>
+            <li>Mapas e relatórios facilitam o planejamento territorial e a tomada de decisão</li>
+        </ul>
+        <div class="footer">
+            <b>Projeto:</b> Análise Espacial dos Estabelecimentos de Saúde &mdash; Concórdia/SC<br>
+            <b>Contato:</b> caetano.ronan@ufsc.br &mdash; <b>Data:</b> Outubro 2025<br>
+            <b>UFSC</b> &copy; 2025
+        </div>
+    </div>
+</body>
+</html>
