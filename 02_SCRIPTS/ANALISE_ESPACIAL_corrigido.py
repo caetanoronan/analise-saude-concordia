@@ -2,9 +2,39 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import folium
 import numpy as np
+import os
 
-# Carregar dados
-df = pd.read_excel('Concordia_ps.xlsx', sheet_name='concordia_filtro')
+# Carregar dados com fallback (Excel → CSV processado)
+df = None
+
+# Obter diretório raiz do projeto
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+try:
+    caminho_excel = os.path.join(ROOT_DIR, 'Concordia_ps.xlsx')
+    df = pd.read_excel(caminho_excel, sheet_name='concordia_filtro')
+    print("📄 Fonte de dados: Concordia_ps.xlsx (planilha)")
+except Exception as e:
+    print(f"⚠️ Planilha não disponível ({e}); usando CSV processado.")
+    caminho_csv = os.path.join(ROOT_DIR, '01_DADOS', 'processados', 'concordia_saude_simples.csv')
+    df_raw = pd.read_csv(caminho_csv)
+    # Garantir tipos numéricos e limpar coordenadas inválidas
+    df_raw['LAT'] = pd.to_numeric(df_raw.get('LAT'), errors='coerce')
+    df_raw['LON'] = pd.to_numeric(df_raw.get('LON'), errors='coerce')
+    df_raw = df_raw.dropna(subset=['LAT', 'LON'])
+    # Mapear para o esquema esperado neste script
+    df = pd.DataFrame({
+        'Field7': df_raw.get('NOME', ''),
+        'Field8': df_raw.get('ENDERECO', ''),
+        'Field9': 'Concórdia/SC',
+        'Field11': df_raw.get('BAIRRO', ''),
+        'Field12': df_raw.get('CEP', ''),
+        'Field39': df_raw['LAT'],  # Latitude
+        'Field40': df_raw['LON'],  # Longitude
+    })
+    # Normalizar strings para evitar NaN em popups
+    for col in ['Field7', 'Field8', 'Field9', 'Field11', 'Field12']:
+        df[col] = df[col].fillna('')
 
 print("=== ANÁLISE ESPACIAL DOS ESTABELECIMENTOS DE SAÚDE - CONCÓRDIA/SC ===")
 
@@ -48,7 +78,7 @@ plt.legend(handles=legend_elements, loc='upper right')
 
 plt.tight_layout()
 plt.savefig('analise_espacial_concordia.png', dpi=300, bbox_inches='tight')
-plt.show()
+# plt.show()  # Desabilitado para execução não interativa
 
 # Estatísticas de dispersão
 print("\n" + "="*50)
@@ -77,6 +107,36 @@ print(f"PS: {len(ps_coords)} estabelecimentos")
 # Criar mapa interativo
 print("\nCriando mapa interativo...")
 mapa = folium.Map(location=[centro_lat, centro_lon], zoom_start=12)
+
+# === CARREGAR MUNICÍPIOS VIZINHOS PARA CONTEXTO REGIONAL ===
+def carregar_municipios_vizinhos():
+    """Carrega municípios vizinhos de Concórdia para contexto regional"""
+    try:
+        import geopandas as gpd
+        from shapely.geometry import Point
+        
+        shp_municipios = os.path.join(ROOT_DIR, "SC_Municipios_2024", "SC_Municipios_2024.shp")
+        if os.path.isfile(shp_municipios):
+            gdf_sc = gpd.read_file(shp_municipios)
+            if gdf_sc.crs is None or gdf_sc.crs.to_epsg() != 4326:
+                gdf_sc = gdf_sc.to_crs(epsg=4326)
+            
+            # Filtrar vizinhos num raio de ~60km
+            centro = Point(-52.0238, -27.2335)
+            gdf_sc['dist_centro'] = gdf_sc.geometry.centroid.distance(centro)
+            vizinhos = gdf_sc[gdf_sc['dist_centro'] < 0.6].copy()
+            
+            # Simplificar geometrias
+            gdf_viz_proj = vizinhos.to_crs(31982)
+            gdf_viz_proj['geometry'] = gdf_viz_proj['geometry'].simplify(200)
+            vizinhos = gdf_viz_proj.to_crs(4326)
+            
+            print(f"✅ {len(vizinhos)} municípios vizinhos carregados")
+            return vizinhos
+    except Exception as e:
+        print(f"⚠️ Erro ao carregar municípios vizinhos: {e}")
+    
+    return None
 
 # === CARREGAR LIMITES VIA API IBGE ===
 def carregar_limites_ibge():
@@ -145,8 +205,9 @@ def carregar_limites_ibge():
     
     return gdf_estado, gdf_municipio
 
-# Carregar limites
+# Carregar limites e municípios vizinhos
 gdf_estado, gdf_municipio = carregar_limites_ibge()
+gdf_vizinhos = carregar_municipios_vizinhos()
 
 # === FILTRO ESPACIAL: Remover estabelecimentos fora do limite municipal ===
 if gdf_municipio is not None and not gdf_municipio.empty:
@@ -199,7 +260,7 @@ else:
 if gdf_estado is not None and not gdf_estado.empty:
     folium.GeoJson(
         data=gdf_estado.__geo_interface__,
-        name='Limite Estadual (SC)',
+        name='🗺️ Limite Estadual (SC)',
         style_function=lambda x: {
             'color': '#2c7fb8',
             'weight': 2.5,
@@ -210,6 +271,27 @@ if gdf_estado is not None and not gdf_estado.empty:
         tooltip=folium.Tooltip('Estado de Santa Catarina'),
         popup=folium.Popup('<b>Estado de Santa Catarina</b><br>Área: ~95.730 km²<br>Fonte: IBGE', max_width=250)
     ).add_to(mapa)
+
+# Adicionar municípios vizinhos (contexto regional)
+if gdf_vizinhos is not None and not gdf_vizinhos.empty:
+    for idx, mun in gdf_vizinhos.iterrows():
+        nome_mun = mun.get('NM_MUN', 'Município')
+        area_km2 = mun.get('AREA_KM2', 'N/D')
+        
+        folium.GeoJson(
+            data=mun['geometry'].__geo_interface__,
+            name=f'🗺️ Municípios Vizinhos (31)',
+            style_function=lambda x: {
+                'color': '#969696',
+                'weight': 1.0,
+                'fillColor': '#d9d9d9',
+                'fillOpacity': 0.05,
+                'dashArray': '3, 3'
+            },
+            tooltip=folium.Tooltip(nome_mun),
+            popup=folium.Popup(f'<b>{nome_mun}</b><br>Área: {area_km2} km²<br>Contexto regional de Concórdia', max_width=200),
+            show=False
+        ).add_to(mapa)
 
 # Adicionar limite municipal
 if gdf_municipio is not None and not gdf_municipio.empty:
@@ -341,9 +423,21 @@ rodape_html = '''
 mapa.get_root().html.add_child(folium.Element(titulo_html))
 mapa.get_root().html.add_child(folium.Element(rodape_html))
 
+# Adicionar controle de camadas
+folium.LayerControl(collapsed=True, position='topleft').add_to(mapa)
+
 # Salvar mapa
 mapa.save('mapa_estabelecimentos_concordia.html')
 print("Mapa salvo como 'mapa_estabelecimentos_concordia.html'")
+
+# Copiar para docs/ para publicação (GitHub Pages)
+try:
+    os.makedirs('docs', exist_ok=True)
+    import shutil
+    shutil.copyfile('mapa_estabelecimentos_concordia.html', os.path.join('docs', 'mapa_estabelecimentos_concordia.html'))
+    print("📤 Copiado para docs/mapa_estabelecimentos_concordia.html")
+except Exception as e:
+    print(f"⚠️ Não foi possível copiar para docs/: {e}")
 
 print("\n" + "="*50)
 print("ANÁLISE CONCLUÍDA!")
