@@ -35,6 +35,13 @@ try:
     import shapefile as pyshp  # pyshp
 except ImportError:
     pyshp = None
+try:
+    import requests
+    import json
+except ImportError:
+    requests = None
+    json = None
+    print("⚠️ requests não disponível, limites municipais podem não ser carregados")
 
 # Caminhos do projeto (independentes do diretório atual)
 SCRIPT_DIR = os.path.dirname(__file__)
@@ -59,21 +66,121 @@ COLORBREWER_QUALITATIVE = {
     'Accent_8': ['#7fc97f', '#beaed4', '#fdc086', '#ffff99', '#386cb0', '#f0027f', '#bf5b17', '#666666']
 }
 
+def carregar_limites_ibge():
+    """
+    Carrega limites municipais e estaduais do IBGE via API com fallbacks robustos
+    
+    Returns:
+        tuple: (gdf_estado, gdf_municipio) ou (None, None) em caso de erro
+    """
+    print("📥 Carregando limites geográficos do IBGE...")
+    
+    # URLs da API do IBGE para malhas municipais
+    # Santa Catarina = UF 42, Concórdia = município 420430
+    url_estado_sc = "https://servicodados.ibge.gov.br/api/v3/malhas/estados/42?formato=application/vnd.geo+json"
+    url_municipio_concordia = "https://servicodados.ibge.gov.br/api/v3/malhas/municipios/420430?formato=application/vnd.geo+json"
+    
+    # URLs alternativas (versão estática hospedada no GitHub do IBGE)
+    url_estado_sc_alt = "https://raw.githubusercontent.com/tbrugz/geodata-br/master/geojson/geojs-42-mun.json"
+    
+    gdf_estado = None
+    gdf_municipio = None
+    
+    if requests is None or gpd is None:
+        print("⚠️ requests ou geopandas não disponíveis para carregar limites")
+        return None, None
+    
+    try:
+        # Carregar limite estadual de SC
+        print("   → Baixando limite estadual de Santa Catarina...")
+        response_estado = requests.get(url_estado_sc, timeout=30)
+        if response_estado.status_code == 200:
+            geojson_estado = response_estado.json()
+            gdf_estado = gpd.GeoDataFrame.from_features(geojson_estado['features'])
+            gdf_estado.crs = "EPSG:4326"
+            print(f"   ✅ Limite estadual carregado: {len(gdf_estado)} feições")
+        else:
+            print(f"   ⚠️ Erro ao baixar limite estadual: status {response_estado.status_code}")
+    
+    except Exception as e:
+        print(f"   ⚠️ Erro ao carregar limite estadual: {e}")
+    
+    try:
+        # Carregar limite municipal de Concórdia
+        print("   → Baixando limite municipal de Concórdia...")
+        response_municipio = requests.get(url_municipio_concordia, timeout=30)
+        if response_municipio.status_code == 200:
+            geojson_municipio = response_municipio.json()
+            gdf_municipio = gpd.GeoDataFrame.from_features(geojson_municipio['features'])
+            gdf_municipio.crs = "EPSG:4326"
+            print(f"   ✅ Limite municipal carregado: {len(gdf_municipio)} feições")
+        else:
+            print(f"   ⚠️ API IBGE indisponível (status {response_municipio.status_code}), tentando fonte alternativa...")
+            
+            # Fallback 1: Tentar URL alternativa do GitHub (geodata-br)
+            try:
+                response_alt = requests.get(url_estado_sc_alt, timeout=30)
+                if response_alt.status_code == 200:
+                    geojson_sc = response_alt.json()
+                    gdf_sc = gpd.GeoDataFrame.from_features(geojson_sc['features'])
+                    gdf_sc.crs = "EPSG:4326"
+                    
+                    # Filtrar Concórdia pelo código IBGE
+                    for col in gdf_sc.columns:
+                        if 'id' in col.lower() or 'cod' in col.lower():
+                            gdf_municipio = gdf_sc[gdf_sc[col].astype(str).str.contains('420430', na=False)]
+                            if not gdf_municipio.empty:
+                                print(f"   ✅ Limite municipal obtido da fonte alternativa!")
+                                break
+                    
+                    # Se não encontrou pelo código, tentar pelo nome
+                    if gdf_municipio is None or gdf_municipio.empty:
+                        for col in gdf_sc.columns:
+                            if 'name' in col.lower() or 'nome' in col.lower():
+                                gdf_municipio = gdf_sc[gdf_sc[col].astype(str).str.upper().str.contains('CONCORD', na=False)]
+                                if not gdf_municipio.empty:
+                                    print(f"   ✅ Limite municipal obtido por nome da fonte alternativa!")
+                                    break
+                            
+            except Exception as e2:
+                print(f"   ⚠️ Fonte alternativa também falhou: {e2}")
+    
+    except Exception as e:
+        print(f"   ⚠️ Erro ao carregar limite municipal: {e}")
+    
+    # Fallback 2: Tentar carregar de arquivo local (shapefile ou geopackage)
+    if gdf_municipio is None or (hasattr(gdf_municipio, 'empty') and gdf_municipio.empty):
+        try:
+            print("   → Tentando carregar limite municipal de arquivos locais...")
+            shp_local = os.path.join(ROOT_DIR, "Concordia_sencitario.shp")
+            if os.path.isfile(shp_local):
+                gdf_municipio = gpd.read_file(shp_local)
+                if gdf_municipio.crs is None or gdf_municipio.crs.to_epsg() != 4326:
+                    gdf_municipio = gdf_municipio.to_crs(epsg=4326)
+                # Dissolver todos os setores em um único polígono municipal
+                gdf_municipio = gdf_municipio.dissolve().reset_index(drop=True)
+                print(f"   ✅ Limite municipal carregado de shapefile local!")
+        except Exception as e3:
+            print(f"   ⚠️ Arquivo local também não disponível: {e3}")
+    
+    return gdf_estado, gdf_municipio
+
 def carregar_dados():
     """Carrega e processa dados de estabelecimentos de saúde"""
     print("🔄 Carregando dados dos estabelecimentos de saúde...")
     
     try:
         # Tentar carregar base completa SC
-        df_sc = pd.read_csv(r'01_DADOS\originais\Tabela_estado_SC.csv', 
-                           sep=';', encoding='utf-8', low_memory=False)
+        caminho_base = os.path.join(ROOT_DIR, '01_DADOS', 'originais', 'Tabela_estado_SC.csv')
+        df_sc = pd.read_csv(caminho_base, sep=';', encoding='utf-8', low_memory=False)
         df_concordia = df_sc[df_sc['CO_MUNICIPIO_GESTOR'] == 420430].copy()
         print(f"✅ Base SC carregada: {len(df_concordia)} estabelecimentos")
         
     except FileNotFoundError:
         try:
             # Fallback para dados processados
-            df_concordia = pd.read_csv(r'01_DADOS\processados\concordia_saude_simples.csv')
+            caminho_processado = os.path.join(ROOT_DIR, '01_DADOS', 'processados', 'concordia_saude_simples.csv')
+            df_concordia = pd.read_csv(caminho_processado)
             print(f"✅ Dados processados carregados: {len(df_concordia)} estabelecimentos")
             
         except FileNotFoundError:
@@ -412,56 +519,94 @@ def adicionar_categorias_analise(df):
     return df
 
 def criar_mapa_avancado_treelayer(df):
-    # === Limite Municipal de Concórdia ===
-    try:
-        import geopandas as gpd
-        limite_mun = gpd.read_file(r"Concordia_sencitario.shp")
-        # Simplificar geometria para performance
-        limite_mun = limite_mun.to_crs(epsg=4326)
-        limite_mun["geometry"] = limite_mun["geometry"].simplify(0.0001)
-        folium.GeoJson(
-            limite_mun,
-            name="Limite Municipal",
-            style_function=lambda x: {
-                'color': '#238b45',
-                'weight': 2,
-                'fill': True,
-                'fillColor': '#238b45',
-                'fillOpacity': 0.08
-            },
-            tooltip=folium.GeoJsonTooltip(fields=["CD_MUN"], aliases=["Município"])
-        """Cria mapa avançado com TreeLayerControl e paletas ColorBrewer"""
-        print("🗺️ Criando mapa avançado com TreeLayerControl...")
-    
-        centro_concordia = [-27.2335, -52.0238]
-    
-        # Mapa base
-        # Definir bounds do município para limitar zoom e navegação
-        bounds = [[-27.32, -52.13], [-27.15, -51.95]]  # Aproximação para Concórdia
-        mapa = folium.Map(
-            location=centro_concordia,
-            zoom_start=12,
-            min_zoom=10,
-            max_zoom=16,
-            max_bounds=True,
-            tiles=None,
-            prefer_canvas=True,
-        )
-        # Forçar limites de navegação e zoom
-        mapa.fit_bounds(bounds)
-        mapa.options['maxBounds'] = bounds
-        mapa.options['minZoom'] = 10
-        mapa.options['maxZoom'] = 16
+    """Cria mapa avançado com TreeLayerControl e paletas ColorBrewer"""
+    print("🗺️ Criando mapa avançado com TreeLayerControl...")
 
-        # Adicionar limite municipal após criar o mapa
+    # Identificar colunas de coordenadas
+    lat_cols = [col for col in df.columns if 'LAT' in col.upper()]
+    lon_cols = [col for col in df.columns if 'LON' in col.upper()]
+    
+    if not lat_cols or not lon_cols:
+        print("⚠️ Colunas de coordenadas não encontradas!")
+        return None
+    
+    lat_col, lon_col = lat_cols[0], lon_cols[0]
+    print(f"   → Usando colunas: {lat_col}, {lon_col}")
+
+    # === FILTRO ESPACIAL: Remover estabelecimentos fora do limite municipal ===
+    print("🔍 Aplicando filtro espacial por limite municipal...")
+    gdf_estado_temp, gdf_municipio_temp = carregar_limites_ibge()
+    
+    if gdf_municipio_temp is not None and not gdf_municipio_temp.empty and gpd is not None:
         try:
-            import geopandas as gpd
+            from shapely.geometry import Point
+            
+            # Criar GeoDataFrame com os estabelecimentos
+            geometry = [Point(xy) for xy in zip(df[lon_col], df[lat_col])]
+            gdf_estabelecimentos = gpd.GeoDataFrame(df, geometry=geometry, crs="EPSG:4326")
+            
+            # Realizar spatial join para manter apenas estabelecimentos dentro do município
+            gdf_dentro = gpd.sjoin(gdf_estabelecimentos, gdf_municipio_temp, how='inner', predicate='within')
+            
+            # Remover colunas duplicadas do join
+            cols_to_drop = [col for col in gdf_dentro.columns if col.startswith('index_')]
+            gdf_dentro = gdf_dentro.drop(columns=cols_to_drop, errors='ignore')
+            
+            n_original = len(df)
+            n_filtrado = len(gdf_dentro)
+            n_removido = n_original - n_filtrado
+            
+            if n_removido > 0:
+                print(f"   ⚠️ {n_removido} estabelecimentos removidos (fora do limite municipal)")
+                # Identificar quais foram removidos
+                ids_dentro = set(gdf_dentro.index)
+                ids_fora = set(df.index) - ids_dentro
+                if 'NO_FANTASIA' in df.columns:
+                    for idx in ids_fora:
+                        nome = df.loc[idx, 'NO_FANTASIA'] if idx in df.index else 'N/A'
+                        print(f"      ❌ {nome}")
+            
+            # Atualizar dataframe
+            df = gdf_dentro.drop(columns=['geometry'], errors='ignore')
+            print(f"   ✅ Filtro aplicado: {n_filtrado} estabelecimentos dentro do município")
+            
+        except Exception as e:
+            print(f"   ⚠️ Erro ao aplicar filtro espacial: {e}")
+            print(f"   → Continuando com todos os estabelecimentos ({len(df)})")
+    else:
+        print("   ⚠️ Limite municipal não disponível, pulando filtro espacial")
+
+    centro_concordia = [-27.2335, -52.0238]
+
+    # Mapa base
+    # Definir bounds do município para limitar zoom e navegação
+    bounds = [[-27.32, -52.13], [-27.15, -51.95]]  # Aproximação para Concórdia
+    mapa = folium.Map(
+        location=centro_concordia,
+        zoom_start=12,
+        min_zoom=10,
+        max_zoom=16,
+        max_bounds=True,
+        tiles=None,
+        prefer_canvas=True,
+    )
+    # Forçar limites de navegação e zoom
+    mapa.fit_bounds(bounds)
+    mapa.options['maxBounds'] = bounds
+    mapa.options['minZoom'] = 10
+    mapa.options['maxZoom'] = 16
+
+    # === Limite Municipal de Concórdia (opcional, fallback local) ===
+    # Nota: Este é um fallback caso o shapefile local exista
+    # Os limites principais são carregados pela função carregar_limites_ibge()
+    try:
+        if gpd is not None and os.path.isfile("Concordia_sencitario.shp"):
             limite_mun = gpd.read_file(r"Concordia_sencitario.shp")
             limite_mun = limite_mun.to_crs(epsg=4326)
             limite_mun["geometry"] = limite_mun["geometry"].simplify(0.0001)
             folium.GeoJson(
                 limite_mun,
-                name="Limite Municipal",
+                name="Limite Municipal (Local)",
                 style_function=lambda x: {
                     'color': '#238b45',
                     'weight': 2,
@@ -471,54 +616,9 @@ def criar_mapa_avancado_treelayer(df):
                 },
                 tooltip=folium.GeoJsonTooltip(fields=["CD_MUN"], aliases=["Município"])
             ).add_to(mapa)
-        except Exception as e:
-            print(f"⚠️ Falha ao adicionar limite municipal: {e}")
-        folium.Circle(
-            location=[row[lat_col], row[lon_col]],
-            radius=3000,
-            color='#3182bd',
-            fill=True,
-            fillOpacity=0.13,
-            weight=2,
-            popup=f"Raio 3km - {row.get('NO_FANTASIA', 'N/A')}"
-        ).add_to(grupo_raio_esfps)
-    grupo_raio_esfps.add_to(mapa)
+    except Exception as e:
+        print(f"⚠️ Shapefile local não disponível ou erro: {e}")
 
-    # Mapa de calor para pontos dentro dos raios de 3 km de ESF/PS
-    grupo_calor_raio3km = folium.FeatureGroup(name="Mapa de Calor nos Raios 3km", show=False)
-    heat_data_raio3km = [[row[lat_col], row[lon_col], 1] for idx, row in esfps.iterrows()]
-    if heat_data_raio3km:
-        heatmap_raio3km = HeatMap(
-            heat_data_raio3km,
-            name='Calor ESF/PS 3km',
-            radius=30,
-            blur=20,
-            max_zoom=15,
-            min_opacity=0.4,
-            gradient={0.2: 'blue', 0.4: 'cyan', 0.6: 'lime', 0.8: 'yellow', 1.0: 'red'}
-        )
-        heatmap_raio3km.add_to(grupo_calor_raio3km)
-    grupo_calor_raio3km.add_to(mapa)
-
-    # Camadas separadas para ESF e PS
-    grupo_esf = folium.FeatureGroup(name="ESF (Estratégia Saúde da Família)", show=False)
-    grupo_ps = folium.FeatureGroup(name="PS (Posto de Saúde)", show=False)
-    esf = df[df['TIPO'] == 'ESF']
-    ps = df[df['TIPO'] == 'PS']
-    for idx, row in esf.iterrows():
-        folium.Marker(
-            location=[row[lat_col], row[lon_col]],
-            popup=f"<b>ESF:</b> {row.get('NO_FANTASIA', 'N/A')}<br>{row.get('ENDERECO', 'N/A')}<br><b>Bairro:</b> {row.get('BAIRRO', 'N/A')}<br>{row.get('dist_centro', 0):.1f} km",
-            icon=folium.Icon(color='green', icon='plus')
-        ).add_to(grupo_esf)
-    for idx, row in ps.iterrows():
-        folium.Marker(
-            location=[row[lat_col], row[lon_col]],
-            popup=f"<b>PS:</b> {row.get('NO_FANTASIA', 'N/A')}<br>{row.get('ENDERECO', 'N/A')}<br><b>Bairro:</b> {row.get('BAIRRO', 'N/A')}<br>{row.get('dist_centro', 0):.1f} km",
-            icon=folium.Icon(color='orange', icon='info-sign')
-        ).add_to(grupo_ps)
-    grupo_esf.add_to(mapa)
-    grupo_ps.add_to(mapa)
     # OpenStreetMap
     osm = folium.TileLayer(
         tiles='OpenStreetMap',
@@ -749,53 +849,74 @@ def criar_mapa_avancado_treelayer(df):
     grupo_ref.add_to(mapa)
 
     # === CAMADAS DE LIMITES (Municipal e Estadual) ===
-    grupo_lim_municipio = folium.FeatureGroup(name="Limite Municipal (Concórdia)")
-    # Limite estadual como fundo permanente
-    shp_dir = os.path.join(ROOT_DIR, 'SC_Municipios_2024')
-    shp_path = os.path.join(shp_dir, 'SC_Municipios_2024.shp')
-    if os.path.isfile(shp_path):
-        if gpd is not None:
-            try:
-                gdf = gpd.read_file(shp_path)
-                if gdf.crs is None or gdf.crs.to_epsg() != 4326:
-                    gdf = gdf.to_crs(epsg=4326)
-                nome_cols = [c for c in gdf.columns if c.upper() in ['NM_MUN', 'NM_MUNICIP', 'NOME', 'MUNICIPIO']]
-                cod_cols = [c for c in gdf.columns if ('CD' in c.upper()) and (("MUN" in c.upper()) or ("IBGE" in c.upper()))]
-                # Limite estadual - fundo permanente
-                folium.GeoJson(
-                    data=gdf.__geo_interface__,
-                    name='Limite Estadual (SC)',
-                    style_function=lambda x: {
-                        'color': '#444444', 'weight': 0.03, 'fillColor': '#ccece6', 'fillOpacity': 0.4
-                    },
-                    overlay=True,
-                    control=False
-                ).add_to(mapa)
-                # Limite municipal destacado
-                gdf_conc = gdf.copy()
-                if cod_cols:
-                    gdf_conc = gdf_conc[gdf_conc[cod_cols[0]].astype(str).str.contains('420430', na=False)]
-                if gdf_conc.empty and nome_cols:
-                    gdf_conc = gdf[gdf[nome_cols[0]].astype(str).str.upper().str.contains('CONCÓRDIA|CONCORDIA', regex=True, na=False)]
-                if not gdf_conc.empty:
-                    folium.GeoJson(
-                        data=gdf_conc.__geo_interface__,
-                        name='Limite Municipal (Concórdia)',
-                        style_function=lambda x: {
-                            'color': '#238b45', 'weight': 3, 'fillColor': '#66c2a4', 'fillOpacity': 0.08
-                        },
-                        highlight_function=lambda x: {'weight': 5, 'color': '#00441b'}
-                    ).add_to(grupo_lim_municipio)
-            except Exception as e:
-                print(f"⚠️ Erro ao carregar limites com GeoPandas: {e}")
+    # Carregar limites do IBGE
+    gdf_estado, gdf_municipio = carregar_limites_ibge()
+    
+    # Grupo para limite estadual (base layer, sempre visível)
+    grupo_lim_estadual = folium.FeatureGroup(name="🗺️ Limite Estadual (Santa Catarina)", show=True)
+    
+    if gdf_estado is not None and not gdf_estado.empty:
+        try:
+            # Adicionar limite estadual como camada de contexto
+            folium.GeoJson(
+                data=gdf_estado.__geo_interface__,
+                name='Limite Estadual (SC)',
+                style_function=lambda x: {
+                    'color': '#2c7fb8',        # Azul mais escuro para melhor visibilidade
+                    'weight': 2.5,              # Linha mais espessa
+                    'fillColor': 'transparent', # Sem preenchimento
+                    'fillOpacity': 0,
+                    'dashArray': '5, 5'        # Linha tracejada para diferenciar
+                },
+                tooltip=folium.Tooltip('Estado de Santa Catarina'),
+                popup=folium.Popup('<b>Estado de Santa Catarina</b><br>Área: ~95.730 km²<br>Fonte: IBGE', max_width=250)
+            ).add_to(grupo_lim_estadual)
+            print("✅ Limite estadual adicionado ao mapa")
+        except Exception as e:
+            print(f"⚠️ Erro ao adicionar limite estadual: {e}")
+    else:
+        print("⚠️ Limite estadual não disponível")
+    
+    grupo_lim_estadual.add_to(mapa)
+    
+    # Grupo para limite municipal (destaque)
+    grupo_lim_municipio = folium.FeatureGroup(name="📍 Limite Municipal (Concórdia)", show=True)
+    
+    if gdf_municipio is not None and not gdf_municipio.empty:
+        try:
+            # Adicionar limite municipal com destaque
+            folium.GeoJson(
+                data=gdf_municipio.__geo_interface__,
+                name='Limite Municipal (Concórdia)',
+                style_function=lambda x: {
+                    'color': '#238b45',        # Verde escuro (ColorBrewer)
+                    'weight': 3.5,              # Linha mais grossa para destaque
+                    'fillColor': '#66c2a4',     # Verde claro suave
+                    'fillOpacity': 0.15,        # Preenchimento leve
+                    'dashArray': None           # Linha contínua
+                },
+                highlight_function=lambda x: {
+                    'weight': 5,
+                    'color': '#00441b',         # Verde muito escuro no hover
+                    'fillOpacity': 0.25
+                },
+                tooltip=folium.Tooltip('Município de Concórdia'),
+                popup=folium.Popup('<b>Município de Concórdia/SC</b><br>Código IBGE: 420430<br>Área: ~799 km²<br>Fonte: IBGE', max_width=250)
+            ).add_to(grupo_lim_municipio)
+            print("✅ Limite municipal adicionado ao mapa")
+        except Exception as e:
+            print(f"⚠️ Erro ao adicionar limite municipal: {e}")
+    else:
+        print("⚠️ Limite municipal não disponível")
+    
     grupo_lim_municipio.add_to(mapa)
 
     # === CONTROLE DE CAMADAS AGRUPADAS ===
     try:
         GroupedLayerControl(
             groups={
-                'Temas': [grupo_setor, grupo_tipo, grupo_calor, grupo_raio_esfps, grupo_calor_raio3km, grupo_esf, grupo_ps],
-                'Limites': [grupo_lim_municipio],
+                'Temas': [grupo_setor, grupo_tipo, grupo_distancia, grupo_calor, grupo_raio_esfps, grupo_calor_raio3km],
+                'Limites Administrativos': [grupo_lim_estadual, grupo_lim_municipio],
                 'Referências': [grupo_ref]
             },
             collapsed=False
@@ -809,6 +930,50 @@ def criar_mapa_avancado_treelayer(df):
     # Adicionar controles adicionais
     folium.plugins.MeasureControl(position='topleft').add_to(mapa)
     folium.plugins.Fullscreen().add_to(mapa)
+    
+    # === ADICIONAR TÍTULO PROFISSIONAL AO MAPA ===
+    titulo_html = '''
+    <div style="position: fixed; 
+                top: 10px; 
+                left: 50%; 
+                transform: translateX(-50%);
+                width: auto;
+                max-width: 90%;
+                height: auto;
+                background-color: white;
+                border: 3px solid #238b45;
+                border-radius: 10px;
+                z-index: 9999;
+                padding: 15px 25px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+                text-align: center;
+                font-family: 'Arial', sans-serif;">
+        <h2 style="margin: 0; 
+                   padding: 0; 
+                   font-size: 22px; 
+                   font-weight: bold; 
+                   color: #00441b;
+                   line-height: 1.3;">
+            🏥 ANÁLISE ESPACIAL DOS ESTABELECIMENTOS DE SAÚDE
+        </h2>
+        <p style="margin: 5px 0 0 0; 
+                  padding: 0; 
+                  font-size: 16px; 
+                  color: #238b45;
+                  font-weight: 600;">
+            Município de Concórdia/SC
+        </p>
+        <p style="margin: 5px 0 0 0; 
+                  padding: 0; 
+                  font-size: 12px; 
+                  color: #666;
+                  font-style: italic;">
+            Fonte: CNES/DataSUS | IBGE | Elaboração: UFSC
+        </p>
+    </div>
+    '''
+    
+    mapa.get_root().html.add_child(folium.Element(titulo_html))
     
     print("✅ Mapa avançado criado com TreeLayerControl")
     return mapa
