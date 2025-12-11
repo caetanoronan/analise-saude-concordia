@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glossário Técnico - Análise Espacial Saúde Concórdia/SC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .search-box {
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 20px;
+        }
+
+        .category-nav {
+            padding: 20px 30px;
+            background: #fff;
+            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .category-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .glossary-content {
+            padding: 40px 30px;
+        }
+
+        .category-section {
+            margin-bottom: 50px;
+        }
+
+        .category-title {
+            font-size: 28px;
+            color: #667eea;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .term-card {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .term-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .term-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .term-acronym {
+            background: #667eea;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .term-definition {
+            color: #4a5568;
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        .term-example {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid #fbbf24;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .term-example strong {
+            color: #f59e0b;
+        }
+
+        .back-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .no-results i {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .category-title {
+                font-size: 22px;
+            }
+
+            .term-name {
+                font-size: 18px;
+            }
+
+            .back-btn {
+                bottom: 15px;
+                right: 15px;
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-book"></i> Glossário Técnico</h1>
+            <p>Análise Espacial dos Estabelecimentos de Saúde de Concórdia/SC</p>
+        </div>
+
+        <div class="search-box">
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="Buscar termo no glossário...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+        </div>
+
+        <div class="category-nav">
+            <button class="category-btn active" onclick="filterCategory('all')">Todos</button>
+            <button class="category-btn" onclick="filterCategory('saude')">Saúde Pública</button>
+            <button class="category-btn" onclick="filterCategory('geo')">Geoprocessamento</button>
+            <button class="category-btn" onclick="filterCategory('tech')">Tecnologias</button>
+            <button class="category-btn" onclick="filterCategory('estatistica')">Estatística</button>
+        </div>
+
+        <div class="glossary-content" id="glossaryContent">
+            <!-- SAÚDE PÚBLICA -->
+            <div class="category-section" data-category="saude">
+                <h2 class="category-title">
+                    <div class="category-icon"><i class="fas fa-hospital"></i></div>
+                    Saúde Pública
+                </h2>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        <span class="term-acronym">CNES</span>
+                        Cadastro Nacional de Estabelecimentos de Saúde
+                    </div>
+                    <div class="term-definition">
+                        Sistema oficial do Ministério da Saúde que registra todos os estabelecimentos de saúde do Brasil, públicos e privados. Contém informações sobre localização, tipo de serviço, profissionais e equipamentos.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> Os 418 estabelecimentos de Concórdia estão cadastrados no CNES com seus respectivos endereços e coordenadas geográficas.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        <span class="term-acronym">ESF</span>
+                        Estratégia Saúde da Família
+                    </div>
+                    <div class="term-definition">
+                        Programa de atenção básica à saúde que reorganiza o atendimento no SUS. Cada equipe ESF é responsável por acompanhar cerca de 3.000 a 4.000 pessoas de uma área geográfica definida.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> Concórdia possui 19 ESFs distribuídas estrategicamente pelo município para garantir cobertura territorial.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Posto de Saúde
+                    </div>
+                    <div class="term-definition">
+                        Unidade básica de saúde que oferece atendimento primário à população, incluindo consultas médicas, vacinação, curativos e acompanhamento de doenças crônicas.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> 14 Postos de Saúde identificados em Concórdia complementam a rede de atenção básica.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Policlínica
+                    </div>
+                    <div class="term-definition">
+                        Estabelecimento de saúde de complexidade intermediária que oferece atendimento ambulatorial com diversas especialidades médicas, exames e pequenas cirurgias.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> As 2 policlínicas de Concórdia concentram especialidades médicas como cardiologia, ortopedia e oftalmologia.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        <span class="term-acronym">SAMU</span>
+                        Serviço de Atendimento Móvel de Urgência
+                    </div>
+                    <div class="term-definition">
+                        Serviço público de emergência que presta socorro rápido à população em casos de urgência médica, acidentes e traumas, funcionando 24 horas pelo telefone 192.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> 3 bases do SAMU/emergência foram mapeadas no município para cobertura territorial adequada.
+                    </div>
+                </div>
+            </div>
+
+            <!-- GEOPROCESSAMENTO -->
+            <div class="category-section" data-category="geo">
+                <h2 class="category-title">
+                    <div class="category-icon"><i class="fas fa-map-marked-alt"></i></div>
+                    Geoprocessamento
+                </h2>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Diagrama de Voronoi
+                    </div>
+                    <div class="term-definition">
+                        Partição do espaço geográfico em polígonos onde cada ponto dentro de um polígono está mais próximo do estabelecimento que o gerou do que de qualquer outro. Muito usado para análise de áreas de influência.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> Os 311 polígonos de Voronoi coloridos mostram a área de influência teórica de cada estabelecimento de saúde em Concórdia.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Setor Censitário
+                    </div>
+                    <div class="term-definition">
+                        Menor unidade territorial de coleta de dados do Censo IBGE, formada por área contínua e homogênea. Contém informações populacionais, socioeconômicas e habitacionais detalhadas.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> Concórdia foi dividida em 200 setores censitários para análise da distribuição espacial dos estabelecimentos de saúde.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Geocodificação
+                    </div>
+                    <div class="term-definition">
+                        Processo de transformar endereços de texto (ruas, números, cidades) em coordenadas geográficas (latitude e longitude) que podem ser plotadas em mapas.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> 95,9% dos estabelecimentos (401 de 418) possuíam coordenadas válidas no CNES, permitindo sua plotagem nos mapas.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Filtro Espacial
+                    </div>
+                    <div class="term-definition">
+                        Operação que seleciona apenas elementos geográficos que atendem a critérios espaciais específicos, como estar dentro de um limite municipal ou a determinada distância de um ponto.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> 13 estabelecimentos foram removidos por estarem fora do limite oficial do município de Concórdia, resultando em 388 estabelecimentos validados.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Shapefile
+                    </div>
+                    <div class="term-definition">
+                        Formato de arquivo popular para armazenar dados geoespaciais vetoriais (pontos, linhas, polígonos). Amplamente usado em softwares de GIS como QGIS e ArcGIS.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> Os limites municipais, setores censitários e polígonos de Voronoi foram exportados como shapefiles para uso em QGIS.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        <span class="term-acronym">WKT</span>
+                        Well-Known Text
+                    </div>
+                    <div class="term-definition">
+                        Formato de texto padrão para representar geometrias vetoriais. Permite armazenar pontos, linhas e polígonos em formatos legíveis por humanos e máquinas (CSV, bancos de dados).
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> POINT(-52.0238 -27.2335) representa as coordenadas do centro de Concórdia em formato WKT.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        <span class="term-acronym">CRS / EPSG</span>
+                        Sistema de Referência de Coordenadas
+                    </div>
+                    <div class="term-definition">
+                        Define como coordenadas geográficas são representadas. EPSG é um código numérico que identifica sistemas específicos. WGS84 (EPSG:4326) usa latitude/longitude, SIRGAS 2000 UTM (EPSG:31982) usa metros.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> Os mapas web usam EPSG:4326 (graus), mas cálculos de distância foram feitos em EPSG:31982 (metros) para maior precisão.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Fórmula de Haversine
+                    </div>
+                    <div class="term-definition">
+                        Fórmula matemática que calcula a distância entre dois pontos na superfície de uma esfera (como a Terra) usando suas coordenadas de latitude e longitude. Resultado em quilômetros ou milhas.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> Usada para calcular a distância de cada estabelecimento ao centro urbano de Concórdia (-27.2335, -52.0238).
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Heatmap (Mapa de Calor)
+                    </div>
+                    <div class="term-definition">
+                        Visualização que usa gradiente de cores para representar densidade ou intensidade de eventos em uma área geográfica. Cores quentes (vermelho) indicam alta concentração, cores frias (azul) baixa concentração.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> O mapa de calor mostra maior concentração de estabelecimentos de saúde no centro urbano de Concórdia.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Cluster (Agrupamento)
+                    </div>
+                    <div class="term-definition">
+                        Técnica de visualização que agrupa marcadores próximos em um único ícone numerado. Quando o usuário aumenta o zoom, os clusters se expandem mostrando os pontos individuais.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> No mapa "Todas as Unidades", os 418 estabelecimentos são agrupados dinamicamente conforme o nível de zoom.
+                    </div>
+                </div>
+            </div>
+
+            <!-- TECNOLOGIAS -->
+            <div class="category-section" data-category="tech">
+                <h2 class="category-title">
+                    <div class="category-icon"><i class="fas fa-laptop-code"></i></div>
+                    Tecnologias e Ferramentas
+                </h2>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Python
+                    </div>
+                    <div class="term-definition">
+                        Linguagem de programação de alto nível, muito usada em ciência de dados, análise espacial e automação. Possui bibliotecas poderosas para geoprocessamento como GeoPandas e Folium.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> Todos os scripts de análise, mapas e dashboards deste projeto foram desenvolvidos em Python 3.14.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        GeoPandas
+                    </div>
+                    <div class="term-definition">
+                        Biblioteca Python que estende o Pandas para trabalhar com dados geoespaciais. Permite operações como filtros espaciais, cálculos de distância, união de polígonos e exportação de shapefiles.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> GeoPandas foi usado para aplicar o filtro espacial que validou os 388 estabelecimentos dentro do limite municipal.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Folium
+                    </div>
+                    <div class="term-definition">
+                        Biblioteca Python que cria mapas interativos em HTML usando a biblioteca JavaScript Leaflet. Gera mapas navegáveis com zoom, camadas, popups e controles personalizados.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> Os 6 mapas interativos do projeto foram criados com Folium e publicados no GitHub Pages.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        QGIS
+                    </div>
+                    <div class="term-definition">
+                        Software livre e gratuito de Sistema de Informações Geográficas (GIS). Permite visualizar, editar, analisar e criar mapas com dados espaciais em diversos formatos.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> Os shapefiles exportados (Voronoi, setores censitários) podem ser abertos e analisados no QGIS.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        ColorBrewer
+                    </div>
+                    <div class="term-definition">
+                        Ferramenta online que fornece paletas de cores cientificamente testadas para mapas, otimizadas para diferentes tipos de dados (sequencial, divergente, qualitativo) e acessíveis para daltônicos.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> As paletas ColorBrewer foram usadas nos mapas para garantir boa visualização mesmo para pessoas com deficiências visuais.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Jupyter Notebook
+                    </div>
+                    <div class="term-definition">
+                        Ambiente de desenvolvimento interativo que combina código Python, visualizações, textos explicativos e resultados em um único documento navegável pelo navegador.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> O notebook "Analise_Espacial_Concordia_Demonstrativo.ipynb" documenta passo a passo todo o processo de análise.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        GitHub Pages
+                    </div>
+                    <div class="term-definition">
+                        Serviço gratuito do GitHub que hospeda sites estáticos (HTML, CSS, JavaScript) diretamente de um repositório Git. Ideal para publicar dashboards, mapas e documentação.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> O dashboard e os 6 mapas interativos estão publicados em https://caetanoronan.github.io/analise-saude-concordia/
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Pandas
+                    </div>
+                    <div class="term-definition">
+                        Biblioteca Python fundamental para análise de dados tabulares. Oferece estruturas de dados (DataFrame) e operações para limpeza, transformação, agregação e análise estatística.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> Pandas foi usado para carregar, filtrar e processar os 418 estabelecimentos do arquivo Excel do CNES.
+                    </div>
+                </div>
+            </div>
+
+            <!-- ESTATÍSTICA E ANÁLISE -->
+            <div class="category-section" data-category="estatistica">
+                <h2 class="category-title">
+                    <div class="category-icon"><i class="fas fa-chart-line"></i></div>
+                    Estatística e Análise Espacial
+                </h2>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Distribuição Espacial
+                    </div>
+                    <div class="term-definition">
+                        Padrão de dispersão de eventos ou objetos no espaço geográfico. Pode ser classificada como aleatória, agrupada (clustered) ou uniforme. Ajuda a identificar áreas com maior ou menor concentração.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> A distribuição dos estabelecimentos de saúde em Concórdia é agrupada no centro urbano, com menor densidade nas áreas rurais.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Análise de Proximidade
+                    </div>
+                    <div class="term-definition">
+                        Estudo da relação espacial entre objetos baseado em distâncias. Identifica os vizinhos mais próximos, áreas de influência e gaps (lacunas) de cobertura territorial.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> Calculamos a distância de cada estabelecimento ao centro urbano para identificar quais estão a menos de 5km, 10km ou mais.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Percentil
+                    </div>
+                    <div class="term-definition">
+                        Medida estatística que indica o valor abaixo do qual uma porcentagem específica dos dados se encontra. O percentil 50 é a mediana, o percentil 95 indica que 95% dos valores são menores.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> Se 79,6% dos postos públicos estão a menos de 5km do centro, isso indica boa acessibilidade urbana.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Agregação Espacial
+                    </div>
+                    <div class="term-definition">
+                        Processo de combinar dados de áreas menores em áreas maiores ou de agrupar pontos em polígonos. Permite análise em diferentes escalas geográficas (setor censitário → bairro → município).
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> Os 388 estabelecimentos foram agregados por setor censitário para identificar áreas com maior concentração de serviços.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Taxa de Cobertura
+                    </div>
+                    <div class="term-definition">
+                        Proporção ou porcentagem de uma área ou população que tem acesso a determinado serviço ou recurso. Importante indicador para planejamento de políticas públicas.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> 95,9% dos estabelecimentos possuem geocodificação válida, indicando alta qualidade dos dados do CNES em Concórdia.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Classificação Temática
+                    </div>
+                    <div class="term-definition">
+                        Divisão de dados em categorias ou classes baseadas em atributos específicos. Permite análises segmentadas e visualizações diferenciadas por cores, símbolos ou tamanhos.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> Os 388 estabelecimentos foram classificados em 14 categorias: ESF, Postos, Consultórios, Farmácias, Laboratórios, etc.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Média Ponderada
+                    </div>
+                    <div class="term-definition">
+                        Média calculada atribuindo pesos diferentes aos valores. Valores com maior importância ou representatividade recebem pesos maiores, influenciando mais o resultado final.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> A distância média dos estabelecimentos ao centro urbano pode ser ponderada pelo tamanho/capacidade de cada unidade.
+                    </div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-name">
+                        Outlier (Valor Atípico)
+                    </div>
+                    <div class="term-definition">
+                        Valor que se desvia significativamente do padrão dos demais dados. Pode indicar erro de medição, situação excepcional ou ponto de interesse especial para análise.
+                    </div>
+                    <div class="term-example">
+                        <strong>Exemplo:</strong> Os 13 estabelecimentos removidos pelo filtro espacial eram outliers geográficos, localizados fora do limite oficial do município.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="no-results" id="noResults" style="display: none;">
+            <i class="fas fa-search"></i>
+            <h2>Nenhum termo encontrado</h2>
+            <p>Tente buscar por outro termo ou navegue pelas categorias acima</p>
+        </div>
+    </div>
+
+    <a href="dashboard_interativo_saude.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i>
+        Voltar ao Dashboard
+    </a>
+
+    <script>
+        // Busca em tempo real
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const termCards = document.querySelectorAll('.term-card');
+            const categorySections = document.querySelectorAll('.category-section');
+            let hasResults = false;
+
+            if (searchTerm === '') {
+                // Se busca vazia, mostrar tudo
+                termCards.forEach(card => card.style.display = 'block');
+                categorySections.forEach(section => section.style.display = 'block');
+                document.getElementById('noResults').style.display = 'none';
+                return;
+            }
+
+            // Filtrar termos
+            termCards.forEach(card => {
+                const termName = card.querySelector('.term-name').textContent.toLowerCase();
+                const termDef = card.querySelector('.term-definition').textContent.toLowerCase();
+                
+                if (termName.includes(searchTerm) || termDef.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    hasResults = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Mostrar/ocultar seções vazias
+            categorySections.forEach(section => {
+                const visibleCards = section.querySelectorAll('.term-card[style="display: block;"]');
+                section.style.display = visibleCards.length > 0 ? 'block' : 'none';
+            });
+
+            // Mostrar mensagem se não houver resultados
+            document.getElementById('noResults').style.display = hasResults ? 'none' : 'block';
+        });
+
+        // Filtro por categoria
+        function filterCategory(category) {
+            const categorySections = document.querySelectorAll('.category-section');
+            const buttons = document.querySelectorAll('.category-btn');
+            
+            // Atualizar botões ativos
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Limpar busca
+            document.getElementById('searchInput').value = '';
+            document.getElementById('noResults').style.display = 'none';
+
+            if (category === 'all') {
+                categorySections.forEach(section => {
+                    section.style.display = 'block';
+                    section.querySelectorAll('.term-card').forEach(card => card.style.display = 'block');
+                });
+            } else {
+                categorySections.forEach(section => {
+                    if (section.dataset.category === category) {
+                        section.style.display = 'block';
+                        section.querySelectorAll('.term-card').forEach(card => card.style.display = 'block');
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+            }
+        }
+
+        // Scroll suave para categoria ao carregar com hash
+        window.addEventListener('load', function() {
+            if (window.location.hash) {
+                const target = document.querySelector(window.location.hash);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
