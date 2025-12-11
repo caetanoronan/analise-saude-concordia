@@ -63,19 +63,76 @@ def eh_estabelecimento_publico(nome_fantasia, tipo_unidade, razao_social=''):
     
     return any(criterios_publicos)
 
+def classificar_estabelecimento(nome, razao_social, tipo_unidade):
+    """
+    Classifica estabelecimento e retorna descrição do tipo.
+    Retorna: ('PÚBLICO' ou 'PRIVADO', descrição do tipo, cor do marcador)
+    """
+    nome_upper = str(nome).upper()
+    razao_upper = str(razao_social).upper() if pd.notna(razao_social) else ""
+    tipo_str = str(tipo_unidade)
+    
+    # === ESTABELECIMENTOS PÚBLICOS ===
+    # Tipos CNES públicos: 1=Posto, 2=ESF, 4=Policlínica, 70=Centro Saúde, 81=Móvel
+    criterios_publicos = [
+        'ESF' in nome_upper,
+        'ESTRATEGIA SAUDE FAMILIA' in nome_upper,
+        'UNIDADE BASICA' in nome_upper,
+        'UNIDADE SAUDE' in nome_upper,
+        'UBS' in nome_upper,
+        'POSTO SAUDE' in nome_upper or 'POSTO DE SAUDE' in nome_upper,
+        'PS ' in nome_upper,
+        'MUNICIPIO' in razao_upper or 'PREFEITURA' in razao_upper,
+        tipo_str in ['1', '2', '4', '70', '81']  # Tipos públicos CNES
+    ]
+    
+    if any(criterios_publicos):
+        # Determinar descrição específica
+        if tipo_str == '2' or 'ESF' in nome_upper:
+            return ('PÚBLICO', 'ESF - Estratégia Saúde da Família', 'red')
+        elif tipo_str == '1' or 'POSTO' in nome_upper:
+            return ('PÚBLICO', 'PS - Posto de Saúde', 'red')
+        elif tipo_str == '4':
+            return ('PÚBLICO', 'Policlínica', 'red')
+        elif tipo_str == '70':
+            return ('PÚBLICO', 'Centro de Saúde', 'red')
+        elif tipo_str == '81':
+            return ('PÚBLICO', 'Unidade Móvel', 'red')
+        else:
+            return ('PÚBLICO', 'Unidade Pública de Saúde', 'red')
+    
+    # === ESTABELECIMENTOS PRIVADOS ===
+    # Tipos CNES privados: 22=Consultório, 36=Clínica, 39=Laboratório, 43=Serviço Apoio, etc.
+    else:
+        if tipo_str == '22':
+            return ('PRIVADO', 'Consultório Médico/Odontológico', 'blue')
+        elif tipo_str == '36':
+            return ('PRIVADO', 'Clínica/Centro Especialidades', 'blue')
+        elif tipo_str == '39':
+            return ('PRIVADO', 'Laboratório de Análises Clínicas', 'blue')
+        elif tipo_str == '43':
+            return ('PRIVADO', 'Serviço de Apoio Diagnóstico', 'blue')
+        elif tipo_str == '5':
+            return ('PRIVADO', 'Hospital Geral/Especializado', 'blue')
+        elif tipo_str == '42':
+            return ('PRIVADO', 'Unidade de Apoio Diagnose/Terapia', 'blue')
+        else:
+            return ('PRIVADO', 'Estabelecimento Privado de Saúde', 'blue')
+
 def carregar_dados():
-    """Carrega dados dos estabelecimentos de saúde"""
-    print("📂 Carregando dados dos estabelecimentos...")
+    """Carrega TODOS os estabelecimentos de saúde (públicos + privados)"""
+    print("📂 Carregando TODOS os estabelecimentos (públicos + privados)...")
     
     # Tentar carregar da base completa primeiro
     try:
-        # === FILTRO ESPACIAL RIGOROSO ===
-        # 1. Carregar Tabela_estado_SC.csv (fonte primária)
-        caminho_completo = os.path.join(ROOT_DIR, '01_DADOS', 'originais', 'Tabela_estado_SC.csv')
+        # === CARREGAR BASE COMPLETA (418 ESTABELECIMENTOS) ===
+        # 1. Tentar Tabela_estado_SC.xlsx (fonte primária com TODOS os estabelecimentos)
+        caminho_xlsx = os.path.join(ROOT_DIR, 'Tabela_estado_SC.xlsx')
+        caminho_csv = os.path.join(ROOT_DIR, '01_DADOS', 'originais', 'Tabela_estado_SC.csv')
         
-        if os.path.exists(caminho_completo):
-            print("   → Carregando base completa SC...")
-            df_sc = pd.read_csv(caminho_completo, sep=';', low_memory=False, encoding='latin1')
+        if os.path.exists(caminho_xlsx):
+            print("   → Carregando base completa SC (Excel)...")
+            df_sc = pd.read_excel(caminho_xlsx)
             
             # Filtrar apenas Concórdia (código IBGE 420430)
             df = df_sc[df_sc['CO_MUNICIPIO_GESTOR'] == 420430].copy()
@@ -92,7 +149,27 @@ def carregar_dados():
                 'NO_RAZAO_SOCIAL': 'RAZAO_SOCIAL'
             })
             
-            print("   ✅ Base completa carregada e filtrada")
+            print(f"   ✅ Base completa carregada: {len(df)} estabelecimentos totais")
+        elif os.path.exists(caminho_csv):
+            print("   → Carregando base completa SC (CSV)...")
+            df_sc = pd.read_csv(caminho_csv, sep=';', low_memory=False, encoding='latin1')
+            
+            # Filtrar apenas Concórdia (código IBGE 420430)
+            df = df_sc[df_sc['CO_MUNICIPIO_GESTOR'] == 420430].copy()
+            
+            # Padronizar nomes de colunas
+            df = df.rename(columns={
+                'NO_FANTASIA': 'NOME',
+                'NO_LOGRADOURO': 'ENDERECO',
+                'NO_BAIRRO': 'BAIRRO',
+                'CO_CEP': 'CEP',
+                'NU_LATITUDE': 'LAT',
+                'NU_LONGITUDE': 'LON',
+                'TP_UNIDADE': 'TIPO_UNIDADE',
+                'NO_RAZAO_SOCIAL': 'RAZAO_SOCIAL'
+            })
+            
+            print(f"   ✅ Base completa carregada: {len(df)} estabelecimentos totais")
         else:
             raise FileNotFoundError("Base completa não encontrada")
     
@@ -334,18 +411,18 @@ def criar_mapa_atualizado(df, gdf_municipio):
         icon=folium.Icon(color='black', icon='home', prefix='glyphicon')
     ).add_to(mapa)
     
-    # === 4. ESTABELECIMENTOS PÚBLICOS (Marcadores vermelhos) ===
-    print("   → Adicionando estabelecimentos públicos (vermelho)")
+    # === 4. ESTABELECIMENTOS PÚBLICOS E PRIVADOS ===
+    print("   → Adicionando TODOS os estabelecimentos (públicos + privados)")
     
     count_publicos = 0
-    count_outros = 0
+    count_privados = 0
     
     for idx, row in df.iterrows():
-        # Verificar se é estabelecimento público
-        eh_publico = eh_estabelecimento_publico(
+        # Classificar estabelecimento (retorna: categoria, descrição, cor)
+        categoria, descricao_tipo, cor = classificar_estabelecimento(
             row.get('NOME', ''),
-            row.get('TIPO_UNIDADE', ''),
-            row.get('RAZAO_SOCIAL', '')
+            row.get('RAZAO_SOCIAL', ''),
+            row.get('TIPO_UNIDADE', '')
         )
         
         # Calcular distância ao centro
@@ -354,19 +431,13 @@ def criar_mapa_atualizado(df, gdf_municipio):
             row['LAT'], row['LON']
         )
         
-        # Determinar cor e ícone
-        if eh_publico:
-            cor = 'red'
+        # Determinar ícone baseado na categoria
+        if categoria == 'PÚBLICO':
             icone = 'plus'
-            prefix = 'glyphicon'
-            categoria = 'PÚBLICO'
             count_publicos += 1
         else:
-            cor = 'lightgray'
             icone = 'info-sign'
-            prefix = 'glyphicon'
-            categoria = 'Privado/Outros'
-            count_outros += 1
+            count_privados += 1
         
         # Classificar por distância
         if distancia <= 5:
@@ -379,17 +450,17 @@ def criar_mapa_atualizado(df, gdf_municipio):
         # Criar popup com informações detalhadas
         popup_html = f"""
         <div style="font-family: Arial, sans-serif; min-width: 200px;">
-            <h4 style="margin: 0 0 10px 0; color: {'#cc0000' if eh_publico else '#666'};">
+            <h4 style="margin: 0 0 10px 0; color: {'#cc0000' if categoria == 'PÚBLICO' else '#0066cc'};">
                 {row.get('NOME', 'N/D')}
             </h4>
             <table style="width: 100%; font-size: 12px;">
                 <tr>
                     <td><b>Categoria:</b></td>
-                    <td><span style="color: {'#cc0000' if eh_publico else '#666'}; font-weight: bold;">{categoria}</span></td>
+                    <td><span style="color: {'#cc0000' if categoria == 'PÚBLICO' else '#0066cc'}; font-weight: bold;">{categoria}</span></td>
                 </tr>
                 <tr>
                     <td><b>Tipo:</b></td>
-                    <td>{row.get('TIPO_UNIDADE', 'N/D')}</td>
+                    <td>{descricao_tipo}</td>
                 </tr>
                 <tr>
                     <td><b>Endereço:</b></td>
@@ -415,11 +486,11 @@ def criar_mapa_atualizado(df, gdf_municipio):
             location=[row['LAT'], row['LON']],
             popup=folium.Popup(popup_html, max_width=350),
             tooltip=f"{row.get('NOME', 'N/D')} ({categoria})",
-            icon=folium.Icon(color=cor, icon=icone, prefix=prefix)
+            icon=folium.Icon(color=cor, icon=icone, prefix='glyphicon')
         ).add_to(mapa)
     
-    print(f"   ✅ {count_publicos} estabelecimentos públicos (vermelho)")
-    print(f"   ✅ {count_outros} outros estabelecimentos (cinza)")
+    print(f"   ✅ {count_publicos} estabelecimentos PÚBLICOS (vermelho)")
+    print(f"   ✅ {count_privados} estabelecimentos PRIVADOS (azul)")
     
     # === 5. TÍTULO ===
     titulo_html = '''
@@ -441,13 +512,13 @@ def criar_mapa_atualizado(df, gdf_municipio):
                    font-size: 22px;
                    font-weight: 600;
                    letter-spacing: 0.5px;">
-            🏥 Estabelecimentos de Saúde - Concórdia/SC (Filtrado)
+            🏥 TODOS os Estabelecimentos de Saúde - Concórdia/SC
         </h2>
         <p style="margin: 5px 0 0 0;
                   color: #666;
                   font-size: 13px;
                   font-weight: normal;">
-            Análise Espacial com Limite Municipal e Raios de Cobertura
+            Públicos (Vermelho) + Privados (Azul) | Análise Espacial com Limite Municipal
         </p>
     </div>
     '''
@@ -490,7 +561,7 @@ def criar_mapa_atualizado(df, gdf_municipio):
     <div style="position: fixed; 
                 top: 120px; 
                 right: 10px; 
-                width: 220px;
+                width: 240px;
                 background-color: white;
                 border: 2px solid #0066cc;
                 border-radius: 8px;
@@ -513,16 +584,16 @@ def criar_mapa_atualizado(df, gdf_municipio):
                          background-color: #cc0000; 
                          border-radius: 50%;
                          margin-right: 8px;"></span>
-            <b>Estabelecimento Público</b> (ESF/PS)
+            <b>Público</b> (ESF, PS, UBS)
         </div>
         <div style="margin: 8px 0;">
             <span style="display: inline-block; 
                          width: 12px; 
                          height: 12px; 
-                         background-color: #d3d3d3; 
+                         background-color: #0066cc; 
                          border-radius: 50%;
                          margin-right: 8px;"></span>
-            Outros Estabelecimentos
+            <b>Privado</b> (Consultórios, Clínicas, Labs)
         </div>
         <div style="margin: 8px 0;">
             <span style="display: inline-block; 
