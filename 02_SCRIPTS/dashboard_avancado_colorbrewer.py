@@ -710,7 +710,7 @@ def criar_mapa_avancado_treelayer(df):
         location=centro_concordia,
         zoom_start=12,
         min_zoom=10,
-        max_zoom=16,
+        max_zoom=18,
         max_bounds=True,
         tiles=None,
         prefer_canvas=True,
@@ -1101,19 +1101,9 @@ def criar_mapa_avancado_treelayer(df):
     
     grupo_lim_distritos.add_to(mapa)
 
-    # === CONTROLE DE CAMADAS AGRUPADAS ===
-    try:
-        GroupedLayerControl(
-            groups={
-                'Temas': [grupo_setor, grupo_tipo, grupo_distancia, grupo_calor, grupo_raio_esfps, grupo_calor_raio3km],
-                'Limites Administrativos': [grupo_lim_estadual, grupo_lim_municipio, grupo_vizinhos, grupo_lim_distritos],
-                'Referências': [grupo_ref]
-            },
-            collapsed=True
-        ).add_to(mapa)
-    except Exception as e:
-        print(f"⚠️ Falha ao ativar GroupedLayerControl: {e}. Usando LayerControl simples.")
-        folium.LayerControl(position='topleft', collapsed=False).add_to(mapa)
+    # === CONTROLE DE CAMADAS (checkboxes independentes) ===
+    # GroupedLayerControl estava restringindo múltiplas camadas; usamos LayerControl simples para permitir sobreposição.
+    folium.LayerControl(position='topleft', collapsed=False).add_to(mapa)
     
     # Legenda tema removida conforme solicitado
     
@@ -1186,6 +1176,42 @@ def criar_mapa_avancado_treelayer(df):
     
     mapa.get_root().html.add_child(folium.Element(titulo_html))
     mapa.get_root().html.add_child(folium.Element(rodape_html))
+    
+    # === ROSA DOS VENTOS (N, S, L, O) ===
+    rosa_ventos_html = '''
+    <div id="rosa-ventos-unica" style="
+        position: fixed;
+        bottom: 100px;
+        right: 30px;
+        width: 75px;
+        height: 75px;
+        z-index: 10001;
+        background: rgba(255, 255, 255, 0.9);
+        border: 2px solid #2c5aa0;
+        border-radius: 50%;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;">
+        <svg width="70" height="70" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="48" fill="white" stroke="#2c5aa0" stroke-width="2"/>
+            <!-- Seta Norte (Vermelha) -->
+            <path d="M 50 10 L 55 40 L 50 35 L 45 40 Z" fill="#cc0000"/>
+            <!-- Seta Sul -->
+            <path d="M 50 90 L 55 60 L 50 65 L 45 60 Z" fill="#666"/>
+            <!-- Seta Leste -->
+            <path d="M 90 50 L 60 55 L 65 50 L 60 45 Z" fill="#666"/>
+            <!-- Seta Oeste -->
+            <path d="M 10 50 L 40 55 L 35 50 L 40 45 Z" fill="#666"/>
+            <!-- Letras -->
+            <text x="50" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#cc0000">N</text>
+            <text x="50" y="95" text-anchor="middle" font-size="12" font-weight="bold" fill="#666">S</text>
+            <text x="85" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="#666">L</text>
+            <text x="15" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="#666">O</text>
+        </svg>
+    </div>
+    '''
+    mapa.get_root().html.add_child(folium.Element(rosa_ventos_html))
     
     print("✅ Mapa avançado criado com TreeLayerControl")
     return mapa
